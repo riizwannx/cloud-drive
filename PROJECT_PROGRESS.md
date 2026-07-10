@@ -6,85 +6,117 @@ Build a production-ready cloud storage platform using React, Node.js, MongoDB, D
 
 ---
 
-## 📅 Current Phase
+# 📅 Current Phase
 
-🟢 Phase 1 - Planning & Project Setup
+🟢 Phase 1 - Planning & Design
 
 ---
 
-## ✅ Completed Tasks
+# ✅ Completed Tasks
 
-- [x] Created GitHub repository
-- [x] Cloned repository to local machine
+## Day 0 - Project Setup
+
+- [x] Created GitHub Repository
+- [x] Cloned Repository
 - [x] Initialized Git
-- [x] Created professional project folder structure
-- [x] Created documentation folders
-- [x] Created README.md
-- [x] Created .gitignore
-- [x] Created CHANGELOG.md
-- [x] Created CONTRIBUTING.md
-- [x] Made first Git commit
+- [x] Created Project Folder Structure
+- [x] Created Documentation Structure
+- [x] Added README.md
+- [x] Added .gitignore
+- [x] Added CHANGELOG.md
+- [x] Added CONTRIBUTING.md
+- [x] Made First Git Commit
 
 ---
 
-## 🚧 Current Task
+## Day 1 - Requirement Analysis
 
-- [ ] Design system architecture
+- [x] Defined Project Goal
+- [x] Defined Target Users
+- [x] Defined User Roles
+- [x] Planned Version 1 Features
+- [x] Planned Version 2 Features
+- [x] Created Project Requirements Document
+- [x] Created System Design Document
+- [x] Finalized Dashboard Features
 
 ---
 
-## 📋 Upcoming Tasks
+# 🚧 Current Task
 
-- [ ] Define project requirements
-- [ ] Create architecture diagram
-- [ ] Design MongoDB database
-- [ ] Design REST APIs
-- [ ] Create UI wireframes
-- [ ] Setup React application
-- [ ] Setup Express server
-- [ ] Connect MongoDB
-- [ ] Implement authentication
-- [ ] Build file upload system
-- [ ] Integrate AWS S3
-- [ ] Dockerize application
-- [ ] Deploy to AWS EC2
-- [ ] Configure GitHub Actions
-- [ ] Add monitoring
-- [ ] Final testing
+Design MongoDB Database
+
+---
+
+# 📋 Upcoming Tasks
+
+- [ ] Database Design
+- [ ] API Design
+- [ ] UI Wireframes
+- [ ] React Setup
+- [ ] Express Setup
+- [ ] MongoDB Integration
+- [ ] Authentication
+- [ ] File Upload
+- [ ] AWS S3 Integration
+- [ ] Docker Setup
+- [ ] AWS Deployment
+- [ ] CI/CD
+- [ ] Monitoring
+- [ ] Testing
 - [ ] Documentation
 
 ---
 
-## 📈 Progress
+# 📈 Overall Progress
 
-Overall Progress: **10%**
+Project Progress
 
-Planning: ███░░░░░░░ 30%
+🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜
 
-Development: ░░░░░░░░░░ 0%
-
-Deployment: ░░░░░░░░░░ 0%
-
-Documentation: █░░░░░░░░░ 10%
+20%
 
 ---
 
-## 📝 Daily Log
+# 📝 Daily Log
 
-### Day 0 - Project Setup
+## Day 0
 
-**Completed**
+### Completed
 
-- Created repository
-- Created folder structure
-- Initialized Git
-- Learned Git basics
-- Added documentation files
+- Repository Created
+- Folder Structure
+- Git Initialized
+- README Added
+- Git Basics Learned
 
-**Time Spent**
-
-Approximately 2 hours
-
-**Status**
+### Status
 
 ✅ Completed
+
+---
+
+## Day 1
+
+### Completed
+
+- Requirement Analysis
+- User Roles
+- Version Planning
+- System Architecture
+- Dashboard Planning
+
+### Status
+
+✅ Completed
+
+---
+
+# 🎯 Tomorrow's Goal (Day 2)
+
+- Design MongoDB Collections
+- Design Relationships
+- Design File Metadata
+- Design Folder Structure
+- Plan Storage Usage Calculation
+- Prepare Database Diagram
