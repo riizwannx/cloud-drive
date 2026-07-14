@@ -8,7 +8,7 @@ Build a production-ready cloud storage platform inspired by Google Drive and Dro
 
 # 📅 Current Phase
 
-🟢 Phase 1 – Planning & System Design
+🟢 Phase 2 – Backend Development
 
 ---
 
@@ -18,15 +18,18 @@ Build a production-ready cloud storage platform inspired by Google Drive and Dro
 - [x] Requirements Analysis
 - [x] System Architecture
 - [x] Database Design
-- [ ] REST API Design
-- [ ] Backend Development
+- [x] REST API Design
+- [x] Backend Foundation
+- [ ] MongoDB Integration
+- [ ] Authentication System
+- [ ] File Management System
+- [ ] AWS S3 Integration
 - [ ] Frontend Development
 - [ ] Dockerization
 - [ ] AWS Deployment
 - [ ] CI/CD Pipeline
 - [ ] Monitoring & Logging
 - [ ] Testing
-- [ ] Documentation
 - [ ] Version 1.0 Release
 
 ---
@@ -41,10 +44,11 @@ Build a production-ready cloud storage platform inspired by Google Drive and Dro
 - [x] Created Professional Folder Structure
 - [x] Created Documentation Structure
 - [x] Added README.md
-- [x] Added .gitignore
+- [x] Added LICENSE
 - [x] Added CHANGELOG.md
 - [x] Added CONTRIBUTING.md
-- [x] Learned Git Basics
+- [x] Added .gitignore
+- [x] Learned Git Workflow
 - [x] First Git Commit
 
 ---
@@ -53,33 +57,137 @@ Build a production-ready cloud storage platform inspired by Google Drive and Dro
 
 - [x] Defined Project Vision
 - [x] Identified Target Users
-- [x] Defined User Roles
 - [x] Planned Version 1 Features
 - [x] Planned Future Features
-- [x] Created Project Requirements Document
-- [x] Created High-Level System Design
-- [x] Planned Dashboard Features
+- [x] Designed Dashboard
+- [x] Created High-Level Architecture
+- [x] Finalized System Design
 
 ---
 
 ## 📅 Day 2 – Database Design
 
-- [x] Finalized MongoDB Collections
-- [x] Designed User Collection
+- [x] Designed MongoDB Collections
+- [x] Designed Users Collection
 - [x] Designed Files Collection
-- [x] Planned Folder Collection
+- [x] Designed Folders Collection
 - [x] Planned Feedback Collection
-- [x] Understood MongoDB Metadata
-- [x] Understood AWS S3 Integration
-- [x] Learned S3 Object Keys (`s3Key`)
-- [x] Finalized Trash System
-- [x] Planned Soft Delete Strategy
+- [x] Designed Soft Delete Strategy
+- [x] Designed Trash System
+- [x] Planned AWS S3 Metadata Storage
+
+---
+
+## 📅 Day 3 – REST API Design
+
+- [x] Learned REST API Fundamentals
+- [x] Learned HTTP Methods
+- [x] Designed Authentication APIs
+- [x] Designed File APIs
+- [x] Designed Folder APIs
+- [x] Designed Profile APIs
+- [x] Designed Feedback APIs
+- [x] Planned Backend API Structure
+
+---
+
+## 📅 Day 4 – Backend Foundation
+
+### Backend Initialization
+
+- [x] Initialized Node.js Project
+- [x] Created package.json
+- [x] Installed Express.js
+- [x] Installed Mongoose
+- [x] Installed CORS
+- [x] Installed Dotenv
+- [x] Installed Nodemon
+
+### Backend Structure
+
+- [x] Created src Directory
+- [x] Created config Folder
+- [x] Created controllers Folder
+- [x] Created middleware Folder
+- [x] Created models Folder
+- [x] Created routes Folder
+- [x] Created services Folder
+- [x] Created utils Folder
+- [x] Created uploads Folder
+
+### Server Configuration
+
+- [x] Created .env File
+- [x] Configured package.json Scripts
+- [x] Created app.js
+- [x] Created server.js
+- [x] Configured Express Application
+- [x] Added CORS Middleware
+- [x] Added JSON Middleware
+
+### API Development
+
+- [x] Created Root Route (/)
+- [x] Created Health Check API (/api/health)
+- [x] Successfully Started Express Server
+- [x] Successfully Tested API in Browser
+
+---
+
+# 🗄️ Final Database Collections
+
+- 👤 Users
+- 📁 Folders
+- 📄 Files
+- 💬 Feedback
+
+---
+
+# 🌐 REST APIs Designed
+
+## Authentication
+
+- Register
+- Login
+- Logout
+- Current User
+
+## Files
+
+- Upload File
+- Get All Files
+- Get Single File
+- Download File
+- Rename File
+- Delete File
+- Restore File
+- Search Files
+- View Trash
+
+## Folders
+
+- Create Folder
+- Get Folders
+- Rename Folder
+- Delete Folder
+- Restore Folder
+
+## Profile
+
+- View Profile
+- Update Profile
+- Change Password
+
+## Feedback
+
+- Submit Feedback
+- View Feedback
 
 ---
 
 # 🚧 Current Task
 
-Design REST APIs
+MongoDB Integration
 
 ---
 
@@ -87,74 +195,90 @@ Design REST APIs
 
 ## Sprint 2
 
-- [ ] REST API Design
-- [ ] Authentication Flow
-- [ ] Database Schema (Mongoose)
-- [ ] React Project Setup
-- [ ] Express Project Setup
+- [ ] Connect MongoDB
+- [ ] Configure Database Connection
+- [ ] Create User Model
+- [ ] Create Folder Model
+- [ ] Create File Model
+- [ ] Create Feedback Model
 
 ---
 
 ## Sprint 3
 
-- [ ] User Authentication
-- [ ] Dashboard
-- [ ] File Upload
-- [ ] Folder Management
-- [ ] Search
-- [ ] Trash
+- [ ] Register API
+- [ ] Login API
+- [ ] JWT Authentication
+- [ ] Password Hashing
+- [ ] Authentication Middleware
 
 ---
 
 ## Sprint 4
 
+- [ ] File Upload
 - [ ] AWS S3 Integration
+- [ ] Folder Management
+- [ ] Search
+- [ ] Trash & Restore
+
+---
+
+## Sprint 5
+
+- [ ] React Frontend
+- [ ] Dashboard
+- [ ] User Profile
+- [ ] Responsive UI
+
+---
+
+## Sprint 6
+
 - [ ] Docker
 - [ ] AWS EC2 Deployment
 - [ ] GitHub Actions
 - [ ] Monitoring
 - [ ] Testing
+- [ ] Documentation
+- [ ] Version 1.0 Release
 
 ---
 
-# 🗄️ Final Database Collections
+# 📁 Backend Structure
 
-- 👤 Users
-- 📄 Files
-- 📁 Folders
-- 💬 Feedback
-
----
-
-# 🏗️ Architecture
-
-User
-
-↓
-
-React + Vite
-
-↓
-
-Express.js API
-
-↓
-
-MongoDB
-
-↓
-
-AWS S3
+```
+server/
+│
+├── node_modules/
+├── src/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── utils/
+│   ├── uploads/
+│   ├── app.js
+│   └── server.js
+│
+├── .env
+├── package.json
+├── package-lock.json
+```
 
 ---
 
 # 📈 Overall Progress
 
-Overall Progress
+```
+Project Progress
 
-🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜
+█████░░░░░
 
-30%
+50% Complete
+```
 
 ---
 
@@ -164,12 +288,12 @@ Overall Progress
 
 ### Completed
 
-- Repository Setup
-- Git Learning
+- Project Initialization
+- Git & GitHub Setup
+- Documentation
 - Folder Structure
-- Documentation Setup
 
-### Status
+**Status**
 
 ✅ Completed
 
@@ -181,10 +305,10 @@ Overall Progress
 
 - Requirements Analysis
 - Feature Planning
-- User Roles
-- System Design
+- System Architecture
+- Dashboard Planning
 
-### Status
+**Status**
 
 ✅ Completed
 
@@ -197,33 +321,70 @@ Overall Progress
 - Database Design
 - MongoDB Planning
 - AWS S3 Planning
-- File Metadata Design
-- User Collection Design
-- Files Collection Design
-- Folder Collection Planning
+- Collection Design
 - Soft Delete Strategy
 
-### Key Concepts Learned
-
-- Metadata vs Actual File Storage
-- AWS S3 Object Keys
-- Collection Relationships
-- Soft Delete
-- Database Normalization Basics
-
-### Status
+**Status**
 
 ✅ Completed
 
 ---
 
-# 🎯 Next Session (Day 3)
+## 📅 Day 3
 
-- Design REST APIs
-- Design Authentication Flow
-- Design Request & Response Formats
-- Prepare Backend Structure
-- Begin Coding
+### Completed
+
+- REST API Design
+- HTTP Methods
+- Authentication API Planning
+- File API Planning
+- Folder API Planning
+- Profile API Planning
+
+**Status**
+
+✅ Completed
+
+---
+
+## 📅 Day 4
+
+### Completed
+
+- Initialized Node.js Project
+- Installed Backend Dependencies
+- Configured Environment Variables
+- Created Professional Backend Folder Structure
+- Created Express Application
+- Configured Express Server
+- Created Root Route
+- Created Health Check API
+- Successfully Started Backend Server
+- Successfully Tested First API
+
+### Key Concepts Learned
+
+- Node.js Project Structure
+- Express.js Basics
+- Middleware
+- Environment Variables
+- REST API Routing
+- Express Application Flow
+
+**Status**
+
+✅ Completed
+
+---
+
+# 🎯 Next Session (Day 5)
+
+- Connect MongoDB
+- Create Database Configuration
+- Test Database Connection
+- Create User Model
+- Learn Mongoose
+- First Database Commit
 
 ---
 
@@ -231,7 +392,7 @@ Overall Progress
 
 ## Version 1.0
 
-- Authentication
+- User Authentication
 - Dashboard
 - File Upload
 - File Download
@@ -245,7 +406,6 @@ Overall Progress
 ## Version 2.0
 
 - File Sharing
-- Multi File Upload
 - Image Preview
 - PDF Preview
 - Automatic Trash Cleanup
@@ -256,13 +416,11 @@ Overall Progress
 ## Version 3.0
 
 - Secure Vault (Premium)
-- Password Protected Files
+- Password-Protected Files
 - File Encryption
-- Payments
 - AI Assistant
 - Team Workspace
 
 ---
 
-Last Updated:
-Day 2
+**Last Updated:** Day 4
