@@ -423,4 +423,29 @@ Project Progress
 
 ---
 
-**Last Updated:** Day 4
+## 📅 Day 5 – MongoDB Integration
+
+### Completed
+
+- [x] Created MongoDB Atlas Account
+- [x] Created Free M0 Cluster
+- [x] Created Database User
+- [x] Configured Network Access
+- [x] Added MongoDB Connection String
+- [x] Created Database Configuration (db.js)
+- [x] Connected Express to MongoDB
+- [x] Successfully Connected to MongoDB Atlas
+- [x] Learned MongoDB Connection Debugging
+
+### Key Concepts Learned
+
+- MongoDB Atlas
+- Mongoose
+- Connection Strings
+- Environment Variables
+- Database Configuration
+- Connection Debugging
+
+**Status**
+
+✅ Completed
