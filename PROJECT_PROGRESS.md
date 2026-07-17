@@ -2,62 +2,72 @@
 
 ## 📌 Project Overview
 
-CloudDrive is a secure cloud storage platform where users can upload, manage, and share files. The project is being developed using the MERN stack with AWS cloud services while following industry-standard backend architecture and best practices.
+CloudDrive is a secure cloud storage platform built using the MERN stack and AWS cloud services. The goal of this project is to develop a scalable and secure file storage application where users can register, authenticate, upload, organize, and share files. The project follows industry-standard backend architecture, security best practices, and clean code principles.
 
 ---
 
 # 📅 Day 1 – Project Planning & System Design
 
-## ✅ Completed
+## 🎯 Objective
 
-- Finalized project idea
-- Planned project architecture
+Plan the complete architecture and roadmap for CloudDrive.
+
+### ✅ Completed
+
+- Finalized CloudDrive project idea
+- Planned application architecture
 - Designed Version 1 features
-- Designed folder structure
-- Planned REST API structure
 - Designed MongoDB database structure
+- Planned REST API endpoints
 - Planned AWS S3 integration
-- Planned user authentication flow
-- Initialized GitHub repository
+- Planned authentication flow
+- Created GitHub repository
+- Created project roadmap
 
-### Concepts Learned
+### 📚 Concepts Learned
 
-- Project Planning
 - Software Architecture
 - REST API Design
 - Database Design
+- Project Planning
 - GitHub Repository Management
 
 ---
 
 # 📅 Day 2 – Backend Foundation
 
-## ✅ Completed
+## 🎯 Objective
+
+Set up the backend development environment.
+
+### ✅ Completed
 
 - Initialized Node.js project
-- Configured Express.js server
-- Installed required dependencies
-- Created backend folder structure
+- Configured Express.js
+- Installed required packages
 - Configured middleware
-- Created API health check endpoint
-- Tested Express server successfully
+- Created backend folder structure
+- Created Health Check API
+- Tested backend server
 
-### Technologies
+### 📚 Technologies
 
 - Node.js
 - Express.js
 - CORS
-- Environment Variables
+- dotenv
 
 ---
 
-# 📅 Day 3 – Backend Structure
+# 📅 Day 3 – Backend Architecture
 
-## ✅ Completed
+## 🎯 Objective
 
-Created scalable backend architecture.
+Build a scalable backend folder structure.
 
-### Folder Structure
+### ✅ Completed
+
+Created project architecture following MVC pattern.
 
 ```
 server/
@@ -79,81 +89,90 @@ server/
 └── .env
 ```
 
-### Concepts Learned
+### 📚 Concepts Learned
 
 - MVC Architecture
-- Backend Folder Organization
 - Clean Project Structure
+- Backend Folder Organization
 
 ---
 
 # 📅 Day 4 – Express Application Setup
 
-## ✅ Completed
+## 🎯 Objective
+
+Configure Express application and routes.
+
+### ✅ Completed
 
 - Configured Express application
-- Added middleware
-- Created root API endpoint
-- Created Health Check endpoint
-- Connected Express app with server.js
-- Verified backend startup
+- Connected middleware
+- Created Root API
+- Created Health Check API
+- Connected Express with Server
+- Successfully tested backend
 
-### API
+### API Endpoints
 
+```
 GET /
-
 GET /api/health
+```
+
+### 📚 Concepts Learned
+
+- Express Middleware
+- API Routing
+- Request Handling
 
 ---
 
 # 📅 Day 5 – MongoDB Atlas Integration
 
-## ✅ Completed
+## 🎯 Objective
 
-### MongoDB Atlas
+Connect CloudDrive with MongoDB Atlas.
 
-- Created Atlas account
-- Created Free Cluster
-- Created Database User
+### ✅ Completed
+
+- Created MongoDB Atlas account
+- Created free cluster
+- Created database user
 - Configured Network Access
-- Connected Atlas with application
+- Connected application with MongoDB
+- Configured Mongoose
+- Successfully established database connection
 
-### Backend
+### 🛠 Debugging
 
-- Created MongoDB configuration
-- Connected Mongoose
-- Verified successful database connection
-
-### Debugging
-
-Successfully resolved:
+Resolved:
 
 - MongoDB connection errors
-- Connection string configuration
 - DNS resolution issue
-- Database connectivity
+- Connection string configuration
+- Environment variable configuration
 
-### Concepts Learned
+### 📚 Concepts Learned
 
 - MongoDB Atlas
 - Mongoose
-- Environment Variables
 - Database Configuration
+- Environment Variables
 - Database Debugging
 
 ---
 
 # 📅 Day 6 – User Model & First API
 
-## ✅ Completed
+## 🎯 Objective
 
-### Database
+Create the first database model and API.
 
-Created first Mongoose Schema.
+### ✅ Completed
 
-### User Model
+### User Schema
 
-Fields
+Created User Schema with:
 
 - Username
 - Email
@@ -169,37 +188,99 @@ Fields
 
 ### Backend
 
-Created
+Created:
 
 - User Model
 - User Controller
 - User Routes
 
-Integrated routes into Express application.
+Integrated routes into Express.
 
 ### API
 
 Created first API endpoint.
 
-POST
-
 ```
-/api/users/create
+POST /api/users/create
 ```
 
-Successfully inserted first user into MongoDB Atlas.
+Successfully inserted first document into MongoDB Atlas.
 
-Verified database document creation.
+### 📚 Concepts Learned
 
-### Concepts Learned
-
-- Schema
-- Model
-- Controller
+- Mongoose Schema
+- Mongoose Model
+- Controllers
 - Routes
 - MongoDB Documents
-- MongoDB Collections
-- Express Request Lifecycle
+- Request Lifecycle
+
+---
+
+# 📅 Day 7 – Secure User Registration
+
+## 🎯 Objective
+
+Build a secure registration system following backend security best practices.
+
+### ✅ Completed
+
+### Dynamic Registration
+
+- Replaced hardcoded user creation
+- Accepted user data using `req.body`
+- Created Register API endpoint
+
+### Input Validation
+
+Implemented validation for:
+
+- Username
+- Email
+- Password
+
+Prevented incomplete user registration.
+
+### Duplicate Validation
+
+Added duplicate checking for:
+
+- Username
+- Email
+
+Returned user-friendly error messages.
+
+### Password Security
+
+Installed and configured **bcrypt**.
+
+Implemented password hashing before storing passwords.
+
+Verified encrypted passwords inside MongoDB.
+
+### API Testing
+
+Successfully tested:
+
+✅ User Registration
+
+✅ Required Field Validation
+
+✅ Duplicate Username Validation
+
+✅ Duplicate Email Validation
+
+✅ Password Hashing
+
+### 📚 Concepts Learned
+
+- req.body
+- Server-side Validation
+- MongoDB findOne()
+- bcrypt
+- Password Hashing
+- HTTP Status Codes
+- Secure Authentication
 
 ---
 
@@ -209,59 +290,65 @@ Verified database document creation.
 cloud-drive/
 
 ├── server/
-│   ├── src/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── middleware/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── uploads/
-│   │   ├── utils/
-│   │   ├── app.js
-│   │   └── server.js
-│   │
-│   ├── package.json
-│   ├── package-lock.json
-│   └── .env
 │
-├── PROJECT_PROGRESS.md
+├── src/
+│   ├── config/
+│   ├── controllers/
+│   │   └── userController.js
+│   │
+│   ├── middleware/
+│   ├── models/
+│   │   └── User.js
+│   │
+│   ├── routes/
+│   │   └── userRoutes.js
+│   │
+│   ├── services/
+│   ├── uploads/
+│   ├── utils/
+│   ├── app.js
+│   └── server.js
+│
+├── package.json
+├── package-lock.json
+├── .env
+├── .gitignore
 ├── README.md
-└── .gitignore
+└── PROJECT_PROGRESS.md
 ```
 
 ---
 
 # 🛠 Technologies Used
 
-### Backend
+## Backend
 
 - Node.js
 - Express.js
 - MongoDB Atlas
 - Mongoose
+- bcrypt
 
-### Tools
+## Tools
 
 - Git
 - GitHub
 - VS Code
 - Postman
 
-### Future
+## Upcoming Technologies
 
 - JWT
-- bcrypt
-- AWS S3
 - Multer
+- AWS S3
 - React
 - Docker
 - Nginx
-- EC2
+- Amazon EC2
 
 ---
 
-# 📈 Current Progress
+# 📈 Current Project Progress
 
 ```
 Planning                     ✅ 100%
@@ -270,78 +357,97 @@ Express Configuration        ✅ 100%
 MongoDB Atlas                ✅ 100%
 Database Design              ✅ 100%
 Mongoose Models              ✅ 100%
-First API                    ✅ 100%
+User Registration            ✅ 100%
+Input Validation             ✅ 100%
+Duplicate Validation         ✅ 100%
+Password Hashing             ✅ 100%
 
-Authentication               ⏳ 0%
-Authorization                ⏳ 0%
-JWT                          ⏳ 0%
-Password Encryption          ⏳ 0%
-File Upload                  ⏳ 0%
-AWS S3                       ⏳ 0%
-Frontend                     ⏳ 0%
-Deployment                   ⏳ 0%
+Login API                    ⏳ Pending
+JWT Authentication           ⏳ Pending
+Protected Routes             ⏳ Pending
+File Upload                  ⏳ Pending
+AWS S3 Integration           ⏳ Pending
+Frontend Development         ⏳ Pending
+Deployment                   ⏳ Pending
 ```
 
 ---
 
 # 🎯 Version 1 Features
 
-### User
+## Authentication
 
-- User Registration
-- Login
-- Profile
+- User Registration ✅
+- Login ⏳
+- JWT Authentication ⏳
+- Protected Routes ⏳
+
+## User
+
+- Profile Management
 - Storage Information
+- VIP Membership
 
-### Files
+## Files
 
 - Upload Files
 - Download Files
 - Delete Files
 - Rename Files
 - Search Files
+- Folder Management
 
-### Cloud
+## Cloud
 
-- AWS S3 Storage
+- AWS S3 Integration
 - Secure File Storage
 
 ---
 
 # 📅 Upcoming Milestones
 
-## Day 7
-
-- User Registration API
-- Input Validation
-- Password Hashing using bcrypt
-- Duplicate User Validation
-
 ## Day 8
 
 - Login API
-- JWT Authentication
-- Protected Routes
+- bcrypt.compare()
+- JWT Token Generation
 
 ## Day 9
 
-- File Upload API
-- Multer Integration
+- JWT Authentication Middleware
+- Protected Routes
 
 ## Day 10
 
+- File Upload API
+- Multer Configuration
+
+## Day 11
+
 - AWS S3 Integration
+
+## Day 12+
+
+- Frontend Development
+- Dashboard
+- Deployment
 
 ---
 
-# 🎯 Current Status
+# 🚀 Current Status
 
 ## Project Version
 
-CloudDrive v1.0 (Development)
+**CloudDrive v1.0 (Backend Development)**
 
-## Overall Progress
+## Overall Status
 
-**Backend Foundation  (Phase 1). Authentication & File Management (Phase 2) begins next.**
+The backend foundation has been successfully established. CloudDrive now supports secure user registration with server-side validation, duplicate user detection, and encrypted password storage using bcrypt.
 
-The backend foundation has been successfully established with MongoDB integration, user model creation, and the first working API. The next phase focuses on implementing secure authentication, file management, cloud storage integration, and frontend development.
+The next phase will focus on user authentication using JWT, protected APIs, file upload functionality, AWS S3 integration, frontend development, and deployment.
+
+---
+
+# 🎯 Goal
+
+Build a production-ready cloud storage platform that demonstrates modern backend development practices, secure authentication, cloud integration, and scalable application architecture using the MERN stack and AWS.
