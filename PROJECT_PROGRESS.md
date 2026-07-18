@@ -513,3 +513,71 @@ CloudDrive now includes a complete authentication system with secure user regist
 # 🎯 Final Goal
 
 Build a production-ready cloud storage platform demonstrating secure authentication, scalable backend architecture, cloud integration with AWS, and modern MERN stack development practices suitable for real-world deployment and portfolio presentation.
+
+# 📅 Day 9 – Authentication Middleware & Protected Routes
+
+## 🎯 Objective
+
+Secure private APIs using JWT Authentication Middleware.
+
+### ✅ Completed
+
+### Authentication Middleware
+
+- Created `authMiddleware.js`
+- Read the Authorization header from incoming requests
+- Validated Bearer Token format
+- Extracted JWT from the Authorization header
+- Verified JWT using `jwt.verify()`
+- Stored decoded user information in `req.user`
+- Handled invalid, missing, and expired tokens with proper HTTP responses
+
+### Protected Route
+
+Created the first protected API endpoint:
+
+```http
+GET /api/users/profile
+```
+
+Only authenticated users with a valid JWT token can access this route.
+
+### API Testing
+
+Successfully tested:
+
+- Valid JWT Token
+- Invalid Token
+- Missing Token
+- Protected Route Access
+- Authorization Header
+
+### Request Flow
+
+```
+User Login
+      ↓
+JWT Token Generated
+      ↓
+Client Sends Token
+      ↓
+Authentication Middleware
+      ↓
+JWT Verified
+      ↓
+req.user Created
+      ↓
+Protected Route Access
+```
+
+### 📚 Concepts Learned
+
+- Express Middleware
+- Authentication Middleware
+- Authorization Header
+- Bearer Token
+- JWT Verification
+- `jwt.verify()`
+- `req.user`
+- Protected Routes
+- HTTP 401 Unauthorized
