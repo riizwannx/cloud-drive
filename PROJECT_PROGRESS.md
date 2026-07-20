@@ -525,7 +525,97 @@ EC2 Deployment                   ⏳ Pending
 - Docker
 - Nginx
 - EC2 Deployment
+# 📅 Day 11 – File Upload Module
 
+## 🎯 Objective
+Implement a secure file upload system for authenticated users using Multer middleware.
+
+---
+
+## ✅ Work Completed
+
+- Installed Multer package.
+- Created the `uploads` folder for storing uploaded files.
+- Configured Multer using `diskStorage()`.
+- Implemented automatic unique filename generation using `Date.now()`.
+- Added file type validation (JPG, JPEG, PNG, PDF).
+- Added maximum file size limit of 5 MB.
+- Created `uploadMiddleware.js` for handling file uploads.
+- Created `fileController.js` to process uploaded files.
+- Created `fileRoutes.js` for upload endpoints.
+- Protected the upload route using JWT Authentication Middleware.
+- Successfully tested file upload using Postman.
+- Verified that uploaded files are stored in the `src/uploads` directory.
+
+---
+
+## 📂 Files Created
+
+- `src/middleware/uploadMiddleware.js`
+- `src/controllers/fileController.js`
+- `src/routes/fileRoutes.js`
+- `src/uploads/`
+
+---
+
+## 🌐 API Implemented
+
+### Upload File
+
+**Method:** `POST`
+
+**Endpoint:**
+```
+/api/files/upload
+```
+
+**Authentication:**
+```
+Bearer Token (JWT Required)
+```
+
+**Request Body:**
+```
+form-data
+
+Key : file
+Type : File
+```
+
+---
+
+## 📤 Response
+
+Returns:
+
+- Upload status
+- Original file name
+- Generated file name
+- File type
+- File size
+- File storage path
+
+---
+
+## 🧠 Concepts Learned
+
+- Multer Middleware
+- multipart/form-data
+- File Upload in Express.js
+- diskStorage Configuration
+- File Validation
+- File Size Limitation
+- JWT Protected Routes
+- req.file Object
+- File Upload Testing using Postman
+
+---
+
+## ✅ Status
+
+Day 11 completed successfully.
+
+CloudDrive now supports authenticated file uploads with validation and local file storage.
 ---
 
 # 🚀 Current Status
