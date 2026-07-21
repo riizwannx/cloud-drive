@@ -610,13 +610,47 @@ Returns:
 - File Upload Testing using Postman
 
 ---
+## 📅 Day 12 - Part 2: My Files API
 
-## ✅ Status
+### Objective
+Implement an API that retrieves all uploaded files belonging to the authenticated user.
 
-Day 11 completed successfully.
+### Tasks Completed
 
-CloudDrive now supports authenticated file uploads with validation and local file storage.
----
+- Added `getMyFiles` controller.
+- Retrieved files using `File.find({ owner: req.user.id })`.
+- Sorted files by upload date (newest first).
+- Protected the endpoint using JWT Authentication.
+- Returned the total file count.
+- Successfully tested the API using Postman.
+
+### API Implemented
+
+**GET** `/api/files`
+
+### Authentication
+
+Bearer Token (JWT Required)
+
+### Response
+
+- Total uploaded files
+- File metadata
+- Upload date
+- Owner information
+
+### Concepts Learned
+
+- MongoDB Query (`find()`)
+- Filtering Documents
+- User-specific Data Retrieval
+- ObjectId Relationships
+- Sorting Documents
+- Protected GET APIs
+
+### Status
+
+✅ Users can now retrieve only their own uploaded files from MongoDB.
 
 # 🚀 Current Status
 
