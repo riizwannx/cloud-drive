@@ -1,669 +1,427 @@
-# 🚀 CloudDrive - Project Progress
+# 📁 CloudDrive - Project Progress Report
 
-## 📌 Project Overview
-
-CloudDrive is a secure cloud storage platform built using the MERN Stack and AWS Cloud Services. The goal of this project is to build a scalable, secure, and production-ready cloud storage application where users can register, authenticate, upload, manage, and securely access their files from anywhere.
-
-The project follows industry-standard backend architecture, REST API principles, secure authentication practices, and clean coding standards.
-
----
-
-# 📅 Day 1 – Project Planning & System Design
-
-## 🎯 Objective
-
-Plan the complete CloudDrive application.
-
-### ✅ Completed
-
-- Finalized CloudDrive project idea
-- Planned complete application architecture
-- Designed Version 1 features
-- Planned MongoDB database
-- Planned REST APIs
-- Planned Authentication Flow
-- Planned AWS S3 Integration
-- Created GitHub Repository
-- Created Development Roadmap
-
-### 📚 Concepts Learned
-
-- Software Architecture
-- Database Design
-- REST API Planning
-- GitHub Project Setup
+**Developer:** Mohammad Rizwan  
+**Project:** CloudDrive - Secure Cloud Storage Application  
+**Tech Stack:** Node.js, Express.js, MongoDB, Mongoose, JWT, Multer  
+**Current Version:** v1.0 Backend (Core Features Complete)  
+**Status:** ✅ Backend Core APIs Completed & Acceptance Tested
 
 ---
 
-# 📅 Day 2 – Backend Foundation
+# 📅 Development Progress
 
-## 🎯 Objective
+## ✅ Day 1 - Project Setup
 
-Initialize backend development.
-
-### ✅ Completed
-
-- Initialized Node.js Project
-- Installed Express.js
-- Configured dotenv
-- Configured CORS
-- Created backend structure
-- Built first API
-- Tested backend successfully
-
-### 📚 Technologies
-
-- Node.js
-- Express.js
-- dotenv
-- CORS
-
----
-
-# 📅 Day 3 – Professional Backend Structure
-
-## 🎯 Objective
-
-Build scalable backend architecture.
-
-### ✅ Completed
-
-Created professional MVC folder structure.
-
-```
-server/
-
-├── src/
-│
-├── config/
-├── controllers/
-├── middleware/
-├── models/
-├── routes/
-├── services/
-├── uploads/
-├── utils/
-│
-├── app.js
-└── server.js
-
-package.json
-.env
-```
-
-### 📚 Concepts Learned
-
-- MVC Architecture
-- Clean Folder Structure
-- Backend Organization
-
----
-
-# 📅 Day 4 – Express Application Setup
-
-## 🎯 Objective
-
-Configure Express Application.
-
-### ✅ Completed
-
-- Configured Express App
-- Added Middleware
-- Configured Routes
-- Created Root Route
-- Created Health API
-
-### APIs
-
-```
-GET /
-GET /api/health
-```
-
-### 📚 Concepts Learned
-
-- Express Routing
-- Middleware
-- Request & Response Lifecycle
-
----
-
-# 📅 Day 5 – MongoDB Atlas Integration
-
-## 🎯 Objective
-
-Connect CloudDrive with MongoDB Atlas.
-
-### ✅ Completed
-
-- Created MongoDB Atlas Cluster
-- Configured Database User
-- Configured Network Access
+### Completed
+- Initialized Node.js project
+- Installed required dependencies
+- Created folder structure
+- Configured Express server
 - Connected MongoDB Atlas
-- Configured Mongoose
-- Successfully Connected Database
+- Environment variables setup
+- GitHub repository initialized
 
-### Debugging
+**Status:** ✅ Completed
 
-Resolved
+---
 
-- MongoDB Connection Errors
-- DNS Issues
-- Environment Variables
-- Connection String Problems
+## ✅ Day 2 - Database & User Model
 
-### 📚 Concepts Learned
+### Completed
+- Created User Schema
+- Password hashing using bcrypt
+- JWT configuration
+- Database testing
+- User model validation
+
+**Status:** ✅ Completed
+
+---
+
+## ✅ Day 3 - Authentication APIs
+
+### Completed
+
+#### Register API
+- User registration
+- Password hashing
+- Duplicate email validation
+
+#### Login API
+- JWT Token generation
+- Password verification
+- Secure authentication
+
+#### Profile API
+- Protected route
+- JWT Middleware
+- Fetch logged-in user
+
+**Status:** ✅ Completed
+
+---
+
+## ✅ Day 4 - File Upload System
+
+### Completed
+
+- Multer configuration
+- Upload directory creation
+- File metadata storage
+- MongoDB integration
+- User ownership mapping
+
+Supported Files (Current)
+
+- PDF
+- PNG
+- JPG
+- JPEG
+
+**Status:** ✅ Completed
+
+---
+
+## ✅ Day 5 - File Listing
+
+### Completed
+
+My Files API
+
+Features
+
+- List all uploaded files
+- User-specific filtering
+- MongoDB query optimization
+
+**Status:** ✅ Completed
+
+---
+
+## ✅ Day 6 - Download API
+
+### Completed
+
+Features
+
+- Download uploaded file
+- Ownership verification
+- File existence validation
+- Secure file delivery
+
+**Acceptance Test**
+
+- PDF downloaded successfully
+- File integrity verified
+
+**Status:** ✅ Completed
+
+---
+
+## ✅ Day 7 - Delete API
+
+### Completed
+
+Features
+
+- Delete MongoDB record
+- Delete physical file
+- Ownership validation
+- Success response
+
+**Acceptance Test**
+
+- MongoDB document removed
+- Upload folder cleaned
+- File permanently deleted
+
+**Status:** ✅ Completed
+
+---
+
+## ✅ Day 8 - Rename API
+
+### Completed
+
+Features
+
+- Rename display filename
+- Keep physical filename unchanged
+- Ownership verification
+
+**Acceptance Test**
+
+- originalName updated
+- fileName unchanged
+- File still downloadable
+
+**Status:** ✅ Completed
+
+---
+
+## ✅ Day 9 - Search API
+
+### Completed
+
+Features
+
+- Search by filename
+- Case-insensitive search
+- Partial matching
+- User-specific search
+
+MongoDB
+
+```javascript
+$regex
+$options: "i"
+```
+
+**Acceptance Test**
+
+Search Result
+
+```
+Cloud
+↓
+
+Cloud Engineer.pdf
+```
+
+**Status:** ✅ Completed
+
+---
+
+# 🧪 Acceptance Testing (Backend v1.0)
+
+A complete end-to-end QA cycle was performed using a new user account.
+
+## Test Results
+
+| Test | Status |
+|-------|--------|
+| Register | ✅ PASS |
+| Login | ✅ PASS |
+| Profile | ✅ PASS |
+| Upload File #1 | ✅ PASS |
+| Upload File #2 | ✅ PASS |
+| Get My Files | ✅ PASS |
+| Search | ✅ PASS |
+| Rename | ✅ PASS |
+| Download | ✅ PASS |
+| Delete | ✅ PASS |
+| Final Verification | ✅ PASS |
+
+## Overall Result
+
+```
+Tests Passed : 11 / 11
+
+Tests Failed : 0
+
+Backend Health : 100%
+```
+
+---
+
+# 🔐 Authentication Features
+
+Completed
+
+- User Registration
+- Login
+- Password Hashing
+- JWT Authentication
+- Protected Routes
+- User Authorization
+
+---
+
+# 📂 File Management Features
+
+Completed
+
+- Upload File
+- Get My Files
+- Search Files
+- Rename File
+- Download File
+- Delete File
+
+---
+
+# 🗄 Database Features
+
+Completed
 
 - MongoDB Atlas
-- Mongoose
-- Database Connections
-- Environment Variables
+- User Collection
+- File Collection
+- User → File Relationship
+- Metadata Storage
 
 ---
 
-# 📅 Day 6 – User Model & First API
+# 🛡 Security Features
 
-## 🎯 Objective
+Completed
 
-Create User Model and First API.
-
-### ✅ Completed
-
-Created User Schema
-
-Fields
-
-- Username
-- Email
-- Password
-- Profile Picture
-- Phone
-- Bio
-- Storage Used
-- Storage Limit
-- VIP Status
-- CreatedAt
-- UpdatedAt
-
-Created
-
-- User Model
-- User Controller
-- User Routes
-
-Successfully inserted first document into MongoDB Atlas.
-
-### API
-
-```
-POST /api/users/register
-```
-
-### 📚 Concepts Learned
-
-- Mongoose Schema
-- Mongoose Models
-- Controllers
-- Routes
-- MongoDB Documents
-
----
-
-# 📅 Day 7 – Secure User Registration
-
-## 🎯 Objective
-
-Develop secure registration system.
-
-### ✅ Completed
-
-- Dynamic Registration
-- Input Validation
-- Duplicate Username Check
-- Duplicate Email Check
-- Password Hashing using bcrypt
-
-### API Testing
-
-Successfully Tested
-
-- Registration
-- Missing Fields
-- Duplicate Username
-- Duplicate Email
-- Password Encryption
-
-### 📚 Concepts Learned
-
-- req.body
-- Validation
-- bcrypt
-- findOne()
-- Secure Registration
-
----
-
-# 📅 Day 8 – Login API & JWT Authentication
-
-## 🎯 Objective
-
-Implement secure login using JWT.
-
-### ✅ Completed
-
-- Login API
-- Password Verification
-- JWT Token Generation
-- Environment Variables
-- Token Expiration
-
-### API
-
-```
-POST /api/users/login
-```
-
-### API Testing
-
-Successfully Tested
-
-- Login
-- Wrong Password
-- User Not Found
-- JWT Generation
-
-### 📚 Concepts Learned
-
-- Authentication
-- Authorization
-- JWT
-- bcrypt.compare()
-- jwt.sign()
-
----
-
-# 📅 Day 9 – Authentication Middleware & Protected Routes
-
-## 🎯 Objective
-
-Protect private APIs.
-
-### ✅ Completed
-
-Created Authentication Middleware.
-
-Implemented
-
-- Authorization Header
-- Bearer Token Validation
-- JWT Verification
-- req.user
-- Protected Routes
-
-### Protected API
-
-```
-GET /api/users/profile
-```
-
-### API Testing
-
-Successfully Tested
-
-- Valid Token
-- Invalid Token
-- Missing Token
-- Protected Route
-
-### 📚 Concepts Learned
-
-- Middleware
-- Authorization Header
-- Bearer Token
-- jwt.verify()
-- Protected Routes
-
----
-
-# 📅 Day 10 – Current User Profile API
-
-## 🎯 Objective
-
-Return complete authenticated user profile.
-
-### ✅ Completed
-
-Improved Profile API.
-
-Implemented
-
-- MongoDB findById()
-- User fetched using req.user.id
-- Password removed from response
-- __v removed from response
-- Production-style Profile API
-
-### Protected API
-
-```
-GET /api/users/profile
-```
-
-### API Testing
-
-Successfully Tested
-
+- Password Hashing (bcrypt)
 - JWT Authentication
-- MongoDB Query
-- Password Hidden
-- __v Hidden
-- User Profile Retrieval
-
-### 📚 Concepts Learned
-
-- findById()
-- select("-password -__v")
-- Secure API Response
-- Production API Design
+- Protected APIs
+- Owner Verification
+- File Type Validation
 
 ---
 
-# 📂 Current Project Structure
+# 📊 Current Project Structure
 
 ```
-cloud-drive/
-
-├── server/
+CloudDrive
 │
-├── src/
-│   ├── config/
-│   ├── controllers/
-│   │   └── userController.js
-│   │
-│   ├── middleware/
-│   │   └── authMiddleware.js
-│   │
-│   ├── models/
-│   │   └── User.js
-│   │
-│   ├── routes/
-│   │   └── userRoutes.js
-│   │
-│   ├── services/
-│   ├── uploads/
-│   ├── utils/
-│   │
-│   ├── app.js
+├── server
+│   ├── controllers
+│   ├── middleware
+│   ├── models
+│   ├── routes
+│   ├── config
+│   ├── uploads
+│   ├── utils
 │   └── server.js
 │
-├── package.json
-├── package-lock.json
-├── .env
-├── .gitignore
-├── README.md
-└── PROJECT_PROGRESS.md
+├── client (Coming Soon)
+│
+└── README.md
 ```
 
 ---
 
-# 🛠 Technologies Used
+# 🚀 Upcoming Improvements
 
-## Backend
+## Backend Refactoring
 
-- Node.js
-- Express.js
-- MongoDB Atlas
-- Mongoose
-- bcrypt
-- JSON Web Token (JWT)
+- ObjectId validation
+- Async file operations
+- Better error handling
+- Cleaner controllers
+- Standard API responses
 
-## Development Tools
+---
 
-- Git
-- GitHub
-- VS Code
-- Postman
+## Security Improvements
 
-## Upcoming
+- Remove password from Register API response
+- Better request validation
+- Improved upload validation
 
-- Multer
-- AWS S3
+---
+
+## New Features (v2.0)
+
+- Multi-file upload
+- DOC/DOCX support
+- XLS/XLSX support
+- PPT/PPTX support
+- ZIP support
+- MP3 support
+- MP4 support
+
+---
+
+## Cloud Integration
+
+- AWS S3 Storage
+- Signed URLs
+- Cloud File Management
+
+---
+
+## Frontend Development
+
 - React
-- Docker
-- Nginx
-- Amazon EC2
-
----
-
-# 📈 Current Project Progress
-
-```
-Project Planning                 ✅ 100%
-Backend Setup                    ✅ 100%
-Express.js                       ✅ 100%
-MongoDB Atlas                    ✅ 100%
-Database Design                  ✅ 100%
-User Model                       ✅ 100%
-Registration API                 ✅ 100%
-Input Validation                 ✅ 100%
-Duplicate Validation             ✅ 100%
-Password Hashing                 ✅ 100%
-Login API                        ✅ 100%
-JWT Authentication               ✅ 100%
-Authentication Middleware        ✅ 100%
-Protected Routes                 ✅ 100%
-Current User Profile API         ✅ 100%
-
-File Upload API                  ⏳ Pending
-File Management                  ⏳ Pending
-AWS S3 Integration               ⏳ Pending
-React Frontend                   ⏳ Pending
-Docker                           ⏳ Pending
-Nginx                            ⏳ Pending
-EC2 Deployment                   ⏳ Pending
-```
-
----
-
-# 🎯 Version 1 Features
-
-## Authentication
-
-- User Registration ✅
-- User Login ✅
-- Password Encryption ✅
-- JWT Authentication ✅
-- Authentication Middleware ✅
-- Protected Routes ✅
-- Current User Profile ✅
-
-## Storage
-
-- File Upload ⏳
-- File Download ⏳
-- File Delete ⏳
-- Folder Management ⏳
-
-## Cloud
-
-- AWS S3 Integration ⏳
-
----
-
-# 📅 Upcoming Milestones
-
-## Day 11
-
-- Multer Installation
-- Upload Middleware
-- File Upload API
-
-## Day 12
-
-- Local File Upload
-- File Metadata
-
-## Day 13
-
-- AWS S3 Upload
-
-## Day 14
-
-- File Listing
-- Download API
-- Delete API
-
-## Day 15
-
-- Folder Management
-- Search API
-
-## Future
-
-- React Frontend
+- Vite
+- Authentication
 - Dashboard
+- Upload UI
+- Search UI
+- Download UI
+- Delete UI
+
+---
+
+## Deployment
+
 - Docker
+- Docker Compose
 - Nginx
-- EC2 Deployment
-# 📅 Day 11 – File Upload Module
-
-## 🎯 Objective
-Implement a secure file upload system for authenticated users using Multer middleware.
+- EC2
+- HTTPS
 
 ---
 
-## ✅ Work Completed
+# 📈 Current Progress
 
-- Installed Multer package.
-- Created the `uploads` folder for storing uploaded files.
-- Configured Multer using `diskStorage()`.
-- Implemented automatic unique filename generation using `Date.now()`.
-- Added file type validation (JPG, JPEG, PNG, PDF).
-- Added maximum file size limit of 5 MB.
-- Created `uploadMiddleware.js` for handling file uploads.
-- Created `fileController.js` to process uploaded files.
-- Created `fileRoutes.js` for upload endpoints.
-- Protected the upload route using JWT Authentication Middleware.
-- Successfully tested file upload using Postman.
-- Verified that uploaded files are stored in the `src/uploads` directory.
+Backend
 
----
-
-## 📂 Files Created
-
-- `src/middleware/uploadMiddleware.js`
-- `src/controllers/fileController.js`
-- `src/routes/fileRoutes.js`
-- `src/uploads/`
-
----
-
-## 🌐 API Implemented
-
-### Upload File
-
-**Method:** `POST`
-
-**Endpoint:**
 ```
-/api/files/upload
+███████████████████████████ 100%
 ```
 
-**Authentication:**
+Frontend
+
 ```
-Bearer Token (JWT Required)
+□□□□□□□□□□□□□□ 0%
 ```
 
-**Request Body:**
-```
-form-data
+AWS Integration
 
-Key : file
-Type : File
+```
+□□□□□□□□□□□□□□ 0%
+```
+
+Deployment
+
+```
+□□□□□□□□□□□□□□ 0%
+```
+
+Overall Project Progress
+
+```
+██████████□□□□□□□□□□ 50%
 ```
 
 ---
 
-## 📤 Response
+# 🎯 Current Milestone
 
-Returns:
+✅ CloudDrive Backend v1.0 Completed
 
-- Upload status
-- Original file name
-- Generated file name
-- File type
-- File size
-- File storage path
+Core backend APIs have been implemented and successfully passed a complete acceptance testing cycle. The backend is stable and ready for refactoring, cloud storage integration, frontend development, and deployment.
 
 ---
 
-## 🧠 Concepts Learned
+# 📝 Notes
 
-- Multer Middleware
-- multipart/form-data
-- File Upload in Express.js
-- diskStorage Configuration
-- File Validation
-- File Size Limitation
-- JWT Protected Routes
-- req.file Object
-- File Upload Testing using Postman
+### Improvements Identified During Testing
 
----
-## 📅 Day 12 - Part 2: My Files API
-
-### Objective
-Implement an API that retrieves all uploaded files belonging to the authenticated user.
-
-### Tasks Completed
-
-- Added `getMyFiles` controller.
-- Retrieved files using `File.find({ owner: req.user.id })`.
-- Sorted files by upload date (newest first).
-- Protected the endpoint using JWT Authentication.
-- Returned the total file count.
-- Successfully tested the API using Postman.
-
-### API Implemented
-
-**GET** `/api/files`
-
-### Authentication
-
-Bearer Token (JWT Required)
-
-### Response
-
-- Total uploaded files
-- File metadata
-- Upload date
-- Owner information
-
-### Concepts Learned
-
-- MongoDB Query (`find()`)
-- Filtering Documents
-- User-specific Data Retrieval
-- ObjectId Relationships
-- Sorting Documents
-- Protected GET APIs
-
-### Status
-
-✅ Users can now retrieve only their own uploaded files from MongoDB.
-
-# 🚀 Current Status
-
-## Project Version
-
-CloudDrive v1.0 (Authentication Module Complete)
-
-## Overall Status
-
-CloudDrive now includes a complete authentication system with secure user registration, password hashing using bcrypt, JWT-based login, authentication middleware, protected routes, and a production-style Current User Profile API. Sensitive information such as passwords and internal Mongoose fields are excluded from responses. The next phase of development focuses on implementing file upload functionality, AWS S3 integration, file management features, frontend development, containerization with Docker, and deployment on Amazon EC2.
+- Do not return hashed password in Register API response.
+- Expand supported file types beyond images and PDFs.
+- Add multi-file upload support.
+- Enhance input validation and error handling.
 
 ---
 
-# 🎯 Final Goal
+# 🏆 Achievement
 
-Build a production-ready cloud storage platform using the MERN Stack and AWS that demonstrates secure authentication, scalable backend architecture, cloud file storage, clean API design, and deployment best practices. The completed project will serve as a professional portfolio project showcasing backend engineering, cloud integration, and full-stack development skills.
+✔ Authentication System Complete
+
+✔ File Management System Complete
+
+✔ MongoDB Integration Complete
+
+✔ JWT Security Complete
+
+✔ Acceptance Testing Passed (11/11)
+
+✔ Backend v1.0 Successfully Completed
