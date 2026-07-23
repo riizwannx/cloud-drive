@@ -52,10 +52,13 @@ const registerUser = async (req, res) => {
     // Save user
     await newUser.save();
 
+    // Fetch user without password and __v
+    const user = await User.findById(newUser._id).select("-password -__v");
+
     res.status(201).json({
       success: true,
       message: "User registered successfully.",
-      user: newUser,
+      user,
     });
   } catch (error) {
     console.error(error);
