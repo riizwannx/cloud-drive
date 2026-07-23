@@ -1,4 +1,5 @@
 const File = require("../models/File");
+const storageService = require("../services/storageService");
 const path = require("path");
 const fs = require("fs");
 
@@ -14,6 +15,25 @@ const uploadFile = async (req, res) => {
       });
     }
 
+    // Check storage limit
+    const storageCheck = await storageService.checkStorageLimit(
+      req.user.id,
+      req.file.size
+    );
+
+    if (!storageCheck.success) {
+      // Delete uploaded file if storage limit exceeded
+      if (fs.existsSync(req.file.path)) {
+        await fs.promises.unlink(req.file.path);
+      }
+
+      return res.status(storageCheck.status).json({
+        success: false,
+        message: storageCheck.message,
+      });
+    }
+
+    // Save file information
     const newFile = await File.create({
       originalName: req.file.originalname,
       fileName: req.file.filename,
@@ -23,7 +43,10 @@ const uploadFile = async (req, res) => {
       owner: req.user.id,
     });
 
-    res.status(201).json({
+    // Increase user's storage usage
+    await storageService.increaseStorage(req.user.id, req.file.size);
+
+    return res.status(201).json({
       success: true,
       message: "File uploaded successfully.",
       file: newFile,
@@ -31,7 +54,12 @@ const uploadFile = async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    // Delete uploaded file if an unexpected error occurs
+    if (req.file && fs.existsSync(req.file.path)) {
+      await fs.promises.unlink(req.file.path);
+    }
+
+    return res.status(500).json({
       success: false,
       message: "Server Error",
     });
@@ -49,7 +77,7 @@ const getMyFiles = async (req, res) => {
       createdAt: -1,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       count: files.length,
       files,
@@ -57,7 +85,7 @@ const getMyFiles = async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server Error",
     });
@@ -100,7 +128,7 @@ const downloadFile = async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server Error",
     });
@@ -131,10 +159,12 @@ const deleteFile = async (req, res) => {
     }
 
     const filePath = path.join(process.cwd(), file.filePath);
-
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
+        if (fs.existsSync(filePath)) {
+      await fs.promises.unlink(filePath);
     }
+
+    // Decrease user's storage usage
+    await storageService.decreaseStorage(req.user.id, file.fileSize);
 
     await file.deleteOne();
 
@@ -145,7 +175,7 @@ const deleteFile = async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server Error",
     });
@@ -192,7 +222,6 @@ const renameFile = async (req, res) => {
       message: "File renamed successfully.",
       file,
     });
-
   } catch (error) {
     console.error(error);
 
@@ -227,7 +256,6 @@ const searchFiles = async (req, res) => {
       count: files.length,
       files,
     });
-
   } catch (error) {
     console.error(error);
 
