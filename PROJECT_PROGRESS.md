@@ -10,388 +10,343 @@
 
 # 📅 Development Progress
 
-## ✅ Day 1 - Project Setup
+# CloudDrive - Project Progress Report
 
-### Completed
-- Initialized Node.js project
-- Installed required dependencies
+**Project:** CloudDrive
+**Backend:** Node.js, Express.js
+**Frontend:** React (Planned)
+**Database:** MongoDB
+**Authentication:** JWT
+**Current Day:** 16
+
+---
+
+# Day 1 - Project Planning
+
+## Completed
+- Finalized project idea
+- Planned project architecture
+- Selected technology stack
+- Created GitHub repository
 - Created folder structure
-- Configured Express server
-- Connected MongoDB Atlas
-- Environment variables setup
-- GitHub repository initialized
 
-**Status:** ✅ Completed
+Status:
+✅ Completed
 
 ---
 
-## ✅ Day 2 - Database & User Model
+# Day 2 - Project Initialization
 
-### Completed
-- Created User Schema
-- Password hashing using bcrypt
-- JWT configuration
-- Database testing
-- User model validation
+## Completed
+- Express setup
+- MongoDB connection
+- Environment configuration
+- Installed project dependencies
 
-**Status:** ✅ Completed
-
----
-
-## ✅ Day 3 - Authentication APIs
-
-### Completed
-
-#### Register API
-- User registration
-- Password hashing
-- Duplicate email validation
-
-#### Login API
-- JWT Token generation
-- Password verification
-- Secure authentication
-
-#### Profile API
-- Protected route
-- JWT Middleware
-- Fetch logged-in user
-
-**Status:** ✅ Completed
+Status:
+✅ Completed
 
 ---
 
-## ✅ Day 4 - File Upload System
+# Day 3 - Authentication
 
-### Completed
-
-- Multer configuration
-- Upload directory creation
-- File metadata storage
-- MongoDB integration
-- User ownership mapping
-
-Supported Files (Current)
-
-- PDF
-- PNG
-- JPG
-- JPEG
-
-**Status:** ✅ Completed
-
----
-
-## ✅ Day 5 - File Listing
-
-### Completed
-
-My Files API
-
-Features
-
-- List all uploaded files
-- User-specific filtering
-- MongoDB query optimization
-
-**Status:** ✅ Completed
-
----
-
-## ✅ Day 6 - Download API
-
-### Completed
-
-Features
-
-- Download uploaded file
-- Ownership verification
-- File existence validation
-- Secure file delivery
-
-**Acceptance Test**
-
-- PDF downloaded successfully
-- File integrity verified
-
-**Status:** ✅ Completed
-
----
-
-## ✅ Day 7 - Delete API
-
-### Completed
-
-Features
-
-- Delete MongoDB record
-- Delete physical file
-- Ownership validation
-- Success response
-
-**Acceptance Test**
-
-- MongoDB document removed
-- Upload folder cleaned
-- File permanently deleted
-
-**Status:** ✅ Completed
-
----
-
-## ✅ Day 8 - Rename API
-
-### Completed
-
-Features
-
-- Rename display filename
-- Keep physical filename unchanged
-- Ownership verification
-
-**Acceptance Test**
-
-- originalName updated
-- fileName unchanged
-- File still downloadable
-
-**Status:** ✅ Completed
-
----
-
-## ✅ Day 9 - Search API
-
-### Completed
-
-Features
-
-- Search by filename
-- Case-insensitive search
-- Partial matching
-- User-specific search
-
-MongoDB
-
-```javascript
-$regex
-$options: "i"
-```
-
-**Acceptance Test**
-
-Search Result
-
-```
-Cloud
-↓
-
-Cloud Engineer.pdf
-```
-
-**Status:** ✅ Completed
-
----
-
-# 🧪 Acceptance Testing (Backend v1.0)
-
-A complete end-to-end QA cycle was performed using a new user account.
-
-## Test Results
-
-| Test | Status |
-|-------|--------|
-| Register | ✅ PASS |
-| Login | ✅ PASS |
-| Profile | ✅ PASS |
-| Upload File #1 | ✅ PASS |
-| Upload File #2 | ✅ PASS |
-| Get My Files | ✅ PASS |
-| Search | ✅ PASS |
-| Rename | ✅ PASS |
-| Download | ✅ PASS |
-| Delete | ✅ PASS |
-| Final Verification | ✅ PASS |
-
-## Overall Result
-
-```
-Tests Passed : 11 / 11
-
-Tests Failed : 0
-
-Backend Health : 100%
-```
-
----
-
-# 🔐 Authentication Features
-
-Completed
-
+## Completed
 - User Registration
-- Login
-- Password Hashing
+- User Login
+- Password hashing using bcrypt
 - JWT Authentication
-- Protected Routes
-- User Authorization
+- Authentication middleware
+
+Testing
+- Register API ✅
+- Login API ✅
+
+Status:
+✅ Completed
 
 ---
 
-# 📂 File Management Features
+# Day 4 - User Management
 
-Completed
+## Completed
+- User Profile API
+- Update Profile
+- Profile Picture support
 
-- Upload File
-- Get My Files
-- Search Files
-- Rename File
-- Download File
-- Delete File
+Testing
+- Profile API ✅
 
----
-
-# 🗄 Database Features
-
-Completed
-
-- MongoDB Atlas
-- User Collection
-- File Collection
-- User → File Relationship
-- Metadata Storage
+Status:
+✅ Completed
 
 ---
 
-# 🛡 Security Features
+# Day 5 - File Upload
 
-Completed
+## Completed
+- Multer configuration
+- Upload API
+- File validation
+- Local storage support
 
-- Password Hashing (bcrypt)
-- JWT Authentication
-- Protected APIs
-- Owner Verification
-- File Type Validation
+Testing
+- Upload API ✅
 
----
-
-# 📊 Current Project Structure
-
-```
-CloudDrive
-│
-├── server
-│   ├── controllers
-│   ├── middleware
-│   ├── models
-│   ├── routes
-│   ├── config
-│   ├── uploads
-│   ├── utils
-│   └── server.js
-│
-├── client (Coming Soon)
-│
-└── README.md
-```
+Status:
+✅ Completed
 
 ---
 
-# 🚀 Upcoming Improvements
+# Day 6 - File Download
 
-## Backend Refactoring
+## Completed
+- Download API
+- Ownership verification
 
-- ObjectId validation
-- Async file operations
-- Better error handling
-- Cleaner controllers
-- Standard API responses
+Testing
+- Download API ✅
 
----
-
-## Security Improvements
-
-- Remove password from Register API response
-- Better request validation
-- Improved upload validation
+Status:
+✅ Completed
 
 ---
 
-## New Features (v2.0)
+# Day 7 - File Rename
 
-- Multi-file upload
-- DOC/DOCX support
-- XLS/XLSX support
-- PPT/PPTX support
-- ZIP support
-- MP3 support
-- MP4 support
+## Completed
+- Rename API
+- Ownership verification
 
----
+Testing
+- Rename API ✅
 
-## Cloud Integration
-
-- AWS S3 Storage
-- Signed URLs
-- Cloud File Management
+Status:
+✅ Completed
 
 ---
 
-## Frontend Development
+# Day 8 - File Delete
 
-- React
-- Vite
+## Completed
+- Delete API
+- Remove physical file
+- Remove database record
+
+Testing
+- Delete API ✅
+
+Status:
+✅ Completed
+
+---
+
+# Day 9 - Search
+
+## Completed
+- Search files by filename
+- Search endpoint
+
+Testing
+- Search API ✅
+
+Status:
+✅ Completed
+
+---
+
+# Day 10
+
+## Completed
+- Project cleanup
+- Backend improvements
+- Bug fixes
+
+Status:
+✅ Completed
+
+---
+
+# Day 11
+
+## Completed
+- Controller improvements
+- Better project structure
+- Code cleanup
+
+Status:
+✅ Completed
+
+---
+
+# Day 12
+
+## Completed
+- Backend testing
+- API verification
+- Bug fixes
+
+Status:
+✅ Completed
+
+---
+
+# Day 13
+
+## Completed
+- Refactoring
+- Preparation for Storage Management
+
+Status:
+✅ Completed
+
+---
+
+# Day 14 - Storage Management
+
+## Completed
+
+Created:
+- storageService.js
+
+Implemented
+
+- checkStorageLimit()
+- increaseStorage()
+- decreaseStorage()
+- getStorageInfo()
+
+Integrated
+
+- Upload storage tracking
+- Delete storage tracking
+
+Testing
+
+- Login API ✅
+- Upload API ✅
+- Delete API ✅
+- StorageUsed verification ✅
+
+Status
+
+✅ Completed
+
+---
+
+# Day 15 - Dashboard API
+
+## Completed
+
+Created
+
+- dashboardService.js
+- dashboardController.js
+- dashboardRoutes.js
+
+Features
+
+- Dashboard statistics
+- Total files
+- Storage usage
+- Remaining storage
+- Usage percentage
+- VIP status
+- File type statistics
+- Recent uploaded files
+
+Testing
+
+- Dashboard API ✅
+
+Status
+
+✅ Completed
+
+---
+
+# Day 16 - Favorites
+
+## Completed
+
+Created
+
+- favoriteService.js
+- favoriteController.js
+- favoriteRoutes.js
+
+Modified
+
+- File Model
+- app.js
+
+Features
+
+- Add Favorite
+- Remove Favorite
+- List Favorite Files
+
+Testing
+
+- Add Favorite API ✅
+- Remove Favorite API ✅
+- Get Favorite Files API ✅
+
+Status
+
+✅ Completed
+
+---
+
+# Current Progress
+
+Completed Features
+
 - Authentication
-- Dashboard
-- Upload UI
-- Search UI
-- Download UI
-- Delete UI
+- User Management
+- File Upload
+- File Download
+- File Rename
+- File Delete
+- File Search
+- Storage Management
+- Dashboard API
+- Favorites
 
 ---
 
-## Deployment
+# Remaining Features
 
-- Docker
-- Docker Compose
-- Nginx
-- EC2
-- HTTPS
+- Trash & Restore
+- Folder Management
+- File Sharing
+- AWS S3 Integration
+- Security
+- Validation
+- Documentation
+- Final Testing
+- Deployment
+- React Frontend Integration
 
 ---
 
-# 📈 Current Progress
+# Project Progress
 
-Backend
+Backend Progress
 
-```
-███████████████████████████ 100%
-```
-
-Frontend
-
-```
-□□□□□□□□□□□□□□ 0%
-```
-
-AWS Integration
-
-```
-□□□□□□□□□□□□□□ 0%
-```
-
-Deployment
-
-```
-□□□□□□□□□□□□□□ 0%
-```
+85%
 
 Overall Project Progress
 
-```
-██████████□□□□□□□□□□ 50%
-```
+55%
 
 ---
+
+# Next Milestone
+
+Day 17
+
+Feature:
+Trash & Restore
 
 # 🎯 Current Milestone
 

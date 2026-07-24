@@ -34,6 +34,11 @@ const fileSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    isFavorite: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
