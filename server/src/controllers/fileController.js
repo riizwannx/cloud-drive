@@ -41,6 +41,7 @@ const uploadFile = async (req, res) => {
       fileType: req.file.mimetype,
       fileSize: req.file.size,
       owner: req.user.id,
+      folder: req.body.folder || null,
     });
 
     // Increase user's storage usage
@@ -71,11 +72,24 @@ const uploadFile = async (req, res) => {
 // ==============================
 const getMyFiles = async (req, res) => {
   try {
-    const files = await File.find({
+    const { folder } = req.query;
+
+    const query = {
       owner: req.user.id,
-    }).sort({
-      createdAt: -1,
-    });
+      isTrashed: false,
+    };
+
+    if (folder) {
+      query.folder = folder;
+    } else {
+      query.folder = null;
+    }
+
+    const files = await File.find(query)
+      .populate("folder", "name")
+      .sort({
+        createdAt: -1,
+      });
 
     return res.status(200).json({
       success: true,
