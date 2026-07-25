@@ -341,12 +341,182 @@ Overall Project Progress
 
 ---
 
-# Next Milestone
+# Day 17 - Trash & Restore
 
-Day 17
+**Date:** 2026-07-25
 
-Feature:
-Trash & Restore
+## Objective
+Implement a Trash & Restore system that allows users to safely delete files by moving them to the Trash, restore them when needed, or permanently delete them.
+
+---
+
+## Work Completed
+
+### Database
+Updated `File` model.
+
+Added:
+- `isTrashed`
+- `trashedAt`
+
+### Services
+Created `trashService.js`
+
+Implemented:
+- moveToTrash()
+- getTrashedFiles()
+- restoreFile()
+- permanentlyDeleteFile()
+
+### Controllers
+Created `trashController.js`
+
+Implemented:
+- Move file to Trash
+- Get Trash
+- Restore file
+- Permanently delete file
+
+### Routes
+Created `trashRoutes.js`
+
+Endpoints:
+- PATCH /api/trash/:id
+- GET /api/trash
+- PATCH /api/trash/restore/:id
+- DELETE /api/trash/:id
+
+### Application
+- Registered Trash routes in `app.js`
+
+---
+
+## Features Implemented
+
+- Move file to Trash
+- View trashed files
+- Restore files
+- Permanently delete files
+- Delete physical file from server
+- Remove file document from MongoDB
+- Update user storage after permanent deletion
+- JWT authentication for all Trash APIs
+- User ownership verification
+
+---
+
+## Testing
+
+### API Testing
+
+✅ Move File to Trash
+
+```
+PATCH /api/trash/:id
+```
+
+Verified:
+- File moved to Trash
+- `isTrashed = true`
+- `trashedAt` updated
+
+---
+
+✅ Get Trashed Files
+
+```
+GET /api/trash
+```
+
+Verified:
+- Returned only trashed files
+
+---
+
+✅ Restore File
+
+```
+PATCH /api/trash/restore/:id
+```
+
+Verified:
+- `isTrashed = false`
+- `trashedAt = null`
+
+---
+
+✅ Permanently Delete File
+
+```
+DELETE /api/trash/:id
+```
+
+Verified:
+- Physical file deleted
+- MongoDB document removed
+- User storage updated
+
+---
+
+## Bugs Fixed
+
+- Fixed middleware import path (`middleware` vs `middlewares`).
+
+---
+
+## Files Created
+
+- src/services/trashService.js
+- src/controllers/trashController.js
+- src/routes/trashRoutes.js
+
+---
+
+## Files Modified
+
+- src/models/File.js
+- src/app.js
+
+---
+
+## Status
+
+✅ Trash & Restore Completed
+
+---
+
+## Overall Progress
+
+Completed Features:
+
+- Authentication
+- User Management
+- File Upload
+- File Download
+- File Rename
+- File Delete
+- File Search
+- Storage Management
+- Dashboard API
+- Favorites
+- Trash & Restore
+
+Backend Completion: **~88%**
+
+Overall Project Completion: **~60%**
+
+---
+Phase 6 - Folder Management (Completed Today)
+✅ Create Folder
+✅ List Folders
+✅ Rename Folder
+✅ Delete Folder
+✅ Prevent Deleting Non-Empty Folder
+✅ Upload Files to Folder
+✅ Upload Files to Root
+✅ Get Files by Folder
+✅ Populate Folder Details
+✅ Folder Ownership Validation
 
 # 🎯 Current Milestone
 

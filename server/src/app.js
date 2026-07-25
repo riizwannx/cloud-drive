@@ -5,6 +5,8 @@ const userRoutes = require("./routes/userRoutes");
 const fileRoutes = require("./routes/fileRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const favoriteRoutes = require("./routes/favoriteRoutes");
+const trashRoutes = require("./routes/trashRoutes");
+const folderRoutes = require("./routes/folderRoutes");
 
 const app = express();
 
@@ -39,5 +41,11 @@ app.use("/api/dashboard", dashboardRoutes);
 
 // Favorite Routes
 app.use("/api/favorites", favoriteRoutes);
+
+// Trash Routes
+app.use("/api/trash", trashRoutes);
+
+// Folder Routes
+app.use("/api/folders", folderRoutes);
 
 module.exports = app;
