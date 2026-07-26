@@ -518,6 +518,21 @@ Phase 6 - Folder Management (Completed Today)
 ✅ Populate Folder Details
 ✅ Folder Ownership Validation
 
+
+
+Day 19 – File Sharing
+Created Share model
+Implemented share service
+Added share APIs
+Implemented public download API
+Added password protection support
+Added expiry validation
+Added download counter
+Fixed accidental File.js overwrite
+Tested all sharing APIs successfully
+
+Writing one summary like this after each session will make it much easier to prepare your final project report or explain your work in interviews.
+
 # 🎯 Current Milestone
 
 ✅ CloudDrive Backend v1.0 Completed

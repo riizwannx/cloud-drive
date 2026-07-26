@@ -7,6 +7,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const favoriteRoutes = require("./routes/favoriteRoutes");
 const trashRoutes = require("./routes/trashRoutes");
 const folderRoutes = require("./routes/folderRoutes");
+const shareRoutes = require("./routes/shareRoutes");
 
 const app = express();
 
@@ -47,5 +48,8 @@ app.use("/api/trash", trashRoutes);
 
 // Folder Routes
 app.use("/api/folders", folderRoutes);
+
+// Share Routes
+app.use("/api/share", shareRoutes);
 
 module.exports = app;
