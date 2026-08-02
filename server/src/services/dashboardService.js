@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const File = require("../models/File");
+const Folder = require("../models/Folder");
+const Share = require("../models/Share");
 
 const getDashboardData = async (userId) => {
   const user = await User.findById(userId).select(
@@ -17,6 +19,17 @@ const getDashboardData = async (userId) => {
   // Total files
   const totalFiles = await File.countDocuments({
     owner: userId,
+  });
+
+  // Total folders
+  const totalFolders = await Folder.countDocuments({
+    owner: userId,
+  });
+
+// Total active shared links
+  const totalShared = await Share.countDocuments({
+    owner: userId,
+  isActive: true,
   });
 
   // PDF files
@@ -58,6 +71,8 @@ const getDashboardData = async (userId) => {
     success: true,
     dashboard: {
       totalFiles,
+      totalFolders,
+      totalShared,
       storageUsed: user.storageUsed,
       storageLimit: user.storageLimit,
       remainingStorage,

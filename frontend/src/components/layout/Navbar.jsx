@@ -1,27 +1,55 @@
-import { Bell, Search, Moon } from "lucide-react";
+import { Bell, Moon, Search, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
-  return (
-    <header className="h-20 border-b border-slate-800 bg-slate-950 flex items-center justify-between px-8">
-      <div className="relative w-96">
-        <Search
-          size={18}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
-        />
+  const navigate = useNavigate();
 
-        <input
-          type="text"
-          placeholder="Search files..."
-          className="w-full rounded-xl bg-slate-900 py-3 pl-12 pr-4 text-white outline-none"
-        />
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/", { replace: true });
+  };
+
+  return (
+    <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-background px-6">
+      <div className="flex items-center gap-4">
+        <SidebarTrigger />
+
+        <div className="relative hidden w-80 md:block">
+          <Search
+            size={18}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
+
+          <Input
+            placeholder="Search files..."
+            className="pl-10"
+          />
+        </div>
       </div>
 
-      <div className="flex items-center gap-5">
-        <Bell className="cursor-pointer" />
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size="icon">
+          <Bell size={18} />
+        </Button>
 
-        <Moon className="cursor-pointer" />
+        <Button variant="ghost" size="icon">
+          <Moon size={18} />
+        </Button>
 
-        <div className="h-11 w-11 rounded-full bg-blue-600 flex items-center justify-center font-bold">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleLogout}
+          title="Logout"
+        >
+          <LogOut size={18} />
+        </Button>
+
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-semibold text-white">
           R
         </div>
       </div>
