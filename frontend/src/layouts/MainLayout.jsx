@@ -1,18 +1,27 @@
-import Sidebar from "@/components/layout/Sidebar";
+import { DashboardProvider } from "@/context/DashboardContext";
+
+import AppSidebar from "@/components/layout/AppSidebar";
 import Navbar from "@/components/layout/Navbar";
+
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar";
 
 export default function MainLayout({ children }) {
   return (
-    <div className="flex h-screen bg-slate-950 text-white">
-      <Sidebar />
+    <DashboardProvider>
+      <SidebarProvider>
+        <AppSidebar />
 
-      <div className="flex flex-1 flex-col">
-        <Navbar />
+        <SidebarInset>
+          <Navbar />
 
-        <main className="flex-1 overflow-auto p-8">
-          {children}
-        </main>
-      </div>
-    </div>
+          <main className="flex-1 p-8">
+            {children}
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
+    </DashboardProvider>
   );
 }
