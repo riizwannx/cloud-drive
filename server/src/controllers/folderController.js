@@ -5,9 +5,15 @@ const {
   deleteFolder,
 } = require("../services/folderService");
 
+// ==============================
 // Create Folder
+// ==============================
 const createNewFolder = async (req, res) => {
   try {
+    console.log("========== CREATE FOLDER ==========");
+    console.log("User:", req.user);
+    console.log("Body:", req.body);
+
     const { name, parentFolder } = req.body;
 
     const result = await createFolder(
@@ -15,6 +21,8 @@ const createNewFolder = async (req, res) => {
       req.user.id,
       parentFolder || null
     );
+
+    console.log("Result:", result);
 
     return res.status(result.status).json(result);
   } catch (error) {
@@ -27,7 +35,9 @@ const createNewFolder = async (req, res) => {
   }
 };
 
+// ==============================
 // Get All Folders
+// ==============================
 const getAllFolders = async (req, res) => {
   try {
     const result = await getFolders(req.user.id);
@@ -43,7 +53,9 @@ const getAllFolders = async (req, res) => {
   }
 };
 
+// ==============================
 // Rename Folder
+// ==============================
 const updateFolder = async (req, res) => {
   try {
     const { name } = req.body;
@@ -65,7 +77,9 @@ const updateFolder = async (req, res) => {
   }
 };
 
+// ==============================
 // Delete Folder
+// ==============================
 const removeFolder = async (req, res) => {
   try {
     const result = await deleteFolder(

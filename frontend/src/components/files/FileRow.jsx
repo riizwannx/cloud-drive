@@ -3,6 +3,7 @@ import { formatFileSize, getFileType } from "@/lib/fileUtils";
 
 export default function FileRow({
   file,
+  onPreview,
   onDownload,
   onRename,
   onDelete,
@@ -27,6 +28,7 @@ export default function FileRow({
 
       <td className="p-4">
         <FileActions
+          onPreview={onPreview}
           onDownload={onDownload}
           onRename={onRename}
           onDelete={onDelete}

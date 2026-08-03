@@ -5,10 +5,12 @@ import useFiles from "@/hooks/useFiles";
 
 import FileToolbar from "@/components/files/FileToolbar";
 import UploadButton from "@/components/files/UploadButton";
-import FileRow from "@/components/files/FileRow";
+import FileTable from "@/components/files/FileTable";
+import RenameDialog from "@/components/files/RenameDialog";
 
 import { deleteFile } from "@/services/deleteFileService";
 import { downloadFile } from "@/services/downloadFileService";
+import { renameFile } from "@/services/renameFileService";
 
 export default function MyFiles() {
   const {
@@ -19,6 +21,9 @@ export default function MyFiles() {
   } = useFiles();
 
   const [search, setSearch] = useState("");
+
+  const [renameOpen, setRenameOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const filteredFiles = files.filter((file) =>
     file.originalName
@@ -33,15 +38,10 @@ export default function MyFiles() {
 
     try {
       await deleteFile(id);
-
       await refreshFiles();
-
       alert("File deleted successfully.");
     } catch (error) {
-      alert(
-        error.response?.data?.message ||
-          "Failed to delete file."
-      );
+      alert(error.response?.data?.message || "Delete failed.");
     }
   };
 
@@ -59,19 +59,51 @@ export default function MyFiles() {
       link.download = file.originalName;
 
       document.body.appendChild(link);
-
       link.click();
 
       link.remove();
 
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      alert(
-        error.response?.data?.message ||
-          "Download failed."
-      );
+      alert(error.response?.data?.message || "Download failed.");
     }
   };
+
+  const openRenameDialog = (file) => {
+    setSelectedFile(file);
+    setRenameOpen(true);
+  };
+
+  const handleRename = async (newName) => {
+    try {
+      await renameFile(selectedFile._id, newName);
+
+      setRenameOpen(false);
+      setSelectedFile(null);
+
+      await refreshFiles();
+
+      alert("File renamed successfully.");
+    } catch (error) {
+      alert(error.response?.data?.message || "Rename failed.");
+    }
+  };
+
+  const handlePreview = (file) => {
+    if (!file.filePath) {
+      alert("Preview is unavailable for this file.");
+      return;
+  }
+
+  const normalizedPath = file.filePath.replace(/\\/g, "/");
+
+  const filename = normalizedPath.split("/").pop();
+
+  window.open(
+    `http://localhost:5000/uploads/${filename}`,
+    "_blank"
+  );
+};
 
   if (loading) {
     return (
@@ -118,70 +150,20 @@ export default function MyFiles() {
           />
         </div>
 
-        <div className="overflow-hidden rounded-2xl border bg-card">
-          <table className="w-full">
-            <thead className="border-b bg-muted/40">
-              <tr>
-                <th className="p-4 text-left">
-                  Name
-                </th>
+        <FileTable
+          files={filteredFiles}
+          onPreview={handlePreview}
+          onDownload={handleDownload}
+          onRename={openRenameDialog}
+          onDelete={handleDelete}
+        />
 
-                <th className="p-4 text-left">
-                  Type
-                </th>
-
-                <th className="p-4 text-left">
-                  Size
-                </th>
-
-                <th className="p-4 text-left">
-                  Uploaded
-                </th>
-
-                <th className="p-4 text-center">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              {filteredFiles.length === 0 ? (
-
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="p-8 text-center text-muted-foreground"
-                  >
-                    No files found.
-                  </td>
-                </tr>
-
-              ) : (
-
-                filteredFiles.map((file) => (
-
-                  <FileRow
-                    key={file._id}
-                    file={file}
-                    onDownload={() =>
-                      handleDownload(file)
-                    }
-                    onRename={() =>
-                      alert("Rename feature coming next.")
-                    }
-                    onDelete={() =>
-                      handleDelete(file._id)
-                    }
-                  />
-
-                ))
-
-              )}
-
-            </tbody>
-          </table>
-        </div>
+        <RenameDialog
+          open={renameOpen}
+          onOpenChange={setRenameOpen}
+          file={selectedFile}
+          onSave={handleRename}
+        />
 
       </div>
     </MainLayout>
