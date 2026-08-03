@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import MyFiles from "@/pages/files/MyFiles";
+import Folders from "@/pages/folders/Folders";
 
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
@@ -20,6 +21,7 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
+
         {/* Public Route */}
         <Route
           path="/"
@@ -30,7 +32,7 @@ export default function AppRouter() {
           }
         />
 
-        {/* Protected Dashboard */}
+        {/* Dashboard */}
         <Route
           path="/dashboard"
           element={
@@ -40,7 +42,7 @@ export default function AppRouter() {
           }
         />
 
-        {/* Protected My Files */}
+        {/* My Files */}
         <Route
           path="/files"
           element={
@@ -50,11 +52,22 @@ export default function AppRouter() {
           }
         />
 
+        {/* Folders */}
+        <Route
+          path="/folders"
+          element={
+            <ProtectedRoute>
+              <Folders />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Redirect unknown routes */}
         <Route
           path="*"
           element={<Navigate to="/dashboard" replace />}
         />
+
       </Routes>
     </BrowserRouter>
   );

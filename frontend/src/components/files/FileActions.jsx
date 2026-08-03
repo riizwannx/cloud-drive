@@ -1,4 +1,5 @@
 import {
+  Eye,
   Download,
   Pencil,
   Trash2,
@@ -7,12 +8,22 @@ import {
 import { Button } from "@/components/ui/button";
 
 export default function FileActions({
+  onPreview,
   onDownload,
   onRename,
   onDelete,
 }) {
   return (
     <div className="flex justify-center gap-2">
+
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onPreview}
+        title="Preview"
+      >
+        <Eye size={18} />
+      </Button>
 
       <Button
         variant="ghost"

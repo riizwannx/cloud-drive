@@ -24,4 +24,4 @@ export function getFileType(type) {
   if (type.includes("excel")) return "Excel";
 
   return "File";
-}
+} 
