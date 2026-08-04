@@ -1,31 +1,36 @@
-import { Folder } from "lucide-react";
-import FolderActions from "./FolderActions";
+import { Pencil, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-export default function FolderCard({
-  folder,
+export default function FolderActions({
   onRename,
   onDelete,
 }) {
   return (
-    <div className="rounded-2xl border bg-card p-5 shadow-sm hover:shadow-md transition">
-      <Folder
-        size={42}
-        className="mb-4 text-yellow-500"
-      />
+    <div className="mt-5 flex justify-end gap-2 border-t pt-4">
 
-      <h3 className="text-lg font-semibold">
-        {folder.name}
-      </h3>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => {
+          alert("Rename Clicked");
+          onRename?.();
+        }}
+      >
+        <Pencil className="mr-2 h-4 w-4" />
+        Rename
+      </Button>
 
-      <p className="mt-1 text-sm text-muted-foreground">
-        Created{" "}
-        {new Date(folder.createdAt).toLocaleDateString()}
-      </p>
+      <Button
+        type="button"
+        variant="destructive"
+        size="sm"
+        onClick={onDelete}
+      >
+        <Trash2 className="mr-2 h-4 w-4" />
+        Delete
+      </Button>
 
-      <FolderActions
-        onRename={onRename}
-        onDelete={onDelete}
-      />
     </div>
   );
 }

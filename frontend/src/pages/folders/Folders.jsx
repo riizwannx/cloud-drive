@@ -4,10 +4,15 @@ import { FolderPlus } from "lucide-react";
 import MainLayout from "@/layouts/MainLayout";
 import useFolders from "@/hooks/useFolders";
 
-import { createFolder } from "@/services/folderService";
+import {
+  createFolder,
+  renameFolder,
+  deleteFolder,
+} from "@/services/folderService";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import FolderCard from "@/components/folders/FolderCard";
 
 export default function Folders() {
@@ -40,10 +45,66 @@ export default function Folders() {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-        "Failed to create folder."
+          "Failed to create folder."
       );
     } finally {
       setCreating(false);
+    }
+  };
+
+const handleRenameFolder = async (folder) => {
+  alert("handleRenameFolder called");
+
+  const newName = prompt(
+    "Enter new folder name:",
+    folder.name
+  );
+
+  alert("New Name: " + newName);
+
+  if (!newName || !newName.trim()) {
+    return;
+  }
+
+    try {
+    const result = await renameFolder(folder._id, newName.trim());
+
+    console.log(result);
+
+    alert("Rename Success");
+
+    await refreshFolders();
+    } catch (error) {
+    console.error(error);
+
+      alert(
+        error.response?.data?.message ||
+        error.message ||
+        "Rename failed."
+       );
+    }
+  };
+
+  const handleDeleteFolder = async (folder) => {
+    const confirmed = window.confirm(
+      `Delete "${folder.name}"?`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteFolder(folder._id);
+
+      await refreshFolders();
+
+      alert("Folder deleted successfully.");
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          "Failed to delete folder."
+      );
     }
   };
 
@@ -65,7 +126,9 @@ export default function Folders() {
 
           <Input
             value={folderName}
-            onChange={(e) => setFolderName(e.target.value)}
+            onChange={(e) =>
+              setFolderName(e.target.value)
+            }
             placeholder="Enter folder name..."
           />
 
@@ -75,7 +138,9 @@ export default function Folders() {
           >
             <FolderPlus className="mr-2 h-4 w-4" />
 
-            {creating ? "Creating..." : "Create Folder"}
+            {creating
+              ? "Creating..."
+              : "Create Folder"}
           </Button>
 
         </div>
@@ -83,7 +148,9 @@ export default function Folders() {
         {loading ? (
           <p>Loading folders...</p>
         ) : error ? (
-          <p className="text-red-500">{error}</p>
+          <p className="text-red-500">
+            {error}
+          </p>
         ) : folders.length === 0 ? (
           <div className="rounded-xl border border-dashed p-12 text-center">
 
@@ -92,7 +159,7 @@ export default function Folders() {
             </h2>
 
             <p className="mt-2 text-muted-foreground">
-              Create your first folder to organize your files.
+              Create your first folder.
             </p>
 
           </div>
@@ -103,6 +170,12 @@ export default function Folders() {
               <FolderCard
                 key={folder._id}
                 folder={folder}
+                onRename={() =>
+                  handleRenameFolder(folder)
+                }
+                onDelete={() =>
+                  handleDeleteFolder(folder)
+                }
               />
             ))}
 
