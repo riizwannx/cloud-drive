@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import FolderCard from "@/components/folders/FolderCard";
+import RenameFolderDialog from "@/components/folders/RenameFolderDialog";
 
 export default function Folders() {
   const {
@@ -26,6 +27,12 @@ export default function Folders() {
   const [folderName, setFolderName] = useState("");
   const [creating, setCreating] = useState(false);
 
+  const [renameOpen, setRenameOpen] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState(null);
+
+  // ===========================
+  // Create Folder
+  // ===========================
   const handleCreateFolder = async () => {
     if (!folderName.trim()) {
       alert("Please enter a folder name.");
@@ -45,57 +52,59 @@ export default function Folders() {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-          "Failed to create folder."
+        "Failed to create folder."
       );
     } finally {
       setCreating(false);
     }
   };
 
-const handleRenameFolder = async (folder) => {
-  alert("handleRenameFolder called");
+  // ===========================
+  // Open Rename Dialog
+  // ===========================
+  const openRenameDialog = (folder) => {
+    setSelectedFolder(folder);
+    setRenameOpen(true);
+  };
 
-  const newName = prompt(
-    "Enter new folder name:",
-    folder.name
-  );
-
-  alert("New Name: " + newName);
-
-  if (!newName || !newName.trim()) {
-    return;
-  }
-
+  // ===========================
+  // Rename Folder
+  // ===========================
+  const handleRename = async (newName) => {
     try {
-    const result = await renameFolder(folder._id, newName.trim());
+      await renameFolder(
+        selectedFolder._id,
+        newName
+      );
 
-    console.log(result);
+      setRenameOpen(false);
+      setSelectedFolder(null);
 
-    alert("Rename Success");
+      await refreshFolders();
 
-    await refreshFolders();
+      alert("Folder renamed successfully.");
     } catch (error) {
-    console.error(error);
-
       alert(
         error.response?.data?.message ||
-        error.message ||
         "Rename failed."
-       );
+      );
     }
   };
 
-  const handleDeleteFolder = async (folder) => {
-    const confirmed = window.confirm(
-      `Delete "${folder.name}"?`
-    );
-
-    if (!confirmed) {
+  // ===========================
+  // Delete Folder
+  // ===========================
+  const handleDeleteFolder = async (folderId) => {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this folder?"
+      )
+    ) {
       return;
     }
 
     try {
-      await deleteFolder(folder._id);
+      await deleteFolder(folderId);
 
       await refreshFolders();
 
@@ -103,7 +112,7 @@ const handleRenameFolder = async (folder) => {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-          "Failed to delete folder."
+        "Delete failed."
       );
     }
   };
@@ -159,7 +168,7 @@ const handleRenameFolder = async (folder) => {
             </h2>
 
             <p className="mt-2 text-muted-foreground">
-              Create your first folder.
+              Create your first folder to organize your files.
             </p>
 
           </div>
@@ -171,16 +180,23 @@ const handleRenameFolder = async (folder) => {
                 key={folder._id}
                 folder={folder}
                 onRename={() =>
-                  handleRenameFolder(folder)
+                  openRenameDialog(folder)
                 }
                 onDelete={() =>
-                  handleDeleteFolder(folder)
+                  handleDeleteFolder(folder._id)
                 }
               />
             ))}
 
           </div>
         )}
+
+        <RenameFolderDialog
+          open={renameOpen}
+          onOpenChange={setRenameOpen}
+          folder={selectedFolder}
+          onSave={handleRename}
+        />
 
       </div>
     </MainLayout>

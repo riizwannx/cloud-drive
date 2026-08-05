@@ -107,6 +107,38 @@ const getMyFiles = async (req, res) => {
 };
 
 // ==============================
+// Get Files By Folder
+// ==============================
+const getFilesByFolder = async (req, res) => {
+  try {
+    const { folderId } = req.params;
+
+    const files = await File.find({
+      owner: req.user.id,
+      folder: folderId,
+      isTrashed: false,
+    })
+      .populate("folder", "name")
+      .sort({
+        createdAt: -1,
+      });
+
+    return res.status(200).json({
+      success: true,
+      count: files.length,
+      files,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+}; 
+
+// ==============================
 // Download File
 // ==============================
 const downloadFile = async (req, res) => {
@@ -286,6 +318,7 @@ const searchFiles = async (req, res) => {
 module.exports = {
   uploadFile,
   getMyFiles,
+  getFilesByFolder,
   downloadFile,
   deleteFile,
   renameFile,

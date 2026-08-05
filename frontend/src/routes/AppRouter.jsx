@@ -4,6 +4,7 @@ import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import MyFiles from "@/pages/files/MyFiles";
 import Folders from "@/pages/folders/Folders";
+import FolderDetails from "@/pages/folders/FolderDetails";
 
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
@@ -58,6 +59,16 @@ export default function AppRouter() {
           element={
             <ProtectedRoute>
               <Folders />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Folder Details */}
+        <Route
+          path="/folders/:folderId"
+          element={
+            <ProtectedRoute>
+              <FolderDetails />
             </ProtectedRoute>
           }
         />

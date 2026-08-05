@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   uploadFile,
   getMyFiles,
+  getFilesByFolder,
   downloadFile,
   deleteFile,
   renameFile,
@@ -29,6 +30,15 @@ router.post(
 router.get("/", authMiddleware, getMyFiles);
 
 // ==============================
+// Get Files By Folder
+// ==============================
+router.get(
+  "/folder/:folderId",
+  authMiddleware,
+  getFilesByFolder
+);
+
+// ==============================
 // Search Files
 // ==============================
 router.get("/search", authMiddleware, searchFiles);
@@ -36,7 +46,11 @@ router.get("/search", authMiddleware, searchFiles);
 // ==============================
 // Download File
 // ==============================
-router.get("/download/:id", authMiddleware, downloadFile);
+router.get(
+  "/download/:id",
+  authMiddleware,
+  downloadFile
+);
 
 // ==============================
 // Rename File
