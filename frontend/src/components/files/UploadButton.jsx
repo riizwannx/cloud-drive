@@ -4,7 +4,10 @@ import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { uploadFile } from "@/services/uploadService";
 
-export default function UploadButton({ onSuccess }) {
+export default function UploadButton({
+  onSuccess,
+  folderId = null,
+}) {
   const inputRef = useRef(null);
 
   const [loading, setLoading] = useState(false);
@@ -21,7 +24,7 @@ export default function UploadButton({ onSuccess }) {
     try {
       setLoading(true);
 
-      await uploadFile(file);
+      await uploadFile(file, folderId);
 
       alert("File uploaded successfully!");
 
@@ -31,11 +34,10 @@ export default function UploadButton({ onSuccess }) {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-          "Upload failed."
+        "Upload failed."
       );
     } finally {
       setLoading(false);
-
       e.target.value = "";
     }
   };
@@ -55,7 +57,9 @@ export default function UploadButton({ onSuccess }) {
       >
         <Upload className="mr-2 h-4 w-4" />
 
-        {loading ? "Uploading..." : "Upload File"}
+        {loading
+          ? "Uploading..."
+          : "Upload File"}
       </Button>
     </>
   );
