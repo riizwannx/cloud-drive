@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import MyFiles from "@/pages/files/MyFiles";
+import Favorites from "@/pages/files/Favorites";
 import Folders from "@/pages/folders/Folders";
 import FolderDetails from "@/pages/folders/FolderDetails";
 
@@ -49,6 +50,16 @@ export default function AppRouter() {
           element={
             <ProtectedRoute>
               <MyFiles />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Favorites */}
+        <Route
+          path="/favorites"
+          element={
+            <ProtectedRoute>
+              <Favorites />
             </ProtectedRoute>
           }
         />

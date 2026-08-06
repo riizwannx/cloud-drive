@@ -11,6 +11,7 @@ import RenameDialog from "@/components/files/RenameDialog";
 import { deleteFile } from "@/services/deleteFileService";
 import { downloadFile } from "@/services/downloadFileService";
 import { renameFile } from "@/services/renameFileService";
+import { toggleFavorite } from "@/services/favoriteService";
 
 export default function MyFiles() {
   const {
@@ -32,16 +33,25 @@ export default function MyFiles() {
   );
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this file?")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this file?"
+      )
+    ) {
       return;
     }
 
     try {
       await deleteFile(id);
+
       await refreshFiles();
+
       alert("File deleted successfully.");
     } catch (error) {
-      alert(error.response?.data?.message || "Delete failed.");
+      alert(
+        error.response?.data?.message ||
+        "Delete failed."
+      );
     }
   };
 
@@ -59,13 +69,17 @@ export default function MyFiles() {
       link.download = file.originalName;
 
       document.body.appendChild(link);
+
       link.click();
 
       link.remove();
 
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      alert(error.response?.data?.message || "Download failed.");
+      alert(
+        error.response?.data?.message ||
+        "Download failed."
+      );
     }
   };
 
@@ -76,7 +90,10 @@ export default function MyFiles() {
 
   const handleRename = async (newName) => {
     try {
-      await renameFile(selectedFile._id, newName);
+      await renameFile(
+        selectedFile._id,
+        newName
+      );
 
       setRenameOpen(false);
       setSelectedFile(null);
@@ -85,25 +102,45 @@ export default function MyFiles() {
 
       alert("File renamed successfully.");
     } catch (error) {
-      alert(error.response?.data?.message || "Rename failed.");
+      alert(
+        error.response?.data?.message ||
+        "Rename failed."
+      );
+    }
+  };
+
+  const handleFavorite = async (file) => {
+    try {
+      await toggleFavorite(file._id);
+
+      await refreshFiles();
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+        "Failed to update favorite."
+      );
     }
   };
 
   const handlePreview = (file) => {
     if (!file.filePath) {
-      alert("Preview is unavailable for this file.");
+      alert(
+        "Preview is unavailable for this file."
+      );
       return;
-  }
+    }
 
-  const normalizedPath = file.filePath.replace(/\\/g, "/");
+    const normalizedPath =
+      file.filePath.replace(/\\/g, "/");
 
-  const filename = normalizedPath.split("/").pop();
+    const filename =
+      normalizedPath.split("/").pop();
 
-  window.open(
-    `http://localhost:5000/uploads/${filename}`,
-    "_blank"
-  );
-};
+    window.open(
+      `http://localhost:5000/uploads/${filename}`,
+      "_blank"
+    );
+  };
 
   if (loading) {
     return (
@@ -156,6 +193,7 @@ export default function MyFiles() {
           onDownload={handleDownload}
           onRename={openRenameDialog}
           onDelete={handleDelete}
+          onFavorite={handleFavorite}
         />
 
         <RenameDialog
