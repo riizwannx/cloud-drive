@@ -11,6 +11,9 @@ const {
   searchFiles,
   toggleFavorite,
   getFavoriteFiles,
+  getTrashFiles,
+  restoreFile,
+  permanentlyDeleteFile,
 } = require("../controllers/fileController");
 
 const upload = require("../middleware/uploadMiddleware");
@@ -50,6 +53,15 @@ router.get(
 );
 
 // ==============================
+// Get Trash Files
+// ==============================
+router.get(
+  "/trash",
+  authMiddleware,
+  getTrashFiles
+);
+
+// ==============================
 // Search Files
 // ==============================
 router.get(
@@ -86,12 +98,30 @@ router.patch(
 );
 
 // ==============================
-// Delete File
+// Restore File
+// ==============================
+router.patch(
+  "/restore/:id",
+  authMiddleware,
+  restoreFile
+);
+
+// ==============================
+// Move File to Trash
 // ==============================
 router.delete(
   "/:id",
   authMiddleware,
   deleteFile
+);
+
+// ==============================
+// Permanently Delete File
+// ==============================
+router.delete(
+  "/permanent/:id",
+  authMiddleware,
+  permanentlyDeleteFile
 );
 
 module.exports = router;
