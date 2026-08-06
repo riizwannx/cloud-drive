@@ -182,7 +182,7 @@ const downloadFile = async (req, res) => {
 };
 
 // ==============================
-// Delete File
+// Move File to Trash
 // ==============================
 const deleteFile = async (req, res) => {
   try {
@@ -204,19 +204,14 @@ const deleteFile = async (req, res) => {
       });
     }
 
-    const filePath = path.join(process.cwd(), file.filePath);
-        if (fs.existsSync(filePath)) {
-      await fs.promises.unlink(filePath);
-    }
+    file.isTrashed = true;
+    file.trashedAt = new Date();
 
-    // Decrease user's storage usage
-    await storageService.decreaseStorage(req.user.id, file.fileSize);
-
-    await file.deleteOne();
+    await file.save();
 
     return res.status(200).json({
       success: true,
-      message: "File deleted successfully.",
+      message: "File moved to trash.",
     });
   } catch (error) {
     console.error(error);
@@ -353,6 +348,127 @@ const getFavoriteFiles = async (req, res) => {
 };
 
 // ==============================
+// Get Trash Files
+// ==============================
+const getTrashFiles = async (req, res) => {
+  try {
+    const files = await File.find({
+      owner: req.user.id,
+      isTrashed: true,
+    })
+      .populate("folder", "name")
+      .sort({
+        trashedAt: -1,
+      });
+
+    return res.status(200).json({
+      success: true,
+      count: files.length,
+      files,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ==============================
+// Restore File
+// ==============================
+const restoreFile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const file = await File.findById(id);
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found.",
+      });
+    }
+
+    if (file.owner.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied.",
+      });
+    }
+
+    file.isTrashed = false;
+    file.trashedAt = null;
+
+    await file.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "File restored successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ==============================
+// Permanently Delete File
+// ==============================
+const permanentlyDeleteFile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const file = await File.findById(id);
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found.",
+      });
+    }
+
+    if (file.owner.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied.",
+      });
+    }
+
+    const filePath = path.join(process.cwd(), file.filePath);
+
+    if (fs.existsSync(filePath)) {
+      await fs.promises.unlink(filePath);
+    }
+
+    await storageService.decreaseStorage(
+      req.user.id,
+      file.fileSize
+    );
+
+    await file.deleteOne();
+
+    return res.status(200).json({
+      success: true,
+      message: "File permanently deleted.",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ==============================
 // Search Files
 // ==============================
 const searchFiles = async (req, res) => {
@@ -398,5 +514,8 @@ module.exports = {
   renameFile,
   toggleFavorite,
   getFavoriteFiles,
+  getTrashFiles,
+  restoreFile,
+  permanentlyDeleteFile,
   searchFiles,
 };

@@ -1,9 +1,18 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 import Login from "@/pages/auth/Login";
+
 import Dashboard from "@/pages/dashboard/Dashboard";
+
 import MyFiles from "@/pages/files/MyFiles";
 import Favorites from "@/pages/files/Favorites";
+import Trash from "@/pages/files/Trash";
+
 import Folders from "@/pages/folders/Folders";
 import FolderDetails from "@/pages/folders/FolderDetails";
 
@@ -13,7 +22,12 @@ function PublicRoute({ children }) {
   const token = localStorage.getItem("token");
 
   if (token) {
-    return <Navigate to="/dashboard" replace />;
+    return (
+      <Navigate
+        to="/dashboard"
+        replace
+      />
+    );
   }
 
   return children;
@@ -24,7 +38,6 @@ export default function AppRouter() {
     <BrowserRouter>
       <Routes>
 
-        {/* Public Route */}
         <Route
           path="/"
           element={
@@ -34,7 +47,6 @@ export default function AppRouter() {
           }
         />
 
-        {/* Dashboard */}
         <Route
           path="/dashboard"
           element={
@@ -44,7 +56,6 @@ export default function AppRouter() {
           }
         />
 
-        {/* My Files */}
         <Route
           path="/files"
           element={
@@ -54,7 +65,6 @@ export default function AppRouter() {
           }
         />
 
-        {/* Favorites */}
         <Route
           path="/favorites"
           element={
@@ -64,7 +74,15 @@ export default function AppRouter() {
           }
         />
 
-        {/* Folders */}
+        <Route
+          path="/trash"
+          element={
+            <ProtectedRoute>
+              <Trash />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/folders"
           element={
@@ -74,7 +92,6 @@ export default function AppRouter() {
           }
         />
 
-        {/* Folder Details */}
         <Route
           path="/folders/:folderId"
           element={
@@ -84,10 +101,14 @@ export default function AppRouter() {
           }
         />
 
-        {/* Redirect unknown routes */}
         <Route
           path="*"
-          element={<Navigate to="/dashboard" replace />}
+          element={
+            <Navigate
+              to="/dashboard"
+              replace
+            />
+          }
         />
 
       </Routes>
