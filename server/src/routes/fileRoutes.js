@@ -9,6 +9,8 @@ const {
   deleteFile,
   renameFile,
   searchFiles,
+  toggleFavorite,
+  getFavoriteFiles,
 } = require("../controllers/fileController");
 
 const upload = require("../middleware/uploadMiddleware");
@@ -39,9 +41,22 @@ router.get(
 );
 
 // ==============================
+// Get Favorite Files
+// ==============================
+router.get(
+  "/favorites",
+  authMiddleware,
+  getFavoriteFiles
+);
+
+// ==============================
 // Search Files
 // ==============================
-router.get("/search", authMiddleware, searchFiles);
+router.get(
+  "/search",
+  authMiddleware,
+  searchFiles
+);
 
 // ==============================
 // Download File
@@ -55,11 +70,28 @@ router.get(
 // ==============================
 // Rename File
 // ==============================
-router.put("/:id", authMiddleware, renameFile);
+router.put(
+  "/:id",
+  authMiddleware,
+  renameFile
+);
+
+// ==============================
+// Toggle Favorite
+// ==============================
+router.patch(
+  "/favorite/:id",
+  authMiddleware,
+  toggleFavorite
+);
 
 // ==============================
 // Delete File
 // ==============================
-router.delete("/:id", authMiddleware, deleteFile);
+router.delete(
+  "/:id",
+  authMiddleware,
+  deleteFile
+);
 
 module.exports = router;

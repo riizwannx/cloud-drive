@@ -279,6 +279,80 @@ const renameFile = async (req, res) => {
 };
 
 // ==============================
+// Toggle Favorite
+// ==============================
+const toggleFavorite = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const file = await File.findById(id);
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found.",
+      });
+    }
+
+    if (file.owner.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied.",
+      });
+    }
+
+    file.isFavorite = !file.isFavorite;
+
+    await file.save();
+
+    return res.status(200).json({
+      success: true,
+      message: file.isFavorite
+        ? "File added to favorites."
+        : "File removed from favorites.",
+      file,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ==============================
+// Get Favorite Files
+// ==============================
+const getFavoriteFiles = async (req, res) => {
+  try {
+    const files = await File.find({
+      owner: req.user.id,
+      isFavorite: true,
+      isTrashed: false,
+    })
+      .populate("folder", "name")
+      .sort({
+        createdAt: -1,
+      });
+
+    return res.status(200).json({
+      success: true,
+      count: files.length,
+      files,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ==============================
 // Search Files
 // ==============================
 const searchFiles = async (req, res) => {
@@ -322,5 +396,7 @@ module.exports = {
   downloadFile,
   deleteFile,
   renameFile,
+  toggleFavorite,
+  getFavoriteFiles,
   searchFiles,
 };

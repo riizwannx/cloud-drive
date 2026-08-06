@@ -7,10 +7,12 @@ export default function FileRow({
   onDownload,
   onRename,
   onDelete,
+  onFavorite,
 }) {
   return (
-    <tr className="border-b hover:bg-muted/30 transition-colors">
-      <td className="p-4 font-medium">
+    <tr className="border-b transition-colors hover:bg-muted/30">
+
+      <td className="max-w-xs truncate p-4 font-medium">
         {file.originalName}
       </td>
 
@@ -27,13 +29,18 @@ export default function FileRow({
       </td>
 
       <td className="p-4">
+
         <FileActions
+          isFavorite={file.isFavorite}
+          onFavorite={onFavorite}
           onPreview={onPreview}
           onDownload={onDownload}
           onRename={onRename}
           onDelete={onDelete}
         />
+
       </td>
+
     </tr>
   );
 }
