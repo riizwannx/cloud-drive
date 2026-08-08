@@ -1,6 +1,7 @@
 const {
   createFolder,
   getFolders,
+  getFolder,
   renameFolder,
   deleteFolder,
 } = require("../services/folderService");
@@ -45,6 +46,27 @@ const getAllFolders = async (req, res) => {
     return res.status(result.status).json(result);
   } catch (error) {
     console.error("Get Folders Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// ==============================
+// Get Single Folder
+// ==============================
+const getFolderById = async (req, res) => {
+  try {
+    const result = await getFolder(
+      req.params.id,
+      req.user.id
+    );
+
+    return res.status(result.status).json(result);
+  } catch (error) {
+    console.error("Get Folder Error:", error);
 
     return res.status(500).json({
       success: false,
@@ -101,6 +123,7 @@ const removeFolder = async (req, res) => {
 module.exports = {
   createNewFolder,
   getAllFolders,
+  getFolderById,
   updateFolder,
   removeFolder,
 };

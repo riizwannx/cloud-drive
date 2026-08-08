@@ -6,6 +6,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 const {
   createNewFolder,
   getAllFolders,
+  getFolderById,
   updateFolder,
   removeFolder,
 } = require("../controllers/folderController");
@@ -15,6 +16,9 @@ router.post("/", authMiddleware, createNewFolder);
 
 // Get All Folders
 router.get("/", authMiddleware, getAllFolders);
+
+// Get Single Folder
+router.get("/:id", authMiddleware, getFolderById);
 
 // Rename Folder
 router.patch("/:id", authMiddleware, updateFolder);

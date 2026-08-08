@@ -49,11 +49,22 @@ const fileSchema = new mongoose.Schema(
       default: false,
     },
 
+    isShared: {
+      type: Boolean,
+      default: false,
+    },
+
+    shareToken: {
+      type: String,
+      default: null,
+    },
+
     trashedAt: {
       type: Date,
       default: null,
     },
   },
+  
   {
     timestamps: true,
   }

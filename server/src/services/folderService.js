@@ -43,6 +43,33 @@ const getFolders = async (owner) => {
   };
 };
 
+// Get Single Folder
+const getFolder = async (folderId, owner) => {
+  const folder = await Folder.findById(folderId);
+
+  if (!folder) {
+    return {
+      success: false,
+      status: 404,
+      message: "Folder not found.",
+    };
+  }
+
+  if (folder.owner.toString() !== owner) {
+    return {
+      success: false,
+      status: 403,
+      message: "Unauthorized access.",
+    };
+  }
+
+  return {
+    success: true,
+    status: 200,
+    folder,
+  };
+};
+
 // Rename Folder
 const renameFolder = async (folderId, owner, name) => {
   const folder = await Folder.findById(folderId);
@@ -121,6 +148,7 @@ const deleteFolder = async (folderId, owner) => {
 module.exports = {
   createFolder,
   getFolders,
+  getFolder,
   renameFolder,
   deleteFolder,
 };

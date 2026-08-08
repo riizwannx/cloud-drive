@@ -5,101 +5,128 @@ import {
   Navigate,
 } from "react-router-dom";
 
+// ==============================
+// Authentication
+// ==============================
 import Login from "@/pages/auth/Login";
 
+// ==============================
+// Dashboard
+// ==============================
 import Dashboard from "@/pages/dashboard/Dashboard";
 
+// ==============================
+// Files
+// ==============================
 import MyFiles from "@/pages/files/MyFiles";
 import Favorites from "@/pages/files/Favorites";
 import Trash from "@/pages/files/Trash";
 
+// ==============================
+// Folders
+// ==============================
 import Folders from "@/pages/folders/Folders";
 import FolderDetails from "@/pages/folders/FolderDetails";
 
-import ProtectedRoute from "@/components/auth/ProtectedRoute";
-
-function PublicRoute({ children }) {
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    return (
-      <Navigate
-        to="/dashboard"
-        replace
-      />
-    );
-  }
-
-  return children;
-}
+// ==============================
+// Settings
+// ==============================
+import Setting from "@/pages/settings/Setting";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
 
+        {/* ============================== */}
+        {/* Login */}
+        {/* ============================== */}
+
         <Route
-          path="/"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
+          path="/login"
+          element={<Login />}
         />
+
+        {/* ============================== */}
+        {/* Dashboard */}
+        {/* ============================== */}
 
         <Route
           path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
+          element={<Dashboard />}
         />
+
+        {/* ============================== */}
+        {/* My Files */}
+        {/* ============================== */}
 
         <Route
           path="/files"
-          element={
-            <ProtectedRoute>
-              <MyFiles />
-            </ProtectedRoute>
-          }
+          element={<MyFiles />}
         />
+
+        {/* ============================== */}
+        {/* Favorites */}
+        {/* ============================== */}
 
         <Route
           path="/favorites"
-          element={
-            <ProtectedRoute>
-              <Favorites />
-            </ProtectedRoute>
-          }
+          element={<Favorites />}
         />
+
+        {/* ============================== */}
+        {/* Trash */}
+        {/* ============================== */}
 
         <Route
           path="/trash"
-          element={
-            <ProtectedRoute>
-              <Trash />
-            </ProtectedRoute>
-          }
+          element={<Trash />}
         />
+
+        {/* ============================== */}
+        {/* Folders */}
+        {/* ============================== */}
 
         <Route
           path="/folders"
-          element={
-            <ProtectedRoute>
-              <Folders />
-            </ProtectedRoute>
-          }
+          element={<Folders />}
         />
+
+        {/* ============================== */}
+        {/* Folder Details */}
+        {/* ============================== */}
 
         <Route
           path="/folders/:folderId"
+          element={<FolderDetails />}
+        />
+
+        {/* ============================== */}
+        {/* Settings */}
+        {/* ============================== */}
+
+        <Route
+          path="/settings"
+          element={<Setting />}
+        />
+
+        {/* ============================== */}
+        {/* Default Route */}
+        {/* ============================== */}
+
+        <Route
+          path="/"
           element={
-            <ProtectedRoute>
-              <FolderDetails />
-            </ProtectedRoute>
+            <Navigate
+              to="/dashboard"
+              replace
+            />
           }
         />
+
+        {/* ============================== */}
+        {/* Unknown Routes */}
+        {/* ============================== */}
 
         <Route
           path="*"
