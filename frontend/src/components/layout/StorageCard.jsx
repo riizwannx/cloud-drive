@@ -2,7 +2,9 @@ import { HardDrive } from "lucide-react";
 import { useDashboardContext } from "@/context/DashboardContext";
 
 function formatStorage(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024) {
+    return `${bytes} B`;
+  }
 
   if (bytes < 1024 * 1024) {
     return `${(bytes / 1024).toFixed(1)} KB`;
@@ -23,9 +25,10 @@ export default function StorageCard() {
   }
 
   return (
-    <div className="mx-3 mb-4 rounded-2xl border bg-card p-4 shadow-sm">
+    <div className="rounded-xl border bg-card p-4">
+
       <div className="mb-3 flex items-center gap-2">
-        <HardDrive className="h-5 w-5 text-blue-600" />
+        <HardDrive size={18} />
 
         <span className="font-semibold">
           Storage
@@ -36,19 +39,28 @@ export default function StorageCard() {
         <div
           className="h-full rounded-full bg-blue-600 transition-all"
           style={{
-            width: `${dashboard.usagePercentage}%`,
+            width: `${Math.min(
+              dashboard.usagePercentage,
+              100
+            )}%`,
           }}
         />
       </div>
 
       <div className="mt-3 flex justify-between text-sm text-muted-foreground">
-        <span>{formatStorage(dashboard.storageUsed)}</span>
-        <span>{formatStorage(dashboard.storageLimit)}</span>
+        <span>
+          {formatStorage(dashboard.storageUsed)}
+        </span>
+
+        <span>
+          {formatStorage(dashboard.storageLimit)}
+        </span>
       </div>
 
       <p className="mt-2 text-xs text-muted-foreground">
         {dashboard.usagePercentage}% of your storage is used.
       </p>
+
     </div>
   );
 }

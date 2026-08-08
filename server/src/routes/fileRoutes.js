@@ -9,11 +9,17 @@ const {
   deleteFile,
   renameFile,
   searchFiles,
+
   toggleFavorite,
   getFavoriteFiles,
+
   getTrashFiles,
   restoreFile,
   permanentlyDeleteFile,
+
+  // shareFile,
+  // getSharedFiles,
+  // removeShare,
 } = require("../controllers/fileController");
 
 const upload = require("../middleware/uploadMiddleware");
@@ -123,5 +129,34 @@ router.delete(
   authMiddleware,
   permanentlyDeleteFile
 );
+
+/*
+// ==============================
+// Share File
+// ==============================
+router.patch(
+  "/share/:id",
+  authMiddleware,
+  shareFile
+);
+
+// ==============================
+// Get Shared Files
+// ==============================
+router.get(
+  "/shared",
+  authMiddleware,
+  getSharedFiles
+);
+
+// ==============================
+// Remove Share
+// ==============================
+router.patch(
+  "/share/remove/:id",
+  authMiddleware,
+  removeShare
+);
+*/
 
 module.exports = router;
