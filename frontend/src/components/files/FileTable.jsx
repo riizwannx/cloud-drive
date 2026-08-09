@@ -7,10 +7,11 @@ export default function FileTable({
   onRename,
   onDelete,
   onFavorite,
+  onShare,
 }) {
   return (
-    <div className="overflow-hidden rounded-2xl border bg-card">
-      <table className="w-full">
+    <div className="overflow-x-auto rounded-xl border">
+      <table className="w-full text-sm">
 
         <thead className="border-b bg-muted/40">
           <tr>
@@ -37,20 +38,16 @@ export default function FileTable({
         </thead>
 
         <tbody>
-
           {files.length === 0 ? (
             <tr>
-
               <td
                 colSpan={5}
                 className="p-8 text-center text-muted-foreground"
               >
                 No files found.
               </td>
-
             </tr>
           ) : (
-
             files.map((file) => (
               <FileRow
                 key={file._id}
@@ -60,11 +57,10 @@ export default function FileTable({
                 onRename={() => onRename(file)}
                 onDelete={() => onDelete(file._id)}
                 onFavorite={() => onFavorite(file)}
+                onShare={() => onShare(file)}
               />
             ))
-
           )}
-
         </tbody>
 
       </table>

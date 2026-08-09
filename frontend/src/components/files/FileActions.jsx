@@ -4,6 +4,7 @@ import {
   Pencil,
   Trash2,
   Star,
+  Share2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,9 +16,12 @@ export default function FileActions({
   onDownload,
   onRename,
   onDelete,
+  onShare,
 }) {
   return (
-    <div className="flex justify-center gap-2">
+    <div className="flex items-center justify-center gap-1">
+
+      {/* Favorite */}
 
       <Button
         variant="ghost"
@@ -39,6 +43,8 @@ export default function FileActions({
         />
       </Button>
 
+      {/* Preview */}
+
       <Button
         variant="ghost"
         size="icon"
@@ -47,6 +53,8 @@ export default function FileActions({
       >
         <Eye size={18} />
       </Button>
+
+      {/* Download */}
 
       <Button
         variant="ghost"
@@ -57,6 +65,19 @@ export default function FileActions({
         <Download size={18} />
       </Button>
 
+      {/* Share */}
+
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onShare}
+        title="Share"
+      >
+        <Share2 size={18} />
+      </Button>
+
+      {/* Rename */}
+
       <Button
         variant="ghost"
         size="icon"
@@ -65,6 +86,8 @@ export default function FileActions({
       >
         <Pencil size={18} />
       </Button>
+
+      {/* Delete */}
 
       <Button
         variant="ghost"

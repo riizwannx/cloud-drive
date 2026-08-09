@@ -1,5 +1,8 @@
 import FileActions from "@/components/files/FileActions";
-import { formatFileSize, getFileType } from "@/lib/fileUtils";
+import {
+  formatFileSize,
+  getFileType,
+} from "@/lib/fileUtils";
 
 export default function FileRow({
   file,
@@ -8,25 +11,38 @@ export default function FileRow({
   onRename,
   onDelete,
   onFavorite,
+  onShare,
 }) {
   return (
-    <tr className="border-b transition-colors hover:bg-muted/30">
+    <tr>
+
+      {/* File Name */}
 
       <td className="max-w-xs truncate p-4 font-medium">
         {file.originalName}
       </td>
 
+      {/* File Type */}
+
       <td className="p-4">
         {getFileType(file.fileType)}
       </td>
+
+      {/* File Size */}
 
       <td className="p-4">
         {formatFileSize(file.fileSize)}
       </td>
 
+      {/* Uploaded Date */}
+
       <td className="p-4">
-        {new Date(file.createdAt).toLocaleDateString()}
+        {new Date(
+          file.createdAt
+        ).toLocaleDateString()}
       </td>
+
+      {/* Actions */}
 
       <td className="p-4">
 
@@ -37,6 +53,7 @@ export default function FileRow({
           onDownload={onDownload}
           onRename={onRename}
           onDelete={onDelete}
+          onShare={onShare}
         />
 
       </td>

@@ -1,7 +1,9 @@
 const File = require("../models/File");
 const storageService = require("../services/storageService");
+
 const path = require("path");
 const fs = require("fs");
+const crypto = require("crypto");
 
 // ==============================
 // Upload File
@@ -16,10 +18,11 @@ const uploadFile = async (req, res) => {
     }
 
     // Check storage limit
-    const storageCheck = await storageService.checkStorageLimit(
-      req.user.id,
-      req.file.size
-    );
+    const storageCheck =
+      await storageService.checkStorageLimit(
+        req.user.id,
+        req.file.size
+      );
 
     if (!storageCheck.success) {
       // Delete uploaded file if storage limit exceeded
@@ -45,7 +48,10 @@ const uploadFile = async (req, res) => {
     });
 
     // Increase user's storage usage
-    await storageService.increaseStorage(req.user.id, req.file.size);
+    await storageService.increaseStorage(
+      req.user.id,
+      req.file.size
+    );
 
     return res.status(201).json({
       success: true,
@@ -136,7 +142,7 @@ const getFilesByFolder = async (req, res) => {
       message: "Server Error",
     });
   }
-}; 
+};
 
 // ==============================
 // Download File
@@ -161,7 +167,10 @@ const downloadFile = async (req, res) => {
       });
     }
 
-    const filePath = path.join(process.cwd(), file.filePath);
+    const filePath = path.join(
+      process.cwd(),
+      file.filePath
+    );
 
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({
@@ -170,7 +179,10 @@ const downloadFile = async (req, res) => {
       });
     }
 
-    return res.download(filePath, file.originalName);
+    return res.download(
+      filePath,
+      file.originalName
+    );
   } catch (error) {
     console.error(error);
 
@@ -206,6 +218,10 @@ const deleteFile = async (req, res) => {
 
     file.isTrashed = true;
     file.trashedAt = new Date();
+
+    // Automatically disable sharing when moved to trash
+    file.isShared = false;
+    file.shareToken = null;
 
     await file.save();
 
@@ -441,7 +457,10 @@ const permanentlyDeleteFile = async (req, res) => {
       });
     }
 
-    const filePath = path.join(process.cwd(), file.filePath);
+    const filePath = path.join(
+      process.cwd(),
+      file.filePath
+    );
 
     if (fs.existsSync(filePath)) {
       await fs.promises.unlink(filePath);
@@ -475,7 +494,9 @@ const searchFiles = async (req, res) => {
   try {
     const { name } = req.query;
 
-    const searchTerm = name ? name.trim() : "";
+    const searchTerm = name
+      ? name.trim()
+      : "";
 
     const files = await File.find({
       owner: req.user.id,
@@ -483,6 +504,7 @@ const searchFiles = async (req, res) => {
         $regex: searchTerm,
         $options: "i",
       },
+      isTrashed: false,
     }).sort({
       createdAt: -1,
     });
@@ -491,6 +513,244 @@ const searchFiles = async (req, res) => {
       success: true,
       count: files.length,
       files,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ============================================================
+// SHARE SYSTEM
+// ============================================================
+
+// ==============================
+// Share File
+// ==============================
+const shareFile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const file = await File.findById(id);
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found.",
+      });
+    }
+
+    // Only owner can share
+    if (file.owner.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied.",
+      });
+    }
+
+    // Don't allow sharing trashed files
+    if (file.isTrashed) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "A file in trash cannot be shared.",
+      });
+    }
+
+    // Reuse existing token if already shared
+    if (!file.isShared || !file.shareToken) {
+      file.shareToken = crypto.randomBytes(32).toString("hex");
+      file.isShared = true;
+
+      await file.save();
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "File shared successfully.",
+      shareToken: file.shareToken,
+      fileId: file._id,
+      fileName: file.originalName,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ==============================
+// Get My Shared Files
+// ==============================
+const getSharedFiles = async (req, res) => {
+  try {
+    const files = await File.find({
+      owner: req.user.id,
+      isShared: true,
+      isTrashed: false,
+      shareToken: {
+        $ne: null,
+      },
+    })
+      .populate("folder", "name")
+      .sort({
+        createdAt: -1,
+      });
+
+    return res.status(200).json({
+      success: true,
+      count: files.length,
+      files,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ==============================
+// Remove Share
+// ==============================
+const removeShare = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const file = await File.findById(id);
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found.",
+      });
+    }
+
+    // Only owner can remove sharing
+    if (file.owner.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied.",
+      });
+    }
+
+    file.isShared = false;
+    file.shareToken = null;
+
+    await file.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "File sharing removed successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ==============================
+// Access Shared File
+// ==============================
+// Public endpoint.
+// No JWT is required.
+// The share token acts as the access credential.
+const accessSharedFile = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: "Share token is required.",
+      });
+    }
+
+    const file = await File.findOne({
+      shareToken: token,
+      isShared: true,
+      isTrashed: false,
+    });
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "Shared file not found or sharing has been removed.",
+      });
+    }
+
+    const filePath = path.join(
+      process.cwd(),
+      file.filePath
+    );
+
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({
+        success: false,
+        message: "Physical file not found.",
+      });
+    }
+
+    return res.download(
+      filePath,
+      file.originalName
+    );
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+// ==============================
+// Get Shared File Information
+// ==============================
+const getSharedFileInfo = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: "Share token is required.",
+      });
+    }
+
+    const file = await File.findOne({
+      shareToken: token,
+      isShared: true,
+      isTrashed: false,
+    }).select(
+      "originalName fileType fileSize createdAt"
+    );
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "Shared file not found or sharing has been removed.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      file,
     });
   } catch (error) {
     console.error(error);
@@ -518,4 +778,11 @@ module.exports = {
   restoreFile,
   permanentlyDeleteFile,
   searchFiles,
+
+  // Share
+  shareFile,
+  getSharedFiles,
+  removeShare,
+  accessSharedFile,
+  getSharedFileInfo,
 };
