@@ -12,6 +12,7 @@ import { deleteFile } from "@/services/deleteFileService";
 import { downloadFile } from "@/services/downloadFileService";
 import { renameFile } from "@/services/renameFileService";
 import { toggleFavorite } from "@/services/favoriteService";
+import { shareFile } from "@/services/shareService";
 
 export default function MyFiles() {
   const {
@@ -23,14 +24,21 @@ export default function MyFiles() {
 
   const [search, setSearch] = useState("");
 
-  const [renameOpen, setRenameOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [renameOpen, setRenameOpen] =
+    useState(false);
+
+  const [selectedFile, setSelectedFile] =
+    useState(null);
 
   const filteredFiles = files.filter((file) =>
     file.originalName
       .toLowerCase()
       .includes(search.toLowerCase())
   );
+
+  // ==============================
+  // Delete
+  // ==============================
 
   const handleDelete = async (id) => {
     if (
@@ -50,20 +58,28 @@ export default function MyFiles() {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-        "Delete failed."
+          "Delete failed."
       );
     }
   };
 
+  // ==============================
+  // Download
+  // ==============================
+
   const handleDownload = async (file) => {
     try {
-      const response = await downloadFile(file._id);
-
-      const url = window.URL.createObjectURL(
-        new Blob([response.data])
+      const response = await downloadFile(
+        file._id
       );
 
-      const link = document.createElement("a");
+      const url =
+        window.URL.createObjectURL(
+          new Blob([response.data])
+        );
+
+      const link =
+        document.createElement("a");
 
       link.href = url;
       link.download = file.originalName;
@@ -78,10 +94,14 @@ export default function MyFiles() {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-        "Download failed."
+          "Download failed."
       );
     }
   };
+
+  // ==============================
+  // Rename
+  // ==============================
 
   const openRenameDialog = (file) => {
     setSelectedFile(file);
@@ -104,10 +124,14 @@ export default function MyFiles() {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-        "Rename failed."
+          "Rename failed."
       );
     }
   };
+
+  // ==============================
+  // Favorite
+  // ==============================
 
   const handleFavorite = async (file) => {
     try {
@@ -117,10 +141,14 @@ export default function MyFiles() {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-        "Failed to update favorite."
+          "Failed to update favorite."
       );
     }
   };
+
+  // ==============================
+  // Preview
+  // ==============================
 
   const handlePreview = (file) => {
     if (!file.filePath) {
@@ -137,27 +165,81 @@ export default function MyFiles() {
       normalizedPath.split("/").pop();
 
     window.open(
-      `http://localhost:5000/uploads/${filename}`,
+      `http://localhost:5001/uploads/${filename}`,
       "_blank"
     );
   };
 
+  // ==============================
+  // Share
+  // ==============================
+
+  const handleShare = async (file) => {
+    try {
+      const response = await shareFile(
+        file._id
+      );
+
+      const token = response.shareToken;
+
+      if (!token) {
+        throw new Error(
+          "Share token was not returned."
+        );
+      }
+
+      const shareUrl =
+        `${window.location.origin}/share/${token}`;
+
+      await navigator.clipboard.writeText(
+        shareUrl
+      );
+
+      alert(
+        `Share link copied!\n\n${shareUrl}`
+      );
+
+      await refreshFiles();
+    } catch (error) {
+      console.error(
+        "Share failed:",
+        error
+      );
+
+      alert(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to share file."
+      );
+    }
+  };
+
+  // ==============================
+  // Loading
+  // ==============================
+
   if (loading) {
     return (
       <MainLayout>
-        <h1 className="text-2xl font-bold">
-          Loading files...
-        </h1>
+        <div className="flex min-h-[400px] items-center justify-center">
+          <p className="text-muted-foreground">
+            Loading files...
+          </p>
+        </div>
       </MainLayout>
     );
   }
 
+  // ==============================
+  // Error
+  // ==============================
+
   if (error) {
     return (
       <MainLayout>
-        <h1 className="text-2xl text-red-500">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-600">
           {error}
-        </h1>
+        </div>
       </MainLayout>
     );
   }
@@ -165,6 +247,10 @@ export default function MyFiles() {
   return (
     <MainLayout>
       <div className="space-y-6">
+
+        {/* ============================== */}
+        {/* Header */}
+        {/* ============================== */}
 
         <div>
           <h1 className="text-4xl font-bold">
@@ -176,7 +262,12 @@ export default function MyFiles() {
           </p>
         </div>
 
+        {/* ============================== */}
+        {/* Toolbar */}
+        {/* ============================== */}
+
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+
           <FileToolbar
             search={search}
             setSearch={setSearch}
@@ -185,7 +276,12 @@ export default function MyFiles() {
           <UploadButton
             onSuccess={refreshFiles}
           />
+
         </div>
+
+        {/* ============================== */}
+        {/* File Table */}
+        {/* ============================== */}
 
         <FileTable
           files={filteredFiles}
@@ -194,7 +290,12 @@ export default function MyFiles() {
           onRename={openRenameDialog}
           onDelete={handleDelete}
           onFavorite={handleFavorite}
+          onShare={handleShare}
         />
+
+        {/* ============================== */}
+        {/* Rename Dialog */}
+        {/* ============================== */}
 
         <RenameDialog
           open={renameOpen}

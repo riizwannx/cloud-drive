@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 
 const {
@@ -17,9 +18,12 @@ const {
   restoreFile,
   permanentlyDeleteFile,
 
-  // shareFile,
-  // getSharedFiles,
-  // removeShare,
+  // Share
+  shareFile,
+  getSharedFiles,
+  removeShare,
+  accessSharedFile,
+  getSharedFileInfo,
 } = require("../controllers/fileController");
 
 const upload = require("../middleware/uploadMiddleware");
@@ -38,7 +42,11 @@ router.post(
 // ==============================
 // Get My Files
 // ==============================
-router.get("/", authMiddleware, getMyFiles);
+router.get(
+  "/",
+  authMiddleware,
+  getMyFiles
+);
 
 // ==============================
 // Get Files By Folder
@@ -77,12 +85,54 @@ router.get(
 );
 
 // ==============================
-// Download File
+// Download Owned File
 // ==============================
 router.get(
   "/download/:id",
   authMiddleware,
   downloadFile
+);
+
+// ============================================================
+// SHARE ROUTES
+// ============================================================
+
+// ==============================
+// Get My Shared Files
+// ==============================
+router.get(
+  "/shared",
+  authMiddleware,
+  getSharedFiles
+);
+
+// ==============================
+// Access Shared File
+// ==============================
+// Public route.
+// IMPORTANT: Keep this before "/:id"
+// routes.
+router.get(
+  "/shared/:token",
+  accessSharedFile
+);
+
+// ==============================
+// Share File
+// ==============================
+router.patch(
+  "/share/:id",
+  authMiddleware,
+  shareFile
+);
+
+// ==============================
+// Remove Share
+// ==============================
+router.patch(
+  "/share/remove/:id",
+  authMiddleware,
+  removeShare
 );
 
 // ==============================
@@ -130,33 +180,9 @@ router.delete(
   permanentlyDeleteFile
 );
 
-/*
-// ==============================
-// Share File
-// ==============================
-router.patch(
-  "/share/:id",
-  authMiddleware,
-  shareFile
-);
-
-// ==============================
-// Get Shared Files
-// ==============================
 router.get(
-  "/shared",
-  authMiddleware,
-  getSharedFiles
+  "/shared/:token/info",
+  getSharedFileInfo
 );
-
-// ==============================
-// Remove Share
-// ==============================
-router.patch(
-  "/share/remove/:id",
-  authMiddleware,
-  removeShare
-);
-*/
 
 module.exports = router;

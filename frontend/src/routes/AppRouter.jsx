@@ -21,12 +21,14 @@ import Dashboard from "@/pages/dashboard/Dashboard";
 import MyFiles from "@/pages/files/MyFiles";
 import Favorites from "@/pages/files/Favorites";
 import Trash from "@/pages/files/Trash";
+import Shared from "@/pages/files/Shared";
 
 // ==============================
 // Folders
 // ==============================
 import Folders from "@/pages/folders/Folders";
 import FolderDetails from "@/pages/folders/FolderDetails";
+import SharedFile from "@/pages/files/SharedFile";
 
 // ==============================
 // Settings
@@ -84,6 +86,15 @@ export default function AppRouter() {
         />
 
         {/* ============================== */}
+        {/* Shared */}
+        {/* ============================== */}
+
+        <Route
+          path="/shared"
+          element={<Shared />}
+        />
+
+        {/* ============================== */}
         {/* Folders */}
         {/* ============================== */}
 
@@ -124,6 +135,11 @@ export default function AppRouter() {
           }
         />
 
+        <Route
+          path="/share/:token"
+          element={<SharedFile />}
+        />
+
         {/* ============================== */}
         {/* Unknown Routes */}
         {/* ============================== */}
@@ -135,6 +151,8 @@ export default function AppRouter() {
               to="/dashboard"
               replace
             />
+
+
           }
         />
 
