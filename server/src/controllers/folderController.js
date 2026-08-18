@@ -41,11 +41,41 @@ const createNewFolder = async (req, res) => {
 // ==============================
 const getAllFolders = async (req, res) => {
   try {
-    const result = await getFolders(req.user.id);
+    const parentFolder =
+      req.query.parentFolder || null;
 
-    return res.status(result.status).json(result);
+    console.log(
+      "========== GET FOLDERS =========="
+    );
+
+    console.log("User:", req.user.id);
+    console.log(
+      "Parent Folder:",
+      parentFolder
+    );
+
+    const result = await getFolders(
+      req.user.id,
+      parentFolder
+    );
+
+    console.log(
+      "Folders Found:",
+      result.folders?.map((folder) => ({
+        id: folder._id,
+        name: folder.name,
+        parentFolder: folder.parentFolder,
+      }))
+    );
+
+    return res
+      .status(result.status)
+      .json(result);
   } catch (error) {
-    console.error("Get Folders Error:", error);
+    console.error(
+      "Get Folders Error:",
+      error
+    );
 
     return res.status(500).json({
       success: false,

@@ -1,26 +1,75 @@
 const Folder = require("../models/Folder");
 const File = require("../models/File");
 
+// ==============================
 // Create Folder
-const createFolder = async (name, owner, parentFolder = null) => {
+// ==============================
+const createFolder = async (
+  name,
+  owner,
+  parentFolder = null
+) => {
+  const trimmedName = name?.trim();
+
+  if (!trimmedName) {
+    return {
+      success: false,
+      status: 400,
+      message: "Folder name is required.",
+    };
+  }
+
+  // ==============================
+  // Validate Parent Folder
+  // ==============================
+
+  if (parentFolder) {
+    const parent = await Folder.findById(parentFolder);
+
+    if (!parent) {
+      return {
+        success: false,
+        status: 404,
+        message: "Parent folder not found.",
+      };
+    }
+
+    if (parent.owner.toString() !== owner.toString()) {
+      return {
+        success: false,
+        status: 403,
+        message: "Unauthorized parent folder.",
+      };
+    }
+  }
+
+  // ==============================
+  // Check Duplicate Folder
+  // ==============================
+
   const existingFolder = await Folder.findOne({
-    name,
+    name: trimmedName,
     owner,
-    parentFolder,
+    parentFolder: parentFolder || null,
   });
 
   if (existingFolder) {
     return {
       success: false,
       status: 400,
-      message: "Folder already exists.",
+      message:
+        "A folder with this name already exists here.",
     };
   }
 
+  // ==============================
+  // Create Folder
+  // ==============================
+
   const folder = await Folder.create({
-    name,
+    name: trimmedName,
     owner,
-    parentFolder,
+    parentFolder: parentFolder || null,
   });
 
   return {
@@ -31,9 +80,19 @@ const createFolder = async (name, owner, parentFolder = null) => {
   };
 };
 
-// Get All Folders
-const getFolders = async (owner) => {
-  const folders = await Folder.find({ owner }).sort({ createdAt: -1 });
+// ==============================
+// Get Folders
+// ==============================
+const getFolders = async (
+  owner,
+  parentFolder = null
+) => {
+  const folders = await Folder.find({
+    owner,
+    parentFolder: parentFolder || null,
+  }).sort({
+    createdAt: -1,
+  });
 
   return {
     success: true,
@@ -43,9 +102,16 @@ const getFolders = async (owner) => {
   };
 };
 
+// ==============================
 // Get Single Folder
-const getFolder = async (folderId, owner) => {
-  const folder = await Folder.findById(folderId);
+// ==============================
+const getFolder = async (
+  folderId,
+  owner
+) => {
+  const folder = await Folder.findById(
+    folderId
+  );
 
   if (!folder) {
     return {
@@ -55,7 +121,10 @@ const getFolder = async (folderId, owner) => {
     };
   }
 
-  if (folder.owner.toString() !== owner) {
+  if (
+    folder.owner.toString() !==
+    owner.toString()
+  ) {
     return {
       success: false,
       status: 403,
@@ -70,9 +139,27 @@ const getFolder = async (folderId, owner) => {
   };
 };
 
+// ==============================
 // Rename Folder
-const renameFolder = async (folderId, owner, name) => {
-  const folder = await Folder.findById(folderId);
+// ==============================
+const renameFolder = async (
+  folderId,
+  owner,
+  name
+) => {
+  const trimmedName = name?.trim();
+
+  if (!trimmedName) {
+    return {
+      success: false,
+      status: 400,
+      message: "Folder name is required.",
+    };
+  }
+
+  const folder = await Folder.findById(
+    folderId
+  );
 
   if (!folder) {
     return {
@@ -82,7 +169,10 @@ const renameFolder = async (folderId, owner, name) => {
     };
   }
 
-  if (folder.owner.toString() !== owner) {
+  if (
+    folder.owner.toString() !==
+    owner.toString()
+  ) {
     return {
       success: false,
       status: 403,
@@ -90,7 +180,29 @@ const renameFolder = async (folderId, owner, name) => {
     };
   }
 
-  folder.name = name;
+  // ==============================
+  // Check Duplicate Name
+  // ==============================
+
+  const existingFolder =
+    await Folder.findOne({
+      _id: { $ne: folderId },
+      name: trimmedName,
+      owner,
+      parentFolder:
+        folder.parentFolder || null,
+    });
+
+  if (existingFolder) {
+    return {
+      success: false,
+      status: 400,
+      message:
+        "A folder with this name already exists here.",
+    };
+  }
+
+  folder.name = trimmedName;
 
   await folder.save();
 
@@ -102,9 +214,16 @@ const renameFolder = async (folderId, owner, name) => {
   };
 };
 
+// ==============================
 // Delete Folder
-const deleteFolder = async (folderId, owner) => {
-  const folder = await Folder.findById(folderId);
+// ==============================
+const deleteFolder = async (
+  folderId,
+  owner
+) => {
+  const folder = await Folder.findById(
+    folderId
+  );
 
   if (!folder) {
     return {
@@ -114,7 +233,10 @@ const deleteFolder = async (folderId, owner) => {
     };
   }
 
-  if (folder.owner.toString() !== owner) {
+  if (
+    folder.owner.toString() !==
+    owner.toString()
+  ) {
     return {
       success: false,
       status: 403,
@@ -122,19 +244,48 @@ const deleteFolder = async (folderId, owner) => {
     };
   }
 
-  const files = await File.countDocuments({
-    owner,
-    folder: folderId,
-    isTrashed: false,
-  });
+  // ==============================
+  // Check Files
+  // ==============================
+
+  const files =
+    await File.countDocuments({
+      owner,
+      folder: folderId,
+      isTrashed: false,
+    });
 
   if (files > 0) {
     return {
       success: false,
       status: 400,
-      message: "Cannot delete a folder that contains files.",
+      message:
+        "Cannot delete a folder that contains files.",
     };
   }
+
+  // ==============================
+  // Check Child Folders
+  // ==============================
+
+  const childFolders =
+    await Folder.countDocuments({
+      owner,
+      parentFolder: folderId,
+    });
+
+  if (childFolders > 0) {
+    return {
+      success: false,
+      status: 400,
+      message:
+        "Cannot delete a folder that contains subfolders.",
+    };
+  }
+
+  // ==============================
+  // Delete Folder
+  // ==============================
 
   await folder.deleteOne();
 
@@ -144,6 +295,10 @@ const deleteFolder = async (folderId, owner) => {
     message: "Folder deleted successfully.",
   };
 };
+
+// ==============================
+// Exports
+// ==============================
 
 module.exports = {
   createFolder,
