@@ -1,5 +1,10 @@
-import { Link } from "react-router-dom";
-import { FolderOpen } from "lucide-react";
+import {
+  ArrowLeft,
+  Folder,
+  Upload,
+} from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 
 import UploadButton from "@/components/files/UploadButton";
 
@@ -9,49 +14,80 @@ export default function FolderHeader({
   fileCount,
   totalSize,
   onUploadSuccess,
+  onBack,
 }) {
+  if (!folder) {
+    return null;
+  }
+
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+    <div className="space-y-5">
 
-      <div>
+      {/* ============================== */}
+      {/* Back Button */}
+      {/* ============================== */}
 
-        <Link
-          to="/folders"
-          className="text-blue-600 hover:underline"
-        >
-          ← Back to Folders
-        </Link>
+      <Button
+        variant="ghost"
+        onClick={onBack}
+        className="gap-2"
+      >
+        <ArrowLeft size={18} />
 
-        <div className="mt-5 flex items-center gap-4">
+        Back
+      </Button>
 
-          <div className="rounded-xl bg-yellow-100 p-4">
-            <FolderOpen
+      {/* ============================== */}
+      {/* Header */}
+      {/* ============================== */}
+
+      <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+
+        <div className="flex items-center gap-4">
+
+          <div className="flex size-20 items-center justify-center rounded-2xl bg-yellow-100">
+
+            <Folder
               size={42}
               className="text-yellow-600"
             />
+
           </div>
 
           <div>
 
             <h1 className="text-4xl font-bold">
-              {folder?.name || "Folder"}
+              {folder.name}
             </h1>
 
             <p className="mt-1 text-muted-foreground">
-              {fileCount} file(s) •{" "}
-              {(totalSize / 1024).toFixed(2)} KB
+              {fileCount}{" "}
+              {fileCount === 1
+                ? "file"
+                : "files"}{" "}
+              •{" "}
+              {(totalSize / 1024).toFixed(
+                2
+              )}{" "}
+              KB
             </p>
 
           </div>
 
         </div>
 
-      </div>
+        {/* ============================== */}
+        {/* Upload */}
+        {/* ============================== */}
 
-      <UploadButton
-        folderId={folderId}
-        onSuccess={onUploadSuccess}
-      />
+        <UploadButton
+          folderId={folderId}
+          onSuccess={
+            onUploadSuccess
+          }
+        />
+
+      </div>
 
     </div>
   );
