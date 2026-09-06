@@ -5,6 +5,34 @@ const path = require("path");
 const fs = require("fs");
 const crypto = require("crypto");
 
+const hasExpectedFileSignature = async (file) => {
+  const handle = await fs.promises.open(file.path, "r");
+
+  try {
+    const buffer = Buffer.alloc(12);
+    const { bytesRead } = await handle.read(buffer, 0, buffer.length, 0);
+    const header = buffer.subarray(0, bytesRead);
+
+    if (file.mimetype === "application/pdf") {
+      return header.subarray(0, 5).toString() === "%PDF-";
+    }
+
+    if (["image/jpeg", "image/jpg"].includes(file.mimetype)) {
+      return header[0] === 0xff && header[1] === 0xd8 && header[2] === 0xff;
+    }
+
+    if (file.mimetype === "image/png") {
+      return header.subarray(0, 8).equals(
+        Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
+      );
+    }
+
+    return false;
+  } finally {
+    await handle.close();
+  }
+};
+
 // ==============================
 // Upload File
 // ==============================
@@ -14,6 +42,14 @@ const uploadFile = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "No file uploaded.",
+      });
+    }
+
+    if (!(await hasExpectedFileSignature(req.file))) {
+      await fs.promises.unlink(req.file.path);
+      return res.status(400).json({
+        success: false,
+        message: "File contents do not match the permitted file type.",
       });
     }
 

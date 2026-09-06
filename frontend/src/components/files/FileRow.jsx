@@ -14,11 +14,11 @@ export default function FileRow({
   onShare,
 }) {
   return (
-    <tr>
+    <tr className="border-b border-border/70 transition-colors hover:bg-secondary/35 last:border-0">
 
       {/* File Name */}
 
-      <td className="max-w-xs truncate p-4 font-medium">
+      <td className="max-w-xs truncate p-4 font-medium" title={file.originalName}>
         {file.originalName}
       </td>
 

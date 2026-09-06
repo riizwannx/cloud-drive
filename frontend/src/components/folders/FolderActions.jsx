@@ -7,13 +7,13 @@ export default function FolderActions({
   onDelete,
 }) {
   return (
-    <div className="mt-5 flex justify-end gap-2 border-t pt-4">
+    <div className="mt-4 flex justify-end gap-2 border-t border-border/70 pt-3">
 
       <Button
         variant="outline"
         size="sm"
         onClick={onRename}
-        className="gap-2"
+        className="h-8 rounded-lg border-border/80 text-xs shadow-none"
       >
         <Pencil size={16} />
         Rename
@@ -23,7 +23,7 @@ export default function FolderActions({
         variant="destructive"
         size="sm"
         onClick={onDelete}
-        className="gap-2"
+        className="h-8 rounded-lg text-xs"
       >
         <Trash2 size={16} />
         Delete

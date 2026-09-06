@@ -10,10 +10,10 @@ export default function FileTable({
   onShare,
 }) {
   return (
-    <div className="overflow-x-auto rounded-xl border">
+    <div className="surface-card overflow-x-auto rounded-2xl border">
       <table className="w-full text-sm">
 
-        <thead className="border-b bg-muted/40">
+        <thead className="border-b bg-secondary/50 text-xs uppercase tracking-[0.08em] text-muted-foreground">
           <tr>
             <th className="p-4 text-left">
               Name

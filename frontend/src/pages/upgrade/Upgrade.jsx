@@ -15,7 +15,7 @@ export default function Upgrade() {
 
   return (
     <MainLayout>
-      <div className="space-y-8">
+      <div className="page-shell max-w-5xl">
 
         {/* ============================== */}
         {/* Header */}
@@ -26,7 +26,7 @@ export default function Upgrade() {
           <Button
             variant="ghost"
             onClick={() => navigate(-1)}
-            className="mb-4"
+            className="mb-5 rounded-xl text-muted-foreground hover:bg-secondary hover:text-foreground"
           >
             <ArrowLeft
               size={18}
@@ -36,11 +36,12 @@ export default function Upgrade() {
             Back
           </Button>
 
-          <h1 className="text-4xl font-bold">
+          <div className="mb-3 flex size-12 items-center justify-center rounded-2xl bg-amber-400/15 text-amber-500"><Crown className="h-6 w-6" /></div>
+          <h1 className="page-heading">
             CloudDrive Plans
           </h1>
 
-          <p className="mt-2 text-muted-foreground">
+          <p className="page-description">
             Choose the plan that fits your storage needs.
           </p>
 
@@ -50,23 +51,23 @@ export default function Upgrade() {
         {/* Plans */}
         {/* ============================== */}
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-2">
 
           {/* ============================== */}
           {/* Free Plan */}
           {/* ============================== */}
 
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+          <div className="surface-card rounded-2xl p-6">
 
             <div className="flex items-center gap-4">
 
-              <div className="flex size-12 items-center justify-center rounded-xl bg-muted">
+              <div className="flex size-12 items-center justify-center rounded-2xl bg-secondary">
                 <HardDrive size={24} />
               </div>
 
               <div>
 
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em]">
                   Free
                 </h2>
 
@@ -80,7 +81,7 @@ export default function Upgrade() {
 
             <div className="mt-6">
 
-              <span className="text-4xl font-bold">
+              <span className="text-4xl font-semibold tracking-[-0.04em]">
                 ₹0
               </span>
 
@@ -143,7 +144,7 @@ export default function Upgrade() {
             <Button
               variant="outline"
               disabled
-              className="mt-8 w-full"
+              className="mt-8 h-11 w-full rounded-xl"
             >
               Current Plan
             </Button>
@@ -154,28 +155,28 @@ export default function Upgrade() {
           {/* VIP Plan */}
           {/* ============================== */}
 
-          <div className="relative rounded-2xl border-2 border-primary bg-card p-6 shadow-md">
+          <div className="relative overflow-hidden rounded-2xl border border-indigo-400/40 bg-gradient-to-br from-indigo-500/10 via-card to-blue-500/10 p-6 shadow-xl shadow-indigo-500/10">
 
             {/* Recommended Badge */}
 
-            <div className="absolute -top-3 right-6 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+            <div className="absolute right-5 top-5 rounded-full bg-indigo-500 px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-white">
               RECOMMENDED
             </div>
 
             <div className="flex items-center gap-4">
 
-              <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10">
+              <div className="flex size-12 items-center justify-center rounded-2xl bg-indigo-500/15">
 
                 <Crown
                   size={24}
-                  className="text-primary"
+                  className="text-indigo-600 dark:text-indigo-300"
                 />
 
               </div>
 
               <div>
 
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em]">
                   VIP
                 </h2>
 
@@ -189,7 +190,7 @@ export default function Upgrade() {
 
             <div className="mt-6">
 
-              <span className="text-4xl font-bold">
+              <span className="text-4xl font-semibold tracking-[-0.04em]">
                 Coming Soon
               </span>
 
@@ -246,7 +247,7 @@ export default function Upgrade() {
             </div>
 
             <Button
-              className="mt-8 w-full"
+              className="mt-8 h-11 w-full rounded-xl bg-gradient-to-r from-indigo-500 to-blue-600 shadow-md shadow-indigo-500/20"
               onClick={() =>
                 alert(
                   "VIP plans and payment options are coming soon."
@@ -269,7 +270,7 @@ export default function Upgrade() {
         {/* Information */}
         {/* ============================== */}
 
-        <div className="rounded-2xl border bg-muted/30 p-6">
+        <div className="surface-card rounded-2xl bg-secondary/35 p-6">
 
           <h2 className="font-semibold">
             About CloudDrive Plans

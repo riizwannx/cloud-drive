@@ -50,18 +50,18 @@ export default function FolderStats({
       {stats.map((stat) => (
         <div
           key={stat.title}
-          className="rounded-xl border bg-card p-5 shadow-sm"
+          className="surface-card rounded-2xl p-4 transition-shadow hover:shadow-md"
         >
 
           <div className="flex items-center justify-between">
 
             <div>
 
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">
                 {stat.title}
               </p>
 
-              <h3 className="mt-2 text-2xl font-bold">
+              <h3 className="mt-2 text-2xl font-semibold tracking-[-0.03em]">
                 {stat.value}
               </h3>
 
@@ -69,7 +69,7 @@ export default function FolderStats({
 
             <stat.icon
               size={28}
-              className="text-primary"
+              className="rounded-xl bg-indigo-500/10 p-2 text-indigo-600 dark:text-indigo-300"
             />
 
           </div>

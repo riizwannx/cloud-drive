@@ -57,18 +57,22 @@ export default function Dashboard() {
 
   return (
     <MainLayout>
-      <div className="space-y-8">
+      <div className="page-shell">
         <div>
-          <h1 className="text-4xl font-bold">
-            Welcome Back 👋
+          <div className="mb-3 flex items-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-300">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.12)]" />
+            Your workspace is ready
+          </div>
+          <h1 className="page-heading">
+            Welcome back
           </h1>
 
-          <p className="mt-2 text-muted-foreground">
-            Here's your CloudDrive overview.
+          <p className="page-description">
+            Everything important in your CloudDrive, at a glance.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <StatCard
             title="Storage"
             value={formatStorage(dashboard.storageUsed)}
@@ -104,7 +108,7 @@ export default function Dashboard() {
           />
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <RecentFiles
               files={dashboard.recentFiles}

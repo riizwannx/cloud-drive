@@ -64,11 +64,10 @@ const shareFile = async (req, res) => {
     console.error("========== SHARE ERROR ==========");
     console.error(error);
 
-  return res.status(500).json({
-    success: false,
-    message: error.message,
-    stack: error.stack,
-  });
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
  }
 };
 

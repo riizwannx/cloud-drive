@@ -2,12 +2,9 @@ import { FolderOpen } from "lucide-react";
 
 export default function FolderEmpty() {
   return (
-    <div className="rounded-2xl border border-dashed p-14 text-center">
+    <div className="rounded-2xl border border-dashed border-indigo-200/80 bg-card p-14 text-center dark:border-indigo-400/25">
 
-      <FolderOpen
-        size={70}
-        className="mx-auto text-muted-foreground"
-      />
+      <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300"><FolderOpen size={34} /></div>
 
       <h2 className="mt-5 text-2xl font-bold">
         Folder is Empty

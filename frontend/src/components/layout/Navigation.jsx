@@ -1,7 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -28,13 +29,22 @@ const items = [
 ];
 
 export default function Navigation() {
+  const location = useLocation();
+
   return (
-    <SidebarGroup>
+    <SidebarGroup className="px-3 py-4">
+      <SidebarGroupLabel className="px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-sidebar-foreground/45">
+        Workspace
+      </SidebarGroupLabel>
       <SidebarGroupContent>
-        <SidebarMenu>
+        <SidebarMenu className="gap-1">
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
+                isActive={location.pathname === item.url || (item.url === "/folders" && location.pathname.startsWith("/folders/"))}
+                tooltip={item.title}
+                size="lg"
+                className="rounded-xl px-3 text-[13px] font-medium data-active:bg-indigo-500/10 data-active:text-indigo-700 data-active:shadow-[inset_3px_0_0_rgb(79,70,229)] dark:data-active:text-indigo-300"
                 render={
                   <NavLink to={item.url}>
                     <item.icon />

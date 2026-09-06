@@ -25,19 +25,21 @@ export default function StorageCard() {
   }
 
   return (
-    <div className="rounded-xl border bg-card p-4">
+    <div className="group-data-[collapsible=icon]:hidden rounded-2xl border border-indigo-100/80 bg-gradient-to-br from-indigo-50 to-white p-4 dark:border-indigo-400/15 dark:from-indigo-500/10 dark:to-sidebar">
 
       <div className="mb-3 flex items-center gap-2">
-        <HardDrive size={18} />
+        <div className="rounded-lg bg-indigo-500/10 p-1.5 text-indigo-600 dark:text-indigo-300">
+          <HardDrive size={15} />
+        </div>
 
-        <span className="font-semibold">
+        <span className="text-sm font-semibold">
           Storage
         </span>
       </div>
 
-      <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+      <div className="h-1.5 overflow-hidden rounded-full bg-indigo-100 dark:bg-indigo-200/10">
         <div
-          className="h-full rounded-full bg-blue-600 transition-all"
+          className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-blue-500 transition-all"
           style={{
             width: `${Math.min(
               dashboard.usagePercentage,
@@ -47,7 +49,7 @@ export default function StorageCard() {
         />
       </div>
 
-      <div className="mt-3 flex justify-between text-sm text-muted-foreground">
+      <div className="mt-3 flex justify-between text-xs text-muted-foreground">
         <span>
           {formatStorage(dashboard.storageUsed)}
         </span>

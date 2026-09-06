@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Lock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { changePassword } from "@/services/userService";
 
 export default function SecuritySettings() {
@@ -65,15 +66,15 @@ export default function SecuritySettings() {
   };
 
   return (
-    <div className="rounded-2xl border bg-card p-6 shadow-sm">
+    <div className="surface-card rounded-2xl p-6">
 
       {/* Header */}
       <div className="mb-6">
 
         <div className="flex items-center gap-3">
 
-          <div className="flex size-11 items-center justify-center rounded-xl bg-muted">
-            <Lock size={22} />
+          <div className="flex size-11 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
+            <Lock size={21} />
           </div>
 
           <div>
@@ -108,7 +109,7 @@ export default function SecuritySettings() {
             Current Password
           </label>
 
-          <input
+          <Input
             id="currentPassword"
             type="password"
             value={currentPassword}
@@ -116,7 +117,7 @@ export default function SecuritySettings() {
               setCurrentPassword(event.target.value)
             }
             placeholder="Enter your current password"
-            className="w-full rounded-lg border bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-primary"
+            className="h-11 rounded-xl border-transparent bg-secondary/70 shadow-none focus-visible:border-indigo-400 focus-visible:bg-background"
           />
 
         </div>
@@ -131,7 +132,7 @@ export default function SecuritySettings() {
             New Password
           </label>
 
-          <input
+          <Input
             id="newPassword"
             type="password"
             value={newPassword}
@@ -139,7 +140,7 @@ export default function SecuritySettings() {
               setNewPassword(event.target.value)
             }
             placeholder="Enter your new password"
-            className="w-full rounded-lg border bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-primary"
+            className="h-11 rounded-xl border-transparent bg-secondary/70 shadow-none focus-visible:border-indigo-400 focus-visible:bg-background"
           />
 
         </div>
@@ -154,7 +155,7 @@ export default function SecuritySettings() {
             Confirm New Password
           </label>
 
-          <input
+          <Input
             id="confirmPassword"
             type="password"
             value={confirmPassword}
@@ -162,7 +163,7 @@ export default function SecuritySettings() {
               setConfirmPassword(event.target.value)
             }
             placeholder="Confirm your new password"
-            className="w-full rounded-lg border bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-primary"
+            className="h-11 rounded-xl border-transparent bg-secondary/70 shadow-none focus-visible:border-indigo-400 focus-visible:bg-background"
           />
 
         </div>
@@ -171,6 +172,7 @@ export default function SecuritySettings() {
         <Button
           type="submit"
           disabled={loading}
+          className="h-11 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-600 px-5 shadow-md shadow-indigo-500/20"
         >
           {loading
             ? "Changing Password..."

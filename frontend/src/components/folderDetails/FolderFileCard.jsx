@@ -59,25 +59,25 @@ export default function FolderFileCard({
   };
 
   return (
-    <div className="rounded-2xl border bg-card p-5 shadow-sm transition-all hover:shadow-md">
+    <div className="surface-card rounded-2xl p-4 transition-all hover:shadow-md">
 
       <div className="flex items-center justify-between">
 
-        <div className="flex items-center gap-4">
+        <div className="min-w-0 flex items-center gap-4">
 
           {getFileIcon(file.fileType)}
 
-          <div>
+          <div className="min-w-0">
 
-            <h3 className="font-semibold break-all">
+            <h3 className="truncate font-semibold" title={file.originalName}>
               {file.originalName}
             </h3>
 
-            <p className="text-sm text-muted-foreground">
+            <p className="mt-1 text-xs text-muted-foreground">
               {(file.fileSize / 1024).toFixed(2)} KB
             </p>
 
-            <p className="text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-muted-foreground">
               {new Date(
                 file.createdAt
               ).toLocaleDateString()}

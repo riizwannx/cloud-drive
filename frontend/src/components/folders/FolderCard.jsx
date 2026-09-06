@@ -15,30 +15,30 @@ export default function FolderCard({
   };
 
   return (
-    <div className="rounded-2xl border bg-card p-5 shadow-sm transition-all hover:shadow-md">
+    <div className="surface-card group rounded-2xl p-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
 
       <div
         className="flex cursor-pointer items-center gap-4"
         onClick={openFolder}
       >
 
-        <div className="rounded-xl bg-yellow-100 p-3 flex-shrink-0">
+        <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-amber-400/15 transition-transform group-hover:scale-105 dark:bg-amber-300/10">
           <Folder
-            size={36}
-            className="text-yellow-600"
+            size={30}
+            className="text-amber-500"
           />
         </div>
 
         <div className="min-w-0 flex-1">
 
           <h2
-            className="truncate text-lg font-semibold"
+            className="truncate text-base font-semibold tracking-[-0.02em]"
             title={folder.name}
           >
             {folder.name}
           </h2>
 
-          <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground">
             <CalendarDays size={14} />
 
             <span>

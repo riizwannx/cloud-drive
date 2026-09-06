@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import MainLayout from "@/layouts/MainLayout";
+import { Button } from "@/components/ui/button";
 
 import {
   getSharedFiles,
@@ -147,7 +148,7 @@ export default function Shared() {
   if (loading) {
     return (
       <MainLayout>
-        <div className="flex min-h-[400px] items-center justify-center">
+        <div className="surface-card flex min-h-[400px] items-center justify-center rounded-2xl">
           <p className="text-muted-foreground">
             Loading shared files...
           </p>
@@ -163,19 +164,19 @@ export default function Shared() {
   if (error) {
     return (
       <MainLayout>
-        <div className="space-y-6">
+        <div className="page-shell">
 
           <div>
-            <h1 className="text-4xl font-bold">
+            <h1 className="page-heading">
               Shared
             </h1>
 
-            <p className="mt-2 text-muted-foreground">
+            <p className="page-description">
               Manage files you have shared.
             </p>
           </div>
 
-          <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-600">
+          <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-6 text-destructive">
             {error}
           </div>
 
@@ -190,7 +191,7 @@ export default function Shared() {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="page-shell">
 
         {/* ============================== */}
         {/* Header */}
@@ -199,19 +200,19 @@ export default function Shared() {
         <div>
           <div className="flex items-center gap-3">
 
-            <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10">
+            <div className="flex size-11 items-center justify-center rounded-2xl bg-indigo-500/10">
               <Share2
-                size={26}
-                className="text-primary"
+                size={22}
+                className="text-indigo-600 dark:text-indigo-300"
               />
             </div>
 
             <div>
-              <h1 className="text-4xl font-bold">
+              <h1 className="page-heading">
                 Shared
               </h1>
 
-              <p className="mt-2 text-muted-foreground">
+              <p className="page-description">
                 Manage files you have shared
                 with others.
               </p>
@@ -224,7 +225,7 @@ export default function Shared() {
         {/* File Count */}
         {/* ============================== */}
 
-        <div className="flex items-center justify-between rounded-xl border bg-card px-5 py-4">
+        <div className="surface-card flex items-center justify-between rounded-2xl px-5 py-4">
 
           <div>
             <p className="font-semibold">
@@ -238,7 +239,7 @@ export default function Shared() {
             </p>
           </div>
 
-          <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-indigo-500/10 font-semibold text-indigo-600 dark:text-indigo-300">
             {files.length}
           </div>
 
@@ -249,12 +250,12 @@ export default function Shared() {
         {/* ============================== */}
 
         {files.length === 0 ? (
-          <div className="rounded-2xl border bg-card p-12 text-center">
+          <div className="rounded-2xl border border-dashed border-indigo-200/80 bg-card p-12 text-center dark:border-indigo-400/25">
 
-            <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-muted">
+            <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-indigo-500/10">
               <Share2
                 size={28}
-                className="text-muted-foreground"
+                className="text-indigo-600 dark:text-indigo-300"
               />
             </div>
 
@@ -274,13 +275,13 @@ export default function Shared() {
           /* Shared Files */
           /* ============================== */
 
-          <div className="overflow-hidden rounded-2xl border bg-card">
+          <div className="surface-card overflow-hidden rounded-2xl">
 
             <div className="overflow-x-auto">
 
               <table className="w-full text-sm">
 
-                <thead className="border-b bg-muted/40">
+                <thead className="border-b bg-secondary/50 text-xs uppercase tracking-[0.08em] text-muted-foreground">
 
                   <tr>
 
@@ -314,7 +315,7 @@ export default function Shared() {
 
                     <tr
                       key={file._id}
-                      className="border-b transition hover:bg-muted/30 last:border-b-0"
+                      className="border-b border-border/70 transition hover:bg-secondary/40 last:border-b-0"
                     >
 
                       {/* ============================== */}
@@ -325,11 +326,11 @@ export default function Shared() {
 
                         <div className="flex items-center gap-3">
 
-                          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10">
 
                             <FileText
                               size={19}
-                              className="text-muted-foreground"
+                              className="text-indigo-600 dark:text-indigo-300"
                             />
 
                           </div>
@@ -397,52 +398,55 @@ export default function Shared() {
 
                           {/* Copy Link */}
 
-                          <button
-                            type="button"
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
                             onClick={() =>
                               handleCopyLink(
                                 file
                               )
                             }
-                            className="rounded-lg p-2 transition hover:bg-muted"
+                            className="rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
                             title="Copy share link"
                           >
                             <Copy size={18} />
-                          </button>
+                          </Button>
 
                           {/* Open Shared File */}
 
-                          <button
-                            type="button"
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
                             onClick={() =>
                               handleDownload(
                                 file
                               )
                             }
-                            className="rounded-lg p-2 transition hover:bg-muted"
+                            className="rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
                             title="Open shared file"
                           >
                             <Download
                               size={18}
                             />
-                          </button>
+                          </Button>
 
                           {/* Remove Share */}
 
-                          <button
-                            type="button"
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
                             onClick={() =>
                               handleRemoveShare(
                                 file
                               )
                             }
-                            className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 dark:hover:bg-red-950/30"
+                            className="rounded-lg text-destructive hover:bg-destructive/10 hover:text-destructive"
                             title="Remove sharing"
                           >
                             <Trash2
                               size={18}
                             />
-                          </button>
+                          </Button>
 
                         </div>
 

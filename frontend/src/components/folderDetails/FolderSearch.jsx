@@ -7,7 +7,7 @@ export default function FolderSearch({
   setSearch,
 }) {
   return (
-    <div className="relative w-full">
+    <div className="surface-card relative w-full rounded-2xl p-3">
 
       <Search
         size={18}
@@ -20,7 +20,7 @@ export default function FolderSearch({
           setSearch(e.target.value)
         }
         placeholder="Search files..."
-        className="pl-10"
+        className="h-10 rounded-xl border-transparent bg-secondary/70 pl-10 shadow-none focus-visible:border-indigo-400 focus-visible:bg-background"
       />
 
     </div>

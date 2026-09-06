@@ -43,12 +43,12 @@ function formatFileSize(bytes) {
 
 export default function RecentFiles({ files = [] }) {
   return (
-    <Card className="rounded-2xl shadow-sm">
-      <CardHeader>
-        <CardTitle>Recent Files</CardTitle>
+    <Card className="surface-card rounded-2xl">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg tracking-[-0.02em]">Recent files</CardTitle>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-2">
         {files.length === 0 ? (
           <p className="text-muted-foreground">
             No recent files found.
@@ -60,25 +60,25 @@ export default function RecentFiles({ files = [] }) {
             return (
               <div
                 key={file._id}
-                className="flex items-center justify-between rounded-xl border p-4 hover:bg-muted/50 transition-colors"
+                className="flex items-center justify-between rounded-xl border border-transparent p-3 transition-colors hover:border-border hover:bg-secondary/60"
               >
                 <div className="flex items-center gap-4">
-                  <div className="rounded-lg bg-blue-100 p-3">
-                    <Icon className="h-5 w-5 text-blue-600" />
+                  <div className="rounded-xl bg-indigo-500/10 p-2.5">
+                    <Icon className="h-5 w-5 text-indigo-600 dark:text-indigo-300" />
                   </div>
 
                   <div>
-                    <p className="font-medium">
+                    <p className="max-w-[12rem] truncate text-sm font-medium sm:max-w-xs">
                       {file.originalName}
                     </p>
 
-                    <p className="text-sm text-muted-foreground">
+                    <p className="max-w-[12rem] truncate text-xs text-muted-foreground sm:max-w-xs">
                       {file.fileType}
                     </p>
                   </div>
                 </div>
 
-                <div className="text-right text-sm text-muted-foreground">
+                <div className="text-right text-xs text-muted-foreground">
                   <p>{formatFileSize(file.fileSize)}</p>
 
                   <p>

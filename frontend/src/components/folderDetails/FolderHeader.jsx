@@ -1,7 +1,6 @@
 import {
   ArrowLeft,
   Folder,
-  Upload,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,7 @@ export default function FolderHeader({
       <Button
         variant="ghost"
         onClick={onBack}
-        className="gap-2"
+        className="h-9 rounded-xl px-3 text-muted-foreground hover:bg-secondary hover:text-foreground"
       >
         <ArrowLeft size={18} />
 
@@ -41,26 +40,26 @@ export default function FolderHeader({
       {/* Header */}
       {/* ============================== */}
 
-      <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+      <div className="surface-card flex flex-col gap-5 rounded-2xl p-5 sm:p-6 md:flex-row md:items-center md:justify-between">
 
         <div className="flex items-center gap-4">
 
-          <div className="flex size-20 items-center justify-center rounded-2xl bg-yellow-100">
+          <div className="flex size-16 items-center justify-center rounded-2xl bg-amber-400/15 sm:size-20 dark:bg-amber-300/10">
 
             <Folder
               size={42}
-              className="text-yellow-600"
+              className="text-amber-500"
             />
 
           </div>
 
           <div>
 
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
               {folder.name}
             </h1>
 
-            <p className="mt-1 text-muted-foreground">
+            <p className="mt-2 text-sm text-muted-foreground">
               {fileCount}{" "}
               {fileCount === 1
                 ? "file"

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Star } from "lucide-react";
 
 import MainLayout from "@/layouts/MainLayout";
 
@@ -114,20 +115,27 @@ export default function Favorites() {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="page-shell">
 
         <div>
-          <h1 className="text-4xl font-bold">
+          <div className="mb-3 flex size-11 items-center justify-center rounded-2xl bg-amber-400/15 text-amber-500"><Star className="h-5 w-5 fill-current" /></div>
+          <h1 className="page-heading">
             Favorites
           </h1>
 
-          <p className="mt-2 text-muted-foreground">
-            Your favorite files.
+          <p className="page-description">
+            The files you reach for most, all in one place.
           </p>
         </div>
 
         {loading ? (
-          <p>Loading...</p>
+          <div className="surface-card rounded-2xl p-10 text-center text-muted-foreground">Loading favorites...</div>
+        ) : files.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-amber-300/70 bg-card p-12 text-center dark:border-amber-300/25">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-amber-400/15 text-amber-500"><Star className="h-7 w-7 fill-current" /></div>
+            <h2 className="mt-5 text-xl font-semibold">No favorites yet</h2>
+            <p className="mt-2 text-sm text-muted-foreground">Star files from My Files to keep them close at hand.</p>
+          </div>
         ) : (
           <FileTable
             files={files}

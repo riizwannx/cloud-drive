@@ -25,7 +25,8 @@ export default function FileActions({
 
       <Button
         variant="ghost"
-        size="icon"
+        size="icon-sm"
+        className="rounded-lg"
         onClick={onFavorite}
         title={
           isFavorite
@@ -47,7 +48,8 @@ export default function FileActions({
 
       <Button
         variant="ghost"
-        size="icon"
+        size="icon-sm"
+        className="rounded-lg"
         onClick={onPreview}
         title="Preview"
       >
@@ -58,7 +60,8 @@ export default function FileActions({
 
       <Button
         variant="ghost"
-        size="icon"
+        size="icon-sm"
+        className="rounded-lg"
         onClick={onDownload}
         title="Download"
       >
@@ -67,20 +70,18 @@ export default function FileActions({
 
       {/* Share */}
 
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={onShare}
-        title="Share"
-      >
-        <Share2 size={18} />
-      </Button>
+      {onShare && (
+        <Button variant="ghost" size="icon-sm" onClick={onShare} title="Share" className="rounded-lg">
+          <Share2 size={18} />
+        </Button>
+      )}
 
       {/* Rename */}
 
       <Button
         variant="ghost"
-        size="icon"
+        size="icon-sm"
+        className="rounded-lg"
         onClick={onRename}
         title="Rename"
       >
@@ -91,7 +92,8 @@ export default function FileActions({
 
       <Button
         variant="ghost"
-        size="icon"
+        size="icon-sm"
+        className="rounded-lg"
         onClick={onDelete}
         title="Delete"
       >

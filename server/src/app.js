@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 const userRoutes = require("./routes/userRoutes");
 const fileRoutes = require("./routes/fileRoutes");
@@ -12,14 +13,33 @@ const shareRoutes = require("./routes/shareRoutes");
 
 const app = express();
 
-// Middleware
-app.use(cors());
+const allowedOrigins = (process.env.CLIENT_ORIGINS ||
+  "https://cloud-drive-sage.vercel.app,http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Origin is not allowed by CORS."));
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express.json());
 
-app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "uploads"))
-);
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: "Too many attempts. Please try again later." },
+});
 
 // Test Route
 app.get("/", (req, res) => {
@@ -38,6 +58,8 @@ app.get("/api/health", (req, res) => {
 });
 
 // User Routes
+app.use("/api/users/login", authLimiter);
+app.use("/api/users/register", authLimiter);
 app.use("/api/users", userRoutes);
 
 // File Routes
@@ -57,5 +79,17 @@ app.use("/api/folders", folderRoutes);
 
 // Share Routes
 app.use("/api/share", shareRoutes);
+
+app.use((error, req, res, next) => {
+  if (error) {
+    const status = error.name === "MulterError" ? 400 : 400;
+    return res.status(status).json({
+      success: false,
+      message: error.message || "Invalid request.",
+    });
+  }
+
+  return next();
+});
 
 module.exports = app;

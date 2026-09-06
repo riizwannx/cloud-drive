@@ -26,15 +26,15 @@ export default function StorageOverview() {
   }
 
   return (
-    <Card className="rounded-2xl shadow-sm">
-      <CardContent className="p-6">
+    <Card className="surface-card rounded-2xl">
+      <CardContent className="p-5 sm:p-6">
         <div className="mb-6 flex items-center gap-3">
-          <div className="rounded-xl bg-blue-600 p-3 text-white">
+          <div className="rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 p-3 text-white shadow-lg shadow-indigo-500/20">
             <HardDrive size={24} />
           </div>
 
           <div>
-            <h2 className="text-xl font-bold">
+            <h2 className="text-lg font-semibold tracking-[-0.02em]">
               Storage Overview
             </h2>
 
@@ -44,7 +44,7 @@ export default function StorageOverview() {
           </div>
         </div>
 
-        <div className="mb-3 flex justify-between">
+        <div className="mb-3 flex justify-between gap-4 text-sm">
           <span className="font-medium">
             {formatStorage(dashboard.storageUsed)} Used
           </span>
@@ -54,9 +54,9 @@ export default function StorageOverview() {
           </span>
         </div>
 
-        <div className="h-3 overflow-hidden rounded-full bg-slate-200">
+        <div className="h-2.5 overflow-hidden rounded-full bg-indigo-100 dark:bg-indigo-200/10">
           <div
-            className="h-full rounded-full bg-blue-600 transition-all duration-500"
+            className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 transition-all duration-500"
             style={{
               width: `${dashboard.usagePercentage}%`,
             }}

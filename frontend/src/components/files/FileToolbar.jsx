@@ -17,7 +17,7 @@ export default function FileToolbar({
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search files..."
-        className="pl-10"
+        className="h-10 rounded-xl border-transparent bg-secondary/70 pl-10 shadow-none focus-visible:border-indigo-400 focus-visible:bg-background"
       />
     </div>
   );

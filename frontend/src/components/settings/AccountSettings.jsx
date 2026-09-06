@@ -30,7 +30,7 @@ export default function AccountSettings() {
 
   if (loading) {
     return (
-      <div className="rounded-2xl border bg-card p-6">
+      <div className="surface-card rounded-2xl p-6">
         <p className="text-muted-foreground">
           Loading account information...
         </p>
@@ -40,8 +40,8 @@ export default function AccountSettings() {
 
   if (!user) {
     return (
-      <div className="rounded-2xl border bg-card p-6">
-        <p className="text-red-500">
+      <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-6">
+        <p className="text-destructive">
           Unable to load account information.
         </p>
       </div>
@@ -49,10 +49,10 @@ export default function AccountSettings() {
   }
 
   return (
-    <div className="rounded-2xl border bg-card p-6 shadow-sm">
+    <div className="surface-card rounded-2xl p-6">
 
       <div className="mb-6">
-        <h2 className="text-xl font-semibold">
+        <h2 className="text-xl font-semibold tracking-[-0.02em]">
           Account Information
         </h2>
 
@@ -64,9 +64,9 @@ export default function AccountSettings() {
       <div className="space-y-4">
 
         {/* Username */}
-        <div className="flex items-center gap-4 rounded-xl border p-4">
+        <div className="flex items-center gap-4 rounded-xl border border-border/70 bg-secondary/25 p-4">
 
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
             <User size={20} />
           </div>
 
@@ -83,9 +83,9 @@ export default function AccountSettings() {
         </div>
 
         {/* Email */}
-        <div className="flex items-center gap-4 rounded-xl border p-4">
+        <div className="flex items-center gap-4 rounded-xl border border-border/70 bg-secondary/25 p-4">
 
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
             <Mail size={20} />
           </div>
 
@@ -102,9 +102,9 @@ export default function AccountSettings() {
         </div>
 
         {/* Phone */}
-        <div className="flex items-center gap-4 rounded-xl border p-4">
+        <div className="flex items-center gap-4 rounded-xl border border-border/70 bg-secondary/25 p-4">
 
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
             <Phone size={20} />
           </div>
 
@@ -121,9 +121,9 @@ export default function AccountSettings() {
         </div>
 
         {/* Account Created */}
-        <div className="flex items-center gap-4 rounded-xl border p-4">
+        <div className="flex items-center gap-4 rounded-xl border border-border/70 bg-secondary/25 p-4">
 
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
             <Calendar size={20} />
           </div>
 

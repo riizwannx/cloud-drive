@@ -72,18 +72,19 @@ export default function Settings() {
 
   return (
     <MainLayout>
-      <div className="space-y-8">
+      <div className="page-shell">
 
         {/* ============================== */}
         {/* Header */}
         {/* ============================== */}
 
         <div>
-          <h1 className="text-4xl font-bold">
+          <p className="mb-3 text-sm font-medium text-indigo-600 dark:text-indigo-300">Personal workspace</p>
+          <h1 className="page-heading">
             Settings
           </h1>
 
-          <p className="mt-2 text-muted-foreground">
+          <p className="page-description">
             Manage your CloudDrive account and preferences.
           </p>
         </div>
@@ -190,7 +191,7 @@ export default function Settings() {
 
         {activeSection === null && (
           <>
-            <div className="space-y-4">
+            <div className="grid gap-3 lg:grid-cols-2">
 
               {settingsSections.map((section) => {
                 const Icon = section.icon;
@@ -198,17 +199,17 @@ export default function Settings() {
                 return (
                   <div
                     key={section.id}
-                    className="flex items-center justify-between rounded-2xl border bg-card p-6 shadow-sm transition hover:shadow-md"
+                    className="surface-card flex items-center justify-between rounded-2xl p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg"
                   >
 
                     {/* Section Information */}
 
                     <div className="flex items-center gap-4">
 
-                      <div className="flex size-12 items-center justify-center rounded-xl bg-muted">
+                      <div className="flex size-11 items-center justify-center rounded-2xl bg-indigo-500/10">
                         <Icon
                           size={24}
-                          className="text-primary"
+                          className="text-indigo-600 dark:text-indigo-300"
                         />
                       </div>
 
@@ -230,7 +231,8 @@ export default function Settings() {
 
                     <Button
                       variant="ghost"
-                      size="icon"
+                      size="icon-sm"
+                      className="rounded-xl text-muted-foreground hover:bg-secondary hover:text-foreground"
                       title={section.title}
                       onClick={() =>
                         setActiveSection(section.id)
@@ -249,17 +251,17 @@ export default function Settings() {
             {/* Logout */}
             {/* ============================== */}
 
-            <div className="rounded-2xl border border-red-200 bg-red-50 p-6 dark:border-red-900 dark:bg-red-950/20">
+            <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-5 lg:col-span-2">
 
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                 <div className="flex items-center gap-4">
 
-                  <div className="flex size-12 items-center justify-center rounded-xl bg-red-100 dark:bg-red-900/40">
+                  <div className="flex size-11 items-center justify-center rounded-2xl bg-destructive/10">
 
                     <LogOut
                       size={24}
-                      className="text-red-600"
+                      className="text-destructive"
                     />
 
                   </div>
@@ -281,6 +283,7 @@ export default function Settings() {
                 <Button
                   variant="destructive"
                   onClick={handleLogout}
+                  className="rounded-xl"
                 >
                   Logout
                 </Button>

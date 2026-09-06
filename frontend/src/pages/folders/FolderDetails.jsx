@@ -375,25 +375,55 @@ export default function FolderDetails() {
   // Preview
   // ==============================
 
-  const handlePreview = (file) => {
-    if (!file.filePath) {
-      alert(
-        "Preview unavailable."
+  const handlePreview = async (
+    file
+  ) => {
+    try {
+      const response =
+        await downloadFile(
+          file._id
+        );
+
+      const contentType =
+        response.headers[
+          "content-type"
+        ] ||
+        file.fileType ||
+        "application/octet-stream";
+
+      const blob = new Blob(
+        [response.data],
+        {
+          type: contentType,
+        }
       );
 
-      return;
+      const url =
+        window.URL.createObjectURL(
+          blob
+        );
+
+      window.open(
+        url,
+        "_blank"
+      );
+
+      setTimeout(() => {
+        window.URL.revokeObjectURL(
+          url
+        );
+      }, 60_000);
+    } catch (error) {
+      console.error(
+        "Preview failed:",
+        error
+      );
+
+      alert(
+        error.response?.data?.message ||
+          "Preview failed."
+      );
     }
-
-    const filename =
-      file.filePath
-        .replace(/\\/g, "/")
-        .split("/")
-        .pop();
-
-    window.open(
-      `http://localhost:5001/uploads/${filename}`,
-      "_blank"
-    );
   };
 
   // ==============================
@@ -504,7 +534,7 @@ export default function FolderDetails() {
 
   return (
     <MainLayout>
-      <div className="space-y-8">
+      <div className="page-shell">
 
         {/* ============================== */}
         {/* Folder Header */}
@@ -523,22 +553,22 @@ export default function FolderDetails() {
         {/* Create Subfolder */}
         {/* ============================== */}
 
-        <div className="rounded-2xl border bg-card p-5">
+        <div className="surface-card rounded-2xl p-5">
 
           <div className="mb-4 flex items-center gap-3">
 
-            <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-indigo-500/10">
 
               <FolderPlus
                 size={20}
-                className="text-primary"
+                className="text-indigo-600 dark:text-indigo-300"
               />
 
             </div>
 
             <div>
 
-              <h2 className="font-semibold">
+              <h2 className="font-semibold tracking-[-0.02em]">
                 Create Subfolder
               </h2>
 
@@ -567,6 +597,7 @@ export default function FolderDetails() {
                 }
               }}
               placeholder="Enter folder name..."
+              className="h-11 rounded-xl border-transparent bg-secondary/70 shadow-none focus-visible:border-indigo-400 focus-visible:bg-background"
             />
 
             <Button
@@ -576,6 +607,7 @@ export default function FolderDetails() {
               disabled={
                 creatingFolder
               }
+              className="h-11 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-600 px-5 shadow-md shadow-indigo-500/20"
             >
 
               <FolderPlus className="mr-2 h-4 w-4" />
@@ -599,18 +631,19 @@ export default function FolderDetails() {
 
             <div>
 
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-xl font-semibold tracking-[-0.03em]">
                 Folders
               </h2>
 
               <p className="mt-1 text-sm text-muted-foreground">
                 Folders inside{" "}
-                {folder?.name || "this folder"}.
+                {folder?.name ||
+                  "this folder"}.
               </p>
 
             </div>
 
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
 
               {subfolders.map(
                 (subfolder) => (

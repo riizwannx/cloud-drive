@@ -24,7 +24,7 @@ export default function StorageSettings() {
 
   if (loading || !dashboard) {
     return (
-      <div className="rounded-2xl border bg-card p-6">
+      <div className="surface-card rounded-2xl p-6">
         <p className="text-muted-foreground">
           Loading storage information...
         </p>
@@ -41,12 +41,12 @@ export default function StorageSettings() {
     <div className="space-y-6">
 
       {/* Storage Overview */}
-      <div className="rounded-2xl border bg-card p-6 shadow-sm">
+      <div className="surface-card rounded-2xl p-6">
 
         <div className="flex items-center gap-4">
 
-          <div className="flex size-12 items-center justify-center rounded-xl bg-muted">
-            <HardDrive size={24} />
+          <div className="flex size-12 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
+            <HardDrive size={22} />
           </div>
 
           <div>
@@ -74,10 +74,10 @@ export default function StorageSettings() {
             </span>
           </div>
 
-          <div className="h-3 overflow-hidden rounded-full bg-muted">
+          <div className="h-2.5 overflow-hidden rounded-full bg-indigo-100 dark:bg-indigo-200/10">
 
             <div
-              className="h-full rounded-full bg-primary transition-all"
+              className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 transition-all"
               style={{
                 width: `${usagePercentage}%`,
               }}
@@ -94,14 +94,14 @@ export default function StorageSettings() {
       </div>
 
       {/* Current Plan */}
-      <div className="rounded-2xl border bg-card p-6 shadow-sm">
+      <div className="surface-card rounded-2xl p-6">
 
         <div className="flex items-center justify-between gap-4">
 
           <div className="flex items-center gap-4">
 
-            <div className="flex size-12 items-center justify-center rounded-xl bg-muted">
-              <Crown size={24} />
+            <div className="flex size-12 items-center justify-center rounded-2xl bg-amber-400/15 text-amber-500">
+              <Crown size={22} />
             </div>
 
             <div>
@@ -127,7 +127,7 @@ export default function StorageSettings() {
 
         </div>
 
-        <div className="mt-5 rounded-xl bg-muted/50 p-4">
+        <div className="mt-5 rounded-xl bg-secondary/60 p-4">
 
           <div className="flex justify-between text-sm">
 

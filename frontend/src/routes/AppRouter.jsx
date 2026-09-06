@@ -5,125 +5,141 @@ import {
   Navigate,
 } from "react-router-dom";
 
-// ==============================
 // Authentication
-// ==============================
 import Login from "@/pages/auth/Login";
+import Register from "@/pages/auth/Register";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
-// ==============================
 // Dashboard
-// ==============================
 import Dashboard from "@/pages/dashboard/Dashboard";
 
-// ==============================
 // Files
-// ==============================
 import MyFiles from "@/pages/files/MyFiles";
 import Favorites from "@/pages/files/Favorites";
 import Trash from "@/pages/files/Trash";
 import Shared from "@/pages/files/Shared";
-
-// ==============================
-// Folders
-// ==============================
-import Folders from "@/pages/folders/Folders";
-import FolderDetails from "@/pages/folders/FolderDetails";
 import SharedFile from "@/pages/files/SharedFile";
 
-// ==============================
+// Folders
+import Folders from "@/pages/folders/Folders";
+import FolderDetails from "@/pages/folders/FolderDetails";
+
 // Settings
-// ==============================
 import Setting from "@/pages/settings/Setting";
+import Upgrade from "@/pages/upgrade/Upgrade";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* ============================== */}
-        {/* Login */}
-        {/* ============================== */}
+        {/* =========================
+            PUBLIC ROUTES
+        ========================== */}
 
         <Route
           path="/login"
           element={<Login />}
         />
 
-        {/* ============================== */}
-        {/* Dashboard */}
-        {/* ============================== */}
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+
+        <Route
+          path="/share/:token"
+          element={<SharedFile />}
+        />
+
+        {/* =========================
+            PROTECTED ROUTES
+        ========================== */}
 
         <Route
           path="/dashboard"
-          element={<Dashboard />}
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
         />
-
-        {/* ============================== */}
-        {/* My Files */}
-        {/* ============================== */}
 
         <Route
           path="/files"
-          element={<MyFiles />}
+          element={
+            <ProtectedRoute>
+              <MyFiles />
+            </ProtectedRoute>
+          }
         />
-
-        {/* ============================== */}
-        {/* Favorites */}
-        {/* ============================== */}
 
         <Route
           path="/favorites"
-          element={<Favorites />}
+          element={
+            <ProtectedRoute>
+              <Favorites />
+            </ProtectedRoute>
+          }
         />
-
-        {/* ============================== */}
-        {/* Trash */}
-        {/* ============================== */}
 
         <Route
           path="/trash"
-          element={<Trash />}
+          element={
+            <ProtectedRoute>
+              <Trash />
+            </ProtectedRoute>
+          }
         />
-
-        {/* ============================== */}
-        {/* Shared */}
-        {/* ============================== */}
 
         <Route
           path="/shared"
-          element={<Shared />}
+          element={
+            <ProtectedRoute>
+              <Shared />
+            </ProtectedRoute>
+          }
         />
-
-        {/* ============================== */}
-        {/* Folders */}
-        {/* ============================== */}
 
         <Route
           path="/folders"
-          element={<Folders />}
+          element={
+            <ProtectedRoute>
+              <Folders />
+            </ProtectedRoute>
+          }
         />
-
-        {/* ============================== */}
-        {/* Folder Details */}
-        {/* ============================== */}
 
         <Route
           path="/folders/:folderId"
-          element={<FolderDetails />}
+          element={
+            <ProtectedRoute>
+              <FolderDetails />
+            </ProtectedRoute>
+          }
         />
-
-        {/* ============================== */}
-        {/* Settings */}
-        {/* ============================== */}
 
         <Route
           path="/settings"
-          element={<Setting />}
+          element={
+            <ProtectedRoute>
+              <Setting />
+            </ProtectedRoute>
+          }
         />
 
-        {/* ============================== */}
-        {/* Default Route */}
-        {/* ============================== */}
+        <Route
+          path="/upgrade"
+          element={
+            <ProtectedRoute>
+              <Upgrade />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* =========================
+            DEFAULT ROUTE
+        ========================== */}
 
         <Route
           path="/"
@@ -135,14 +151,9 @@ export default function AppRouter() {
           }
         />
 
-        <Route
-          path="/share/:token"
-          element={<SharedFile />}
-        />
-
-        {/* ============================== */}
-        {/* Unknown Routes */}
-        {/* ============================== */}
+        {/* =========================
+            UNKNOWN ROUTES
+        ========================== */}
 
         <Route
           path="*"
@@ -151,8 +162,6 @@ export default function AppRouter() {
               to="/dashboard"
               replace
             />
-
-
           }
         />
 

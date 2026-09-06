@@ -75,7 +75,7 @@ export default function MyFiles() {
 
       const url =
         window.URL.createObjectURL(
-          new Blob([response.data])
+          response.data
         );
 
       const link =
@@ -150,24 +150,43 @@ export default function MyFiles() {
   // Preview
   // ==============================
 
-  const handlePreview = (file) => {
-    if (!file.filePath) {
-      alert(
-        "Preview is unavailable for this file."
+  const handlePreview = async (file) => {
+    try {
+      const response = await downloadFile(
+        file._id
       );
-      return;
+
+      const contentType =
+        response.headers["content-type"] ||
+        file.fileType ||
+        "application/octet-stream";
+
+      const blob = new Blob(
+        [response.data],
+        {
+          type: contentType,
+        }
+      );
+
+      const url =
+        window.URL.createObjectURL(blob);
+
+      window.open(url, "_blank");
+
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 60_000);
+    } catch (error) {
+      console.error(
+        "Preview failed:",
+        error
+      );
+
+      alert(
+        error.response?.data?.message ||
+          "Preview failed."
+      );
     }
-
-    const normalizedPath =
-      file.filePath.replace(/\\/g, "/");
-
-    const filename =
-      normalizedPath.split("/").pop();
-
-    window.open(
-      `http://localhost:5001/uploads/${filename}`,
-      "_blank"
-    );
   };
 
   // ==============================
@@ -246,19 +265,19 @@ export default function MyFiles() {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="page-shell">
 
         {/* ============================== */}
         {/* Header */}
         {/* ============================== */}
 
         <div>
-          <h1 className="text-4xl font-bold">
+          <h1 className="page-heading">
             My Files
           </h1>
 
-          <p className="mt-2 text-muted-foreground">
-            Manage all your uploaded files.
+          <p className="page-description">
+            Upload, organize, and securely manage all your files in one place.
           </p>
         </div>
 
@@ -266,7 +285,7 @@ export default function MyFiles() {
         {/* Toolbar */}
         {/* ============================== */}
 
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="surface-card flex flex-col gap-3 rounded-2xl p-3 sm:p-4 md:flex-row md:items-center md:justify-between">
 
           <FileToolbar
             search={search}

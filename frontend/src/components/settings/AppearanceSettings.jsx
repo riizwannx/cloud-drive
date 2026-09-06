@@ -79,10 +79,10 @@ export default function AppearanceSettings() {
   ];
 
   return (
-    <div className="rounded-2xl border bg-card p-6 shadow-sm">
+    <div className="surface-card rounded-2xl p-6">
 
       <div className="mb-6">
-        <h2 className="text-xl font-semibold">
+        <h2 className="text-xl font-semibold tracking-[-0.02em]">
           Appearance
         </h2>
 
@@ -104,14 +104,14 @@ export default function AppearanceSettings() {
               onClick={() => applyTheme(item.id)}
               className={`flex w-full items-center justify-between rounded-xl border p-4 text-left transition ${
                 selected
-                  ? "border-primary bg-primary/5"
-                  : "hover:bg-muted/50"
+                  ? "border-indigo-400 bg-indigo-500/8 shadow-sm dark:border-indigo-400/60"
+                  : "border-border/70 bg-secondary/25 hover:bg-secondary/60"
               }`}
             >
 
               <div className="flex items-center gap-4">
 
-                <div className="flex size-11 items-center justify-center rounded-lg bg-muted">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
                   <Icon size={21} />
                 </div>
 
@@ -128,7 +128,7 @@ export default function AppearanceSettings() {
               </div>
 
               {selected && (
-                <div className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <div className="flex size-7 items-center justify-center rounded-full bg-indigo-500 text-white">
                   <Check size={16} />
                 </div>
               )}

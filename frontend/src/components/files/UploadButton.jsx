@@ -54,6 +54,7 @@ export default function UploadButton({
       <Button
         onClick={handleClick}
         disabled={loading}
+        className="h-10 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-600 px-4 shadow-md shadow-indigo-500/20 hover:from-indigo-600 hover:to-blue-700"
       >
         <Upload className="mr-2 h-4 w-4" />
 

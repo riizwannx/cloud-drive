@@ -8,26 +8,26 @@ export default function StatCard({
   color = "bg-blue-600",
 }) {
   return (
-    <Card className="rounded-2xl shadow-sm border hover:shadow-md transition-all duration-300">
-      <CardContent className="flex items-center justify-between p-6">
+    <Card className="surface-card overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+      <CardContent className="flex items-center justify-between p-5">
         <div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground">
             {title}
           </p>
 
-          <h2 className="mt-2 text-3xl font-bold">
+          <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em]">
             {value}
           </h2>
 
           {subtitle && (
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-xs text-muted-foreground">
               {subtitle}
             </p>
           )}
         </div>
 
         <div
-          className={`flex h-14 w-14 items-center justify-center rounded-2xl ${color} text-white`}
+          className={`flex h-12 w-12 items-center justify-center rounded-2xl ${color} text-white shadow-lg`}
         >
           <Icon size={28} />
         </div>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getProfile } from "@/services/userService";
+import { Button } from "@/components/ui/button";
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -41,19 +42,19 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="border-t p-4">
+    <div className="rounded-2xl p-2 group-data-[collapsible=icon]:p-0">
 
       {/* ============================== */}
       {/* User Information */}
       {/* ============================== */}
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
 
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+        <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-sm font-semibold text-white shadow-sm dark:from-slate-200 dark:to-slate-400 dark:text-slate-900">
           {username.charAt(0).toUpperCase()}
         </div>
 
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden">
 
           <h3 className="truncate font-semibold">
             {loading
@@ -69,9 +70,7 @@ export default function UserProfile() {
 
         </div>
 
-        <ChevronUp
-          className="h-5 w-5 text-muted-foreground"
-        />
+        <ChevronUp className="h-4 w-4 text-muted-foreground group-data-[collapsible=icon]:hidden" />
 
       </div>
 
@@ -80,15 +79,14 @@ export default function UserProfile() {
       {/* ============================== */}
 
       {!isVIP && (
-        <button
-          type="button"
+        <Button
           onClick={handleUpgrade}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+          className="mt-3 w-full rounded-xl bg-gradient-to-r from-indigo-500 to-blue-600 text-xs shadow-md shadow-indigo-500/20 group-data-[collapsible=icon]:hidden"
         >
           <Crown className="h-4 w-4" />
 
           Upgrade Plan
-        </button>
+        </Button>
       )}
 
       {/* ============================== */}
@@ -96,7 +94,7 @@ export default function UserProfile() {
       {/* ============================== */}
 
       {isVIP && (
-        <div className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
+        <div className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-amber-50 px-4 py-2 text-xs font-medium text-amber-700 group-data-[collapsible=icon]:hidden dark:bg-amber-950/30 dark:text-amber-400">
           <Crown className="h-4 w-4" />
 
           VIP Member
