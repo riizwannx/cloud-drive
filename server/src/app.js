@@ -3,13 +3,13 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
+
 const userRoutes = require("./routes/userRoutes");
 const fileRoutes = require("./routes/fileRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const favoriteRoutes = require("./routes/favoriteRoutes");
 const trashRoutes = require("./routes/trashRoutes");
 const folderRoutes = require("./routes/folderRoutes");
-const shareRoutes = require("./routes/shareRoutes");
 
 const app = express();
 
@@ -68,6 +68,9 @@ app.use("/api/files", fileRoutes);
 // Dashboard Routes
 app.use("/api/dashboard", dashboardRoutes);
 
+
+
+
 // Favorite Routes
 app.use("/api/favorites", favoriteRoutes);
 
@@ -76,9 +79,6 @@ app.use("/api/trash", trashRoutes);
 
 // Folder Routes
 app.use("/api/folders", folderRoutes);
-
-// Share Routes
-app.use("/api/share", shareRoutes);
 
 app.use((error, req, res, next) => {
   if (error) {

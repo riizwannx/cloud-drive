@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const File = require("../models/File");
 const Folder = require("../models/Folder");
-const Share = require("../models/Share");
 
 const getDashboardData = async (userId) => {
   const user = await User.findById(userId).select(
@@ -26,10 +25,12 @@ const getDashboardData = async (userId) => {
     owner: userId,
   });
 
-// Total active shared links
-  const totalShared = await Share.countDocuments({
+  // Total active shared links
+  const totalShared = await File.countDocuments({
     owner: userId,
-  isActive: true,
+    isShared: true,
+    isTrashed: false,
+    shareToken: { $exists: true, $ne: null },
   });
 
   // PDF files
