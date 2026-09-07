@@ -83,16 +83,34 @@ export default function Favorites() {
     }
   };
 
-  const handlePreview = (file) => {
-    const filename = file.filePath
-      .replace(/\\/g, "/")
-      .split("/")
-      .pop();
+  const handlePreview = async (file) => {
+    try {
+      const response = await downloadFile(file._id);
 
-    window.open(
-      `http://localhost:5000/uploads/${filename}`,
-      "_blank"
-    );
+      const contentType =
+        response.headers["content-type"] ||
+        file.fileType ||
+        "application/octet-stream";
+
+      const blob = new Blob([response.data], {
+        type: contentType,
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      window.open(url, "_blank");
+
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 60_000);
+    } catch (error) {
+      console.error("Preview failed:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Preview failed."
+      );
+    }
   };
 
   const openRenameDialog = (file) => {

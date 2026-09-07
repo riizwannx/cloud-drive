@@ -19,8 +19,12 @@ export default function SharedFile() {
         setLoading(true);
         setError("");
 
+        const apiUrl =
+          import.meta.env.VITE_API_URL ||
+          "http://localhost:5001/api";
+
         const response = await fetch(
-          `http://localhost:5001/api/files/shared/${token}`
+          `${apiUrl}/files/shared/${token}`
         );
 
         if (!response.ok) {
