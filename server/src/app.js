@@ -13,6 +13,8 @@ const folderRoutes = require("./routes/folderRoutes");
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 const allowedOrigins = (process.env.CLIENT_ORIGINS ||
   "https://cloud-drive-sage.vercel.app,http://localhost:5173")
   .split(",")
