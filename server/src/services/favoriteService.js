@@ -1,6 +1,15 @@
+const mongoose = require("mongoose");
 const File = require("../models/File");
 
 const toggleFavorite = async (fileId, userId) => {
+  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "File not found.",
+    };
+  }
+
   const file = await File.findById(fileId);
 
   if (!file) {

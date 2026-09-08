@@ -1,4 +1,70 @@
+const mongoose = require("mongoose");
 const User = require("../models/User");
+
+/**
+ * Atomically reserve storage for a user if within storage limit
+ */
+const reserveStorage = async (userId, fileSize) => {
+  if (typeof fileSize !== "number" || Number.isNaN(fileSize) || fileSize < 0) {
+    return {
+      success: false,
+      status: 400,
+      message: "Invalid file size.",
+    };
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "User not found.",
+    };
+  }
+
+  const user = await User.findOneAndUpdate(
+    {
+      _id: userId,
+      $expr: {
+        $lte: [
+          { $add: [{ $ifNull: ["$storageUsed", 0] }, fileSize] },
+          { $ifNull: ["$storageLimit", 5 * 1024 * 1024 * 1024] },
+        ],
+      },
+    },
+    {
+      $inc: {
+        storageUsed: fileSize,
+      },
+    },
+    {
+      returnDocument: "after",
+    }
+  );
+
+  if (!user) {
+    const existingUser = await User.findById(userId);
+
+    if (!existingUser) {
+      return {
+        success: false,
+        status: 404,
+        message: "User not found.",
+      };
+    }
+
+    return {
+      success: false,
+      status: 403,
+      message:
+        "Storage limit exceeded. Please delete some files or upgrade your plan.",
+    };
+  }
+
+  return {
+    success: true,
+    user,
+  };
+};
 
 /**
  * Check if user has enough storage available
@@ -82,6 +148,7 @@ const getStorageInfo = async (userId) => {
 
 module.exports = {
   checkStorageLimit,
+  reserveStorage,
   increaseStorage,
   decreaseStorage,
   getStorageInfo,

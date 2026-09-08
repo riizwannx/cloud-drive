@@ -1,9 +1,44 @@
+const mongoose = require("mongoose");
+const path = require("path");
 const fs = require("fs");
 const File = require("../models/File");
-const { decreaseStorage } = require("./storageService");
+const Folder = require("../models/Folder");
+const storageService = require("./storageService");
+const cloudinaryService = require("./cloudinaryService");
+
+const isLegacyLocalPath = (filePath) => {
+  if (!filePath || typeof filePath !== "string") {
+    return false;
+  }
+  const normalized = filePath.replace(/\\/g, "/");
+  return normalized.startsWith("src/uploads");
+};
+
+const isCloudinaryFile = (file) => {
+  if (!file) return false;
+  if (file.cloudinaryPublicId || file.cloudinaryUrl) return true;
+  if (typeof file.filePath === "string") {
+    if (
+      file.filePath.startsWith("http://") ||
+      file.filePath.startsWith("https://") ||
+      file.filePath.startsWith("clouddrive/")
+    ) {
+      return true;
+    }
+  }
+  return false;
+};
 
 // Move file to Trash
 const moveToTrash = async (fileId, userId) => {
+  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "File not found.",
+    };
+  }
+
   const file = await File.findById(fileId);
 
   if (!file) {
@@ -60,6 +95,14 @@ const getTrashedFiles = async (userId) => {
 
 // Restore file
 const restoreFile = async (fileId, userId) => {
+  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "File not found.",
+    };
+  }
+
   const file = await File.findById(fileId);
 
   if (!file) {
@@ -86,6 +129,17 @@ const restoreFile = async (fileId, userId) => {
     };
   }
 
+  if (file.folder) {
+    const folderExists = await Folder.exists({
+      _id: file.folder,
+      owner: userId,
+    });
+
+    if (!folderExists) {
+      file.folder = null;
+    }
+  }
+
   file.isTrashed = false;
   file.trashedAt = null;
 
@@ -101,6 +155,14 @@ const restoreFile = async (fileId, userId) => {
 
 // Permanently delete file
 const permanentlyDeleteFile = async (fileId, userId) => {
+  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "File not found.",
+    };
+  }
+
   const file = await File.findById(fileId);
 
   if (!file) {
@@ -127,11 +189,19 @@ const permanentlyDeleteFile = async (fileId, userId) => {
     };
   }
 
-  if (fs.existsSync(file.filePath)) {
-    fs.unlinkSync(file.filePath);
+  // Physical storage cleanup before database deletion
+  if (isLegacyLocalPath(file.filePath)) {
+    const localPath = path.isAbsolute(file.filePath)
+      ? file.filePath
+      : path.join(process.cwd(), file.filePath);
+    if (fs.existsSync(localPath)) {
+      await fs.promises.unlink(localPath);
+    }
+  } else if (isCloudinaryFile(file)) {
+    await cloudinaryService.deleteFileFromCloudinary(file);
   }
 
-  await decreaseStorage(userId, file.fileSize);
+  await storageService.decreaseStorage(userId, file.fileSize);
 
   await file.deleteOne();
 

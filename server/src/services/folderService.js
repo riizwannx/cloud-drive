@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Folder = require("../models/Folder");
 const File = require("../models/File");
 
@@ -24,6 +25,14 @@ const createFolder = async (
   // ==============================
 
   if (parentFolder) {
+    if (!mongoose.Types.ObjectId.isValid(parentFolder)) {
+      return {
+        success: false,
+        status: 404,
+        message: "Parent folder not found.",
+      };
+    }
+
     const parent = await Folder.findById(parentFolder);
 
     if (!parent) {
@@ -87,6 +96,14 @@ const getFolders = async (
   owner,
   parentFolder = null
 ) => {
+  if (parentFolder && !mongoose.Types.ObjectId.isValid(parentFolder)) {
+    return {
+      success: false,
+      status: 400,
+      message: "Invalid parent folder ID.",
+    };
+  }
+
   const folders = await Folder.find({
     owner,
     parentFolder: parentFolder || null,
@@ -109,6 +126,14 @@ const getFolder = async (
   folderId,
   owner
 ) => {
+  if (!mongoose.Types.ObjectId.isValid(folderId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "Folder not found.",
+    };
+  }
+
   const folder = await Folder.findById(
     folderId
   );
@@ -147,6 +172,14 @@ const renameFolder = async (
   owner,
   name
 ) => {
+  if (!mongoose.Types.ObjectId.isValid(folderId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "Folder not found.",
+    };
+  }
+
   const trimmedName = name?.trim();
 
   if (!trimmedName) {
@@ -221,6 +254,14 @@ const deleteFolder = async (
   folderId,
   owner
 ) => {
+  if (!mongoose.Types.ObjectId.isValid(folderId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "Folder not found.",
+    };
+  }
+
   const folder = await Folder.findById(
     folderId
   );
@@ -282,6 +323,22 @@ const deleteFolder = async (
         "Cannot delete a folder that contains subfolders.",
     };
   }
+
+  // ==============================
+  // Disassociate Trashed Files
+  // ==============================
+
+  await File.updateMany(
+    {
+      owner,
+      folder: folderId,
+    },
+    {
+      $set: {
+        folder: null,
+      },
+    }
+  );
 
   // ==============================
   // Delete Folder

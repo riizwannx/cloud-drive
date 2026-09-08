@@ -1,8 +1,17 @@
+const mongoose = require("mongoose");
 const User = require("../models/User");
 const File = require("../models/File");
 const Folder = require("../models/Folder");
 
 const getDashboardData = async (userId) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "User not found.",
+    };
+  }
+
   const user = await User.findById(userId).select(
     "storageUsed storageLimit isVIP"
   );

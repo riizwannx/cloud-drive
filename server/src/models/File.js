@@ -63,6 +63,21 @@ const fileSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+
+    cloudinaryPublicId: {
+      type: String,
+      default: null,
+    },
+
+    cloudinaryUrl: {
+      type: String,
+      default: null,
+    },
+
+    cloudinaryResourceType: {
+      type: String,
+      default: null,
+    },
   },
   
   {
