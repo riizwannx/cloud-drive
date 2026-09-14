@@ -78,11 +78,29 @@ const fileSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+
+    cloudinaryType: {
+      type: String,
+      enum: ["upload", "authenticated", "private", null],
+      default: "authenticated",
+    },
   },
   
   {
     timestamps: true,
   }
 );
+
+// Compound index for tenant file queries and folder browsing with creation date ordering
+fileSchema.index({ owner: 1, isTrashed: 1, folder: 1, createdAt: -1 });
+
+// Index for tenant favorite file listing
+fileSchema.index({ owner: 1, isFavorite: 1, isTrashed: 1, createdAt: -1 });
+
+// Sparse index for shared file token lookups (avoids indexing null values)
+fileSchema.index({ shareToken: 1 }, { sparse: true });
+
+// Sparse index for Cloudinary asset lookups and cleanup
+fileSchema.index({ cloudinaryPublicId: 1 }, { sparse: true });
 
 module.exports = mongoose.model("File", fileSchema);

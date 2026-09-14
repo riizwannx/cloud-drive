@@ -171,7 +171,7 @@ export default function MyFiles() {
       const url =
         window.URL.createObjectURL(blob);
 
-      window.open(url, "_blank");
+      window.open(url, "_blank", "noopener,noreferrer");
 
       setTimeout(() => {
         window.URL.revokeObjectURL(url);
@@ -179,7 +179,7 @@ export default function MyFiles() {
     } catch (error) {
       console.error(
         "Preview failed:",
-        error
+        error.message
       );
 
       alert(
@@ -222,7 +222,7 @@ export default function MyFiles() {
     } catch (error) {
       console.error(
         "Share failed:",
-        error
+        error.message
       );
 
       alert(

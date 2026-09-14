@@ -3,8 +3,13 @@ const User = require("../models/User");
 const File = require("../models/File");
 const Folder = require("../models/Folder");
 
+const isValidObjectId = (id) =>
+  typeof id === "string" &&
+  mongoose.Types.ObjectId.isValid(id) &&
+  /^[0-9a-fA-F]{24}$/.test(id);
+
 const getDashboardData = async (userId) => {
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
+  if (!isValidObjectId(userId)) {
     return {
       success: false,
       status: 404,

@@ -16,7 +16,7 @@ const isLegacyLocalPath = (filePath) => {
 
 const isCloudinaryFile = (file) => {
   if (!file) return false;
-  if (file.cloudinaryPublicId || file.cloudinaryUrl) return true;
+  if (file.cloudinaryPublicId || file.cloudinaryUrl || file.cloudinaryType) return true;
   if (typeof file.filePath === "string") {
     if (
       file.filePath.startsWith("http://") ||
@@ -29,9 +29,14 @@ const isCloudinaryFile = (file) => {
   return false;
 };
 
+const isValidObjectId = (id) =>
+  typeof id === "string" &&
+  mongoose.Types.ObjectId.isValid(id) &&
+  /^[0-9a-fA-F]{24}$/.test(id);
+
 // Move file to Trash
 const moveToTrash = async (fileId, userId) => {
-  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+  if (!isValidObjectId(fileId)) {
     return {
       success: false,
       status: 404,
@@ -95,7 +100,7 @@ const getTrashedFiles = async (userId) => {
 
 // Restore file
 const restoreFile = async (fileId, userId) => {
-  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+  if (!isValidObjectId(fileId)) {
     return {
       success: false,
       status: 404,
@@ -155,7 +160,7 @@ const restoreFile = async (fileId, userId) => {
 
 // Permanently delete file
 const permanentlyDeleteFile = async (fileId, userId) => {
-  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+  if (!isValidObjectId(fileId)) {
     return {
       success: false,
       status: 404,

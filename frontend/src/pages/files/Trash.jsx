@@ -18,7 +18,7 @@ export default function Trash() {
       const response = await getTrashFiles();
       setFiles(response.files || []);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to load trash:", error.message);
       alert("Failed to load trash.");
     } finally {
       setLoading(false);

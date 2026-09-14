@@ -32,10 +32,7 @@ export default function Shared() {
 
       const response = await getSharedFiles();
 
-      console.log(
-        "SHARED API RESPONSE:",
-        response
-      );
+
 
       const sharedFiles = Array.isArray(
         response?.files
@@ -43,16 +40,13 @@ export default function Shared() {
         ? response.files
         : [];
 
-      console.log(
-        "SHARED FILES:",
-        sharedFiles
-      );
+
 
       setFiles(sharedFiles);
     } catch (error) {
       console.error(
         "Failed to load shared files:",
-        error
+        error.message
       );
 
       setError(
@@ -85,7 +79,7 @@ export default function Shared() {
     } catch (error) {
       console.error(
         "Copy link failed:",
-        error
+        error.message
       );
 
       alert("Failed to copy share link.");
@@ -131,7 +125,7 @@ export default function Shared() {
     } catch (error) {
       console.error(
         "Remove sharing failed:",
-        error
+        error.message
       );
 
       alert(

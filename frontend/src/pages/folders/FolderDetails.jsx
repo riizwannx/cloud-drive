@@ -105,7 +105,7 @@ export default function FolderDetails() {
     } catch (error) {
       console.error(
         "Failed to load folder:",
-        error
+        error.message
       );
     }
   };
@@ -126,7 +126,7 @@ export default function FolderDetails() {
     } catch (error) {
       console.error(
         "Failed to load subfolders:",
-        error
+        error.message
       );
     }
   };
@@ -149,7 +149,7 @@ export default function FolderDetails() {
     } catch (error) {
       console.error(
         "Failed to load folder files:",
-        error
+        error.message
       );
 
       alert(
@@ -405,7 +405,8 @@ export default function FolderDetails() {
 
       window.open(
         url,
-        "_blank"
+        "_blank",
+        "noopener,noreferrer"
       );
 
       setTimeout(() => {
@@ -416,7 +417,7 @@ export default function FolderDetails() {
     } catch (error) {
       console.error(
         "Preview failed:",
-        error
+        error.message
       );
 
       alert(

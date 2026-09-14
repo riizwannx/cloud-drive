@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   User,
@@ -17,8 +18,10 @@ import AccountSettings from "@/components/settings/AccountSettings";
 import SecuritySettings from "@/components/settings/SecuritySettings";
 import StorageSettings from "@/components/settings/StorageSettings";
 import AppearanceSettings from "@/components/settings/AppearanceSettings";
+import { logoutUser } from "@/services/authService";
 
 export default function Settings() {
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState(null);
 
   const settingsSections = [
@@ -52,7 +55,7 @@ export default function Settings() {
     },
   ];
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const confirmLogout = window.confirm(
       "Are you sure you want to logout?"
     );
@@ -61,9 +64,14 @@ export default function Settings() {
       return;
     }
 
-    localStorage.removeItem("token");
-
-    window.location.href = "/";
+    try {
+      await logoutUser();
+    } catch (error) {
+      // Fallback: proceed with client cleanup even if network/server fails
+    } finally {
+      localStorage.removeItem("token");
+      navigate("/login", { replace: true });
+    }
   };
 
   const handleBack = () => {

@@ -29,7 +29,7 @@ export default function Favorites() {
       const response = await getFavoriteFiles();
       setFiles(response.files);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to load favorites:", error.message);
       alert("Failed to load favorites.");
     } finally {
       setLoading(false);
@@ -98,13 +98,13 @@ export default function Favorites() {
 
       const url = window.URL.createObjectURL(blob);
 
-      window.open(url, "_blank");
+      window.open(url, "_blank", "noopener,noreferrer");
 
       setTimeout(() => {
         window.URL.revokeObjectURL(url);
       }, 60_000);
     } catch (error) {
-      console.error("Preview failed:", error);
+      console.error("Preview failed:", error.message);
 
       alert(
         error.response?.data?.message ||

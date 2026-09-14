@@ -11,10 +11,6 @@ const {
 // ==============================
 const createNewFolder = async (req, res) => {
   try {
-    console.log("========== CREATE FOLDER ==========");
-    console.log("User:", req.user);
-    console.log("Body:", req.body);
-
     const { name, parentFolder } = req.body;
 
     const result = await createFolder(
@@ -22,8 +18,6 @@ const createNewFolder = async (req, res) => {
       req.user.id,
       parentFolder || null
     );
-
-    console.log("Result:", result);
 
     return res.status(result.status).json(result);
   } catch (error) {
@@ -44,28 +38,9 @@ const getAllFolders = async (req, res) => {
     const parentFolder =
       req.query.parentFolder || null;
 
-    console.log(
-      "========== GET FOLDERS =========="
-    );
-
-    console.log("User:", req.user.id);
-    console.log(
-      "Parent Folder:",
-      parentFolder
-    );
-
     const result = await getFolders(
       req.user.id,
       parentFolder
-    );
-
-    console.log(
-      "Folders Found:",
-      result.folders?.map((folder) => ({
-        id: folder._id,
-        name: folder.name,
-        parentFolder: folder.parentFolder,
-      }))
     );
 
     return res

@@ -1,8 +1,13 @@
 const mongoose = require("mongoose");
 const File = require("../models/File");
 
+const isValidObjectId = (id) =>
+  typeof id === "string" &&
+  mongoose.Types.ObjectId.isValid(id) &&
+  /^[0-9a-fA-F]{24}$/.test(id);
+
 const toggleFavorite = async (fileId, userId) => {
-  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+  if (!isValidObjectId(fileId)) {
     return {
       success: false,
       status: 404,
@@ -28,6 +33,14 @@ const toggleFavorite = async (fileId, userId) => {
     };
   }
 
+  if (file.isTrashed) {
+    return {
+      success: false,
+      status: 400,
+      message: "Cannot modify favorites for a trashed file.",
+    };
+  }
+
   file.isFavorite = !file.isFavorite;
 
   await file.save();
@@ -45,6 +58,7 @@ const getFavoriteFiles = async (userId) => {
   const files = await File.find({
     owner: userId,
     isFavorite: true,
+    isTrashed: false,
   }).sort({
     createdAt: -1,
   });

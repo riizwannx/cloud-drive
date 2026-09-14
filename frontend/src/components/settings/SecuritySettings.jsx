@@ -53,7 +53,7 @@ export default function SecuritySettings() {
     } catch (error) {
       console.error(
         "Change password error:",
-        error
+        error.response?.data?.message || error.message
       );
 
       alert(

@@ -22,7 +22,7 @@ export default function UserProfile() {
       } catch (error) {
         console.error(
           "Failed to load user profile:",
-          error
+          error.message
         );
       } finally {
         setLoading(false);

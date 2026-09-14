@@ -1,11 +1,21 @@
 const mongoose = require("mongoose");
 const User = require("../models/User");
 
+const isValidObjectId = (id) =>
+  typeof id === "string" &&
+  mongoose.Types.ObjectId.isValid(id) &&
+  /^[0-9a-fA-F]{24}$/.test(id);
+
 /**
  * Atomically reserve storage for a user if within storage limit
  */
 const reserveStorage = async (userId, fileSize) => {
-  if (typeof fileSize !== "number" || Number.isNaN(fileSize) || fileSize < 0) {
+  if (
+    typeof fileSize !== "number" ||
+    Number.isNaN(fileSize) ||
+    !Number.isFinite(fileSize) ||
+    fileSize < 0
+  ) {
     return {
       success: false,
       status: 400,
@@ -13,7 +23,7 @@ const reserveStorage = async (userId, fileSize) => {
     };
   }
 
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
+  if (!isValidObjectId(userId)) {
     return {
       success: false,
       status: 404,
@@ -109,14 +119,67 @@ const increaseStorage = async (userId, fileSize) => {
 };
 
 /**
- * Decrease user's used storage
+ * Atomically decrease user's used storage with floor protection (storageUsed >= 0)
  */
 const decreaseStorage = async (userId, fileSize) => {
-  await User.findByIdAndUpdate(userId, {
-    $inc: {
-      storageUsed: -fileSize,
-    },
-  });
+  if (
+    typeof fileSize !== "number" ||
+    Number.isNaN(fileSize) ||
+    !Number.isFinite(fileSize) ||
+    fileSize < 0
+  ) {
+    return {
+      success: false,
+      status: 400,
+      message: "Invalid file size.",
+    };
+  }
+
+  if (fileSize === 0) {
+    const user = await User.findById(userId);
+    return {
+      success: !!user,
+      user,
+    };
+  }
+
+  if (!isValidObjectId(userId)) {
+    return {
+      success: false,
+      status: 404,
+      message: "User not found.",
+    };
+  }
+
+  const user = await User.findOneAndUpdate(
+    { _id: userId },
+    [
+      {
+        $set: {
+          storageUsed: {
+            $max: [
+              0,
+              { $subtract: [{ $ifNull: ["$storageUsed", 0] }, fileSize] },
+            ],
+          },
+        },
+      },
+    ],
+    { returnDocument: "after", updatePipeline: true }
+  );
+
+  if (!user) {
+    return {
+      success: false,
+      status: 404,
+      message: "User not found.",
+    };
+  }
+
+  return {
+    success: true,
+    user,
+  };
 };
 
 /**

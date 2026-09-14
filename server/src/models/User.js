@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
 
     profilePicture: {
@@ -50,6 +51,11 @@ const userSchema = new mongoose.Schema(
     isVIP: {
       type: Boolean,
       default: false,
+    },
+
+    tokenVersion: {
+      type: Number,
+      default: 0,
     },
   },
   {

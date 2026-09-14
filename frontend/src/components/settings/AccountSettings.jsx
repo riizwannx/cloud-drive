@@ -17,7 +17,7 @@ export default function AccountSettings() {
 
       setUser(response.user);
     } catch (error) {
-      console.error("Failed to load profile:", error);
+      console.error("Failed to load profile:", error.message);
 
       alert(
         error.response?.data?.message ||

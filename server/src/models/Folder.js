@@ -25,4 +25,7 @@ const folderSchema = new mongoose.Schema(
   }
 );
 
+// Compound index for multi-tenant parent-folder listing, child lookups, and duplicate name checks
+folderSchema.index({ owner: 1, parentFolder: 1, name: 1 });
+
 module.exports = mongoose.model("Folder", folderSchema);

@@ -71,10 +71,13 @@ const uploadFileToCloudinary = (fileBuffer, optionsOrKey = {}, mimeTypeArg) => {
           : uniqueId;
     }
 
+    const deliveryType = options.type || "authenticated";
+
     const uploadOptions = {
       folder: "clouddrive",
       public_id: publicId,
       resource_type: resourceType,
+      type: deliveryType,
       overwrite: true,
     };
 
@@ -93,9 +96,9 @@ const uploadFileToCloudinary = (fileBuffer, optionsOrKey = {}, mimeTypeArg) => {
 };
 
 /**
- * Parse a Cloudinary URL to extract resourceType and publicId
+ * Parse a Cloudinary URL to extract resourceType, deliveryType, and publicId
  * @param {string} urlStr
- * @returns {{ resourceType: string, publicId: string } | null}
+ * @returns {{ resourceType: string, deliveryType: string, publicId: string } | null}
  */
 const parseCloudinaryUrl = (urlStr) => {
   try {
@@ -103,12 +106,16 @@ const parseCloudinaryUrl = (urlStr) => {
     const parts = parsed.pathname.split("/").filter(Boolean);
     if (parts.length >= 4) {
       const resourceType = parts[1];
+      const deliveryType = parts[2];
       let startIndex = 3;
+      if (parts[startIndex] && /^s--[a-zA-Z0-9_-]+--$/.test(parts[startIndex])) {
+        startIndex++;
+      }
       if (parts[startIndex] && /^v\d+$/.test(parts[startIndex])) {
         startIndex++;
       }
       const publicId = decodeURIComponent(parts.slice(startIndex).join("/"));
-      return { resourceType, publicId };
+      return { resourceType, deliveryType, publicId };
     }
   } catch (e) {
     // Not a valid URL
@@ -126,6 +133,7 @@ const getFileStreamFromCloudinary = (fileOrUrl) => {
     let targetUrl = null;
     let publicId = null;
     let resourceType = null;
+    let deliveryType = null;
     let fallbackUrl = null;
 
     if (typeof fileOrUrl === "string") {
@@ -138,6 +146,7 @@ const getFileStreamFromCloudinary = (fileOrUrl) => {
         if (parsed) {
           publicId = parsed.publicId;
           resourceType = parsed.resourceType;
+          deliveryType = parsed.deliveryType;
         }
       } else {
         publicId = fileOrUrl;
@@ -148,6 +157,9 @@ const getFileStreamFromCloudinary = (fileOrUrl) => {
       resourceType =
         fileOrUrl.cloudinaryResourceType ||
         fileOrUrl.resource_type;
+      deliveryType =
+        fileOrUrl.cloudinaryType ||
+        fileOrUrl.type;
 
       if (!resourceType) {
         resourceType = getResourceType(
@@ -170,6 +182,7 @@ const getFileStreamFromCloudinary = (fileOrUrl) => {
           if (parsed) {
             publicId = parsed.publicId;
             resourceType = resourceType || parsed.resourceType;
+            deliveryType = deliveryType || parsed.deliveryType;
           }
         } else {
           publicId = fileOrUrl.filePath;
@@ -177,7 +190,32 @@ const getFileStreamFromCloudinary = (fileOrUrl) => {
       }
     }
 
-    // Generate authenticated signed API download URL to bypass restricted delivery blocks
+    let finalDeliveryType = deliveryType;
+    if (!finalDeliveryType) {
+      if (fallbackUrl) {
+        if (
+          fallbackUrl.includes("/image/upload/") ||
+          fallbackUrl.includes("/raw/upload/")
+        ) {
+          finalDeliveryType = "upload";
+        } else if (
+          fallbackUrl.includes("/image/authenticated/") ||
+          fallbackUrl.includes("/raw/authenticated/")
+        ) {
+          finalDeliveryType = "authenticated";
+        } else if (
+          fallbackUrl.includes("/image/private/") ||
+          fallbackUrl.includes("/raw/private/")
+        ) {
+          finalDeliveryType = "private";
+        }
+      }
+    }
+    if (!finalDeliveryType) {
+      finalDeliveryType = "authenticated";
+    }
+
+    // Generate authenticated signed API download URL
     if (publicId) {
       try {
         const finalResourceType =
@@ -189,7 +227,7 @@ const getFileStreamFromCloudinary = (fileOrUrl) => {
 
         targetUrl = cloudinary.utils.private_download_url(publicId, formatArg, {
           resource_type: finalResourceType,
-          type: "upload",
+          type: finalDeliveryType,
         });
       } catch (signErr) {
         console.warn(
@@ -235,6 +273,34 @@ const getFileStreamFromCloudinary = (fileOrUrl) => {
             return fetchStream(nextUrl, redirectCount + 1);
           }
 
+          // Automatic fallback for legacy assets uploaded as type: "upload"
+          if (
+            (res.statusCode === 404 || res.statusCode === 401) &&
+            finalDeliveryType === "authenticated" &&
+            publicId
+          ) {
+            try {
+              const fallbackResourceType =
+                resourceType ||
+                (publicId.toLowerCase().endsWith(".pdf") ? "raw" : "image");
+              const ext = path.extname(publicId).replace(/^\./, "");
+              const formatArg =
+                fallbackResourceType === "raw" ? "" : (ext || "");
+              const legacyUrl = cloudinary.utils.private_download_url(
+                publicId,
+                formatArg,
+                {
+                  resource_type: fallbackResourceType,
+                  type: "upload",
+                }
+              );
+              finalDeliveryType = "upload";
+              return fetchStream(legacyUrl, redirectCount + 1);
+            } catch (fallbackErr) {
+              // Continue to standard error handling below
+            }
+          }
+
           if (res.statusCode === 404) {
             const err = new Error("Physical file not found in Cloudinary.");
             err.statusCode = 404;
@@ -266,9 +332,10 @@ const getFileStreamFromCloudinary = (fileOrUrl) => {
  * @param {string} [resourceType] - "image" or "raw"
  * @returns {Promise<Object>} Cloudinary destroy result ({ result: "ok" })
  */
-const deleteFileFromCloudinary = async (publicIdOrFile, resourceType) => {
+const deleteFileFromCloudinary = async (publicIdOrFile, resourceType, typeArg) => {
   let publicId;
   let resType = resourceType;
+  let deliveryType = typeArg;
 
   if (typeof publicIdOrFile === "string") {
     if (
@@ -279,6 +346,7 @@ const deleteFileFromCloudinary = async (publicIdOrFile, resourceType) => {
       if (parsed) {
         publicId = parsed.publicId;
         resType = resType || parsed.resourceType;
+        deliveryType = deliveryType || parsed.deliveryType;
       } else {
         publicId = publicIdOrFile;
       }
@@ -289,6 +357,10 @@ const deleteFileFromCloudinary = async (publicIdOrFile, resourceType) => {
     publicId =
       publicIdOrFile.cloudinaryPublicId ||
       publicIdOrFile.publicId;
+    deliveryType =
+      deliveryType ||
+      publicIdOrFile.cloudinaryType ||
+      publicIdOrFile.type;
 
     if (!publicId && typeof publicIdOrFile.filePath === "string") {
       if (
@@ -299,6 +371,7 @@ const deleteFileFromCloudinary = async (publicIdOrFile, resourceType) => {
         if (parsed) {
           publicId = parsed.publicId;
           resType = resType || parsed.resourceType;
+          deliveryType = deliveryType || parsed.deliveryType;
         }
       } else {
         publicId = publicIdOrFile.filePath;
@@ -337,11 +410,41 @@ const deleteFileFromCloudinary = async (publicIdOrFile, resourceType) => {
     finalResourceType = "image";
   }
 
+  if (!deliveryType) {
+    if (publicIdOrFile && typeof publicIdOrFile === "object") {
+      if (
+        (publicIdOrFile.filePath && publicIdOrFile.filePath.includes("/upload/")) ||
+        (publicIdOrFile.cloudinaryUrl && publicIdOrFile.cloudinaryUrl.includes("/upload/"))
+      ) {
+        deliveryType = "upload";
+      }
+    }
+  }
+  if (!deliveryType) {
+    deliveryType = "authenticated";
+  }
+
   const options = {
     resource_type: finalResourceType,
+    type: deliveryType,
   };
 
-  const result = await cloudinary.uploader.destroy(publicId, options);
+  let result = await cloudinary.uploader.destroy(publicId, options);
+
+  // Fallback to type: "upload" if authenticated returns not found (for legacy files)
+  if ((!result || result.result !== "ok") && deliveryType === "authenticated") {
+    try {
+      const fallbackResult = await cloudinary.uploader.destroy(publicId, {
+        resource_type: finalResourceType,
+        type: "upload",
+      });
+      if (fallbackResult && fallbackResult.result === "ok") {
+        result = fallbackResult;
+      }
+    } catch (fbErr) {
+      // Ignore fallback error and preserve initial result
+    }
+  }
 
   if (!result || result.result !== "ok") {
     const errorMsg =

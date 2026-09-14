@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { logoutUser } from "@/services/authService";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -22,9 +23,15 @@ export default function Navbar() {
     setIsDark(nextIsDark);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/", { replace: true });
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch (error) {
+      // Fallback: proceed with client cleanup even if network/server fails
+    } finally {
+      localStorage.removeItem("token");
+      navigate("/login", { replace: true });
+    }
   };
 
   return (

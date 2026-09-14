@@ -51,7 +51,7 @@ export default function SharedFile() {
       } catch (error) {
         console.error(
           "Shared file error:",
-          error
+          error.message
         );
 
         setError(

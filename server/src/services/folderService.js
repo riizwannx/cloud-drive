@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 const Folder = require("../models/Folder");
 const File = require("../models/File");
 
+const isValidObjectId = (id) => {
+  return (
+    typeof id === "string" &&
+    mongoose.Types.ObjectId.isValid(id) &&
+    /^[0-9a-fA-F]{24}$/.test(id)
+  );
+};
+
 // ==============================
 // Create Folder
 // ==============================
@@ -10,7 +18,15 @@ const createFolder = async (
   owner,
   parentFolder = null
 ) => {
-  const trimmedName = name?.trim();
+  if (typeof name !== "string") {
+    return {
+      success: false,
+      status: 400,
+      message: "Folder name is required.",
+    };
+  }
+
+  const trimmedName = name.trim();
 
   if (!trimmedName) {
     return {
@@ -20,12 +36,28 @@ const createFolder = async (
     };
   }
 
+  if (trimmedName.length > 100) {
+    return {
+      success: false,
+      status: 400,
+      message: "Folder name must be at most 100 characters.",
+    };
+  }
+
+  if (/[<>]/.test(trimmedName)) {
+    return {
+      success: false,
+      status: 400,
+      message: "Folder name contains invalid characters.",
+    };
+  }
+
   // ==============================
   // Validate Parent Folder
   // ==============================
 
   if (parentFolder) {
-    if (!mongoose.Types.ObjectId.isValid(parentFolder)) {
+    if (!isValidObjectId(parentFolder)) {
       return {
         success: false,
         status: 404,
@@ -96,12 +128,36 @@ const getFolders = async (
   owner,
   parentFolder = null
 ) => {
-  if (parentFolder && !mongoose.Types.ObjectId.isValid(parentFolder)) {
-    return {
-      success: false,
-      status: 400,
-      message: "Invalid parent folder ID.",
-    };
+  if (parentFolder) {
+    if (
+      typeof parentFolder !== "string" ||
+      !mongoose.Types.ObjectId.isValid(parentFolder) ||
+      !/^[0-9a-fA-F]{24}$/.test(parentFolder)
+    ) {
+      return {
+        success: false,
+        status: 400,
+        message: "Invalid parent folder ID.",
+      };
+    }
+
+    const parent = await Folder.findById(parentFolder);
+
+    if (!parent) {
+      return {
+        success: false,
+        status: 404,
+        message: "Parent folder not found.",
+      };
+    }
+
+    if (parent.owner.toString() !== owner.toString()) {
+      return {
+        success: false,
+        status: 403,
+        message: "Unauthorized access.",
+      };
+    }
   }
 
   const folders = await Folder.find({
@@ -126,7 +182,7 @@ const getFolder = async (
   folderId,
   owner
 ) => {
-  if (!mongoose.Types.ObjectId.isValid(folderId)) {
+  if (!isValidObjectId(folderId)) {
     return {
       success: false,
       status: 404,
@@ -172,7 +228,7 @@ const renameFolder = async (
   owner,
   name
 ) => {
-  if (!mongoose.Types.ObjectId.isValid(folderId)) {
+  if (!isValidObjectId(folderId)) {
     return {
       success: false,
       status: 404,
@@ -180,13 +236,37 @@ const renameFolder = async (
     };
   }
 
-  const trimmedName = name?.trim();
+  if (typeof name !== "string") {
+    return {
+      success: false,
+      status: 400,
+      message: "Folder name is required.",
+    };
+  }
+
+  const trimmedName = name.trim();
 
   if (!trimmedName) {
     return {
       success: false,
       status: 400,
       message: "Folder name is required.",
+    };
+  }
+
+  if (trimmedName.length > 100) {
+    return {
+      success: false,
+      status: 400,
+      message: "Folder name must be at most 100 characters.",
+    };
+  }
+
+  if (/[<>]/.test(trimmedName)) {
+    return {
+      success: false,
+      status: 400,
+      message: "Folder name contains invalid characters.",
     };
   }
 
@@ -254,7 +334,7 @@ const deleteFolder = async (
   folderId,
   owner
 ) => {
-  if (!mongoose.Types.ObjectId.isValid(folderId)) {
+  if (!isValidObjectId(folderId)) {
     return {
       success: false,
       status: 404,

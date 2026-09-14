@@ -29,7 +29,7 @@ export default function useFolders(
       } catch (error) {
         console.error(
           "Failed to load folders:",
-          error
+          error.message
         );
 
         setError(

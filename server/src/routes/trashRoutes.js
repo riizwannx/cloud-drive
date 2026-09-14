@@ -10,6 +10,8 @@ const {
   deleteTrashFile,
 } = require("../controllers/trashController");
 
+const { permanentDeleteLimiter } = require("./fileRoutes");
+
 // Get all trashed files
 router.get("/", authMiddleware, getTrash);
 
@@ -20,6 +22,6 @@ router.patch("/:id", authMiddleware, moveFileToTrash);
 router.patch("/restore/:id", authMiddleware, restoreTrashFile);
 
 // Permanently delete file
-router.delete("/:id", authMiddleware, deleteTrashFile);
+router.delete("/:id", authMiddleware, permanentDeleteLimiter, deleteTrashFile);
 
 module.exports = router;
