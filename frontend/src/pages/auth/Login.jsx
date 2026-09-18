@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -141,7 +141,21 @@ export default function Login() {
             >
               {loading ? "Signing In..." : "Sign In"}
             </Button>
-          </form><p className="mt-8 text-center text-xs text-muted-foreground">Your files stay private and protected.</p>
+          </form>
+
+          <p className="mt-7 text-center text-sm text-muted-foreground">
+            Don&apos;t have an account?{" "}
+            <Link
+              to="/register"
+              className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
+            >
+              Create one
+            </Link>
+          </p>
+
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            Your files stay private and protected.
+          </p>
         </CardContent>
       </Card>
       </div>
