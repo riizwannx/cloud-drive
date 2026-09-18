@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -12,22 +13,28 @@ const actions = [
   {
     title: "Upload File",
     icon: Upload,
+    path: "/files",
   },
   {
     title: "New Folder",
     icon: FolderPlus,
+    path: "/folders",
   },
   {
     title: "Share File",
     icon: Share2,
+    path: "/shared",
   },
   {
     title: "Trash",
     icon: Trash2,
+    path: "/trash",
   },
 ];
 
 export default function QuickActions() {
+  const navigate = useNavigate();
+
   return (
     <Card className="surface-card rounded-2xl">
       <CardHeader className="pb-3">
@@ -42,6 +49,7 @@ export default function QuickActions() {
             <Button
               key={action.title}
               variant="outline"
+              onClick={() => navigate(action.path)}
               className="h-24 flex-col gap-2 rounded-xl border-border/80 bg-background/40 text-xs font-medium shadow-none hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:border-indigo-400/30 dark:hover:bg-indigo-400/10 dark:hover:text-indigo-300"
             >
               <Icon className="h-5 w-5" />

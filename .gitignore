@@ -32,3 +32,7 @@ coverage/
 
 # User uploaded files
 server/src/uploads/
+
+# Local tooling & QA
+.reticle/
+.cursor/
